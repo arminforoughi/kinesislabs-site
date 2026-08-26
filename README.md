@@ -19,20 +19,26 @@ cp ../lab-robot/index.html index.html && git commit -am "update site" && git pus
 
 ## The hero animation
 
-An abstract SVG robot: a two-link arm sweeps around an arc, lifts an element
-from the pick point, and lights each position in turn, trailing a fading motion
-path. Nothing in it depicts the product workflow.
+An SVG receiving cell with no words in it: tubes ride in on a conveyor from off
+the left edge, the read station scans each one, and a gantry arm lifts it into
+one of three racks. Everything the animation "says" it says visually — a
+coloured meter under each rack that fills as the rack fills, a ping ring at the
+read station (mint accepted, amber held), a carriage LED on the same code, and a
+glow around whatever the gripper is carrying.
 
 It is all inline in `index.html`:
 
-- geometry at the top of the `<script>` — base point, link lengths, the arc the
-  positions sit on
-- moves are tweened in *polar* coordinates around the base, which is what makes
-  them arc instead of running in straight lines
-- `ik()` solves the two links; the elbow always breaks to the same side so the
-  arm keeps one silhouette
-- an action queue drives the cycle; **durations are milliseconds**
-- animated opacity is set as an *attribute*, so never give those classes an
-  `opacity` in CSS — the stylesheet would win and nothing would show
-- `prefers-reduced-motion` gets a static frame; the loop pauses when the tab is
-  hidden or the animation is scrolled out of view
+- geometry constants at the top of the `<script>` — belt line, pick point, rack
+  positions, link lengths
+- `TYPES` — the tube mix and where each routes; edit this to change the balance
+  of accepted vs held
+- two-link inverse kinematics in `ik()`, redrawn each frame by `render()`
+- an action queue (`push`, `stepQueue`) scripting one pick-and-place cycle;
+  **durations are milliseconds, belt speed is px/second**
+- ambient effects (dust, light shaft, seat pulse, sweep) run off the frame loop,
+  outside the queue
+- `prefers-reduced-motion` gets a static, already-sorted frame
+- the loop pauses when the tab is hidden or the animation is scrolled out of view
+
+The caption beneath it labelling this a concept animation is deliberate and
+should stay while there is no footage of a working system.
