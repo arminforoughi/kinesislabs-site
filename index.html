@@ -119,62 +119,25 @@ ul,ol{margin:0;padding:0;list-style:none}
   border:1px solid var(--line-d);
   box-shadow:0 40px 90px -50px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.05);
 }
-.cell svg{width:100%;height:auto;font-family:var(--font)}
-.hud{
-  position:absolute;left:clamp(.75rem,2vw,1.35rem);top:clamp(.75rem,2vw,1.35rem);
-  min-width:min(20rem,58vw);padding:.85rem 1rem .95rem;
-  border-radius:var(--r-sm);background:rgba(6,12,16,.72);border:1px solid var(--line-d);
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-}
-.hud-state{display:flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mint)}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 0 rgba(95,227,180,.6);animation:pulse 1.8s var(--ease) infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(95,227,180,.55)}70%{box-shadow:0 0 0 9px rgba(95,227,180,0)}100%{box-shadow:0 0 0 0 rgba(95,227,180,0)}}
-.hud-tube{margin:.55rem 0 .1rem;font-size:.95rem;font-weight:600;letter-spacing:-.015em;color:#fff}
-.hud-test{margin:0;font-size:.8125rem;color:rgba(216,234,238,.62)}
-.hud-route{margin:.7rem 0 0;display:inline-flex;align-items:center;gap:.45rem;font-family:var(--mono);font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase;padding:.32rem .6rem;border-radius:var(--pill);border:1px solid rgba(95,227,180,.4);color:var(--mint);background:rgba(95,227,180,.08)}
-.hud-route[data-flag="1"]{color:var(--amber);border-color:rgba(255,148,85,.45);background:rgba(255,148,85,.1)}
-.hud-count{
-  position:absolute;right:clamp(.75rem,2vw,1.35rem);top:clamp(.75rem,2vw,1.35rem);
-  display:flex;align-items:baseline;gap:.55rem;padding:.6rem .95rem;border-radius:var(--r-sm);
-  background:rgba(6,12,16,.72);border:1px solid var(--line-d);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-}
-.hud-count span{font-family:var(--mono);font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(216,234,238,.55)}
-.hud-count strong{font-size:1.25rem;font-weight:600;letter-spacing:-.03em;color:#fff;font-variant-numeric:tabular-nums}
-@media (max-width:640px){.hud{min-width:0;max-width:62vw}.hud-count{display:none}}
-.cell-note{margin-top:1.1rem;max-width:44rem;font-size:var(--t-sm);color:rgba(219,236,239,.6);border-left:2px solid var(--amber);padding-left:.9rem}
+.cell svg{width:100%;height:auto}
+.cell-note{margin-top:1rem;font-size:var(--t-sm);color:rgba(219,236,239,.5)}
 
 /* SVG machine styling */
 .grid-line{stroke:#284452;stroke-width:1;fill:none}
-.mach{fill:#1A2A34}
-.mach-2{fill:#22394666}
-.mach-edge{fill:none;stroke:rgba(150,215,235,.22);stroke-width:1}
-.belt-body{fill:#16242D}
-.belt-top{fill:#1E323D}
-.belt-stripe{fill:rgba(150,215,235,.13)}
-.roller{fill:#25404E;stroke:rgba(150,215,235,.25);stroke-width:1}
-.rack-body{fill:#152430;stroke:rgba(150,215,235,.18);stroke-width:1}
-.rack-front{fill:#1B2E3A;stroke:rgba(150,215,235,.22);stroke-width:1}
-.rack-slot{fill:#0A1218}
-.rack-label{fill:rgba(214,238,243,.78);font-size:11px;font-weight:600;letter-spacing:.14em;text-anchor:middle}
-.rack-sub{fill:rgba(214,238,243,.34);font-size:9.5px;letter-spacing:.1em;text-anchor:middle}
-.rack-body.is-full{stroke:rgba(95,227,180,.65)}
-.tag{fill:rgba(214,238,243,.4);font-size:10px;letter-spacing:.14em}
-.glass{fill:url(#gGlass);stroke:rgba(214,238,243,.4);stroke-width:1}
-.blood{fill:#8E2733;opacity:.92}
-.sticker{fill:#EEF2EC;opacity:.94}
-.bars{stroke:#0A1216;stroke-width:1.1;opacity:.75}
-.neck{fill:rgba(214,238,243,.28)}
-.shine{stroke:#fff;stroke-width:2;opacity:.34;stroke-linecap:round}
 .link{stroke:#2C4653;stroke-linecap:round;fill:none}
-.link-core{stroke:#4E7787;stroke-linecap:round;fill:none;opacity:.8}
-.joint{fill:#0D151B;stroke:rgba(95,227,180,.5);stroke-width:2}
-.grip-body{fill:#22394A;stroke:rgba(150,215,235,.3);stroke-width:1}
-.finger{fill:#31536A;stroke:rgba(150,215,235,.35);stroke-width:1}
-.rail{fill:#152530;stroke:rgba(150,215,235,.2);stroke-width:1}
-.rail-line{stroke:rgba(150,215,235,.25);stroke-width:1}
-.beam{stroke:url(#gBeam);stroke-width:2}
-.bracket{stroke:var(--mint);stroke-width:1.5;fill:none;opacity:.8}
-.tube{transition:opacity 400ms linear}
+.link-core{stroke:#4E7787;stroke-linecap:round;fill:none;opacity:.85}
+.joint{fill:#0D151B;stroke:rgba(95,227,180,.55);stroke-width:2}
+.base{fill:#152530;stroke:rgba(150,215,235,.22);stroke-width:1}
+.plinth{fill:#101C24;stroke:rgba(150,215,235,.14);stroke-width:1}
+.node{fill:none;stroke:rgba(150,215,235,.26);stroke-width:1.5}
+.node-fill{fill:var(--mint)}
+.node-ring{fill:none;stroke:var(--mint);stroke-width:1.5}
+.node-halo{fill:var(--mint)}
+.trail{fill:none;stroke:url(#gTrail);stroke-linecap:round;stroke-linejoin:round}
+.finger{fill:#31536A;stroke:rgba(150,215,235,.4);stroke-width:1}
+.tool-body{fill:#22394A;stroke:rgba(150,215,235,.32);stroke-width:1}
+.payload{fill:var(--mint)}
+.feeder-ring{fill:none;stroke:rgba(95,227,180,.45);stroke-width:1.5;stroke-dasharray:4 5}
 
 /* Stats */
 .stats{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;grid-template-columns:1fr}
@@ -245,85 +208,58 @@ ul,ol{margin:0;padding:0;list-style:none}
 
     <figure class="cell-outer">
       <div class="cell">
-        <svg id="cell" viewBox="0 0 1000 600" role="img" aria-labelledby="cell-title cell-desc" preserveAspectRatio="xMidYMid meet">
-          <title id="cell-title">Concept animation of the receiving station</title>
-          <desc id="cell-desc">A gantry robot lifts each blood tube off a conveyor, reads its label, and seats it in the spin, no-spin or hold rack.</desc>
+        <svg id="cell" viewBox="140 120 720 420" role="img" aria-labelledby="cell-title cell-desc" preserveAspectRatio="xMidYMid meet">
+          <title id="cell-title">Robotic arm animation</title>
+          <desc id="cell-desc">An articulated arm repeatedly lifts a glowing element and places it into one of the waiting positions arranged around it.</desc>
           <defs>
-            <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#DCEAF0" stop-opacity=".5"/>
-              <stop offset=".35" stop-color="#FFFFFF" stop-opacity=".2"/>
-              <stop offset="1" stop-color="#7FA8B8" stop-opacity=".4"/>
-            </linearGradient>
-            <linearGradient id="gBeam" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#5FE3B4" stop-opacity="0"/>
-              <stop offset=".5" stop-color="#5FE3B4" stop-opacity="1"/>
-              <stop offset="1" stop-color="#5FE3B4" stop-opacity="0"/>
-            </linearGradient>
-            <radialGradient id="gVig" cx=".5" cy=".2" r=".9">
+            <radialGradient id="gVig" cx=".5" cy=".25" r=".9">
               <stop offset="0" stop-color="#5FE3B4" stop-opacity=".07"/>
               <stop offset="1" stop-color="#050A0E" stop-opacity=".55"/>
             </radialGradient>
             <pattern id="pGrid" width="40" height="40" patternUnits="userSpaceOnUse">
               <path class="grid-line" d="M40 0H0V40"/>
             </pattern>
-            <clipPath id="clipBelt"><rect x="24" y="428" width="466" height="42" rx="8"/></clipPath>
+            <linearGradient id="gTrail" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="0">
+              <stop offset="0" stop-color="#5FE3B4" stop-opacity="0"/>
+              <stop offset=".65" stop-color="#5FE3B4" stop-opacity=".55"/>
+              <stop offset="1" stop-color="#5FE3B4" stop-opacity="1"/>
+            </linearGradient>
           </defs>
 
-          <rect width="1000" height="600" fill="url(#pGrid)" opacity=".45"/>
-          <rect width="1000" height="600" fill="url(#gVig)"/>
+          <rect width="1000" height="560" fill="url(#pGrid)" opacity=".4"/>
+          <rect width="1000" height="560" fill="url(#gVig)"/>
 
-          <!-- overhead rail -->
-          <g id="rail">
-            <rect class="rail" x="90" y="82" width="880" height="22" rx="11"/>
-            <line class="rail-line" x1="102" y1="93" x2="958" y2="93"/>
-            <rect class="mach" x="90" y="60" width="26" height="24" rx="6"/>
-            <rect class="mach" x="944" y="60" width="26" height="24" rx="6"/>
+          <g id="layer-nodes"></g>
+
+          <polyline id="trail-glow" class="trail" stroke-width="11" opacity=".12"/>
+          <polyline id="trail" class="trail" stroke-width="2.5" opacity=".55"/>
+
+          <g id="feeder" transform="translate(258,360)">
+            <circle class="feeder-ring" r="17"/>
+            <circle id="feed-dot" class="payload" r="7" opacity="1"/>
           </g>
 
-          <g id="layer-back"></g>
-          <g id="layer-tubes"></g>
-          <g id="layer-front"></g>
-
-          <!-- scanner -->
-          <g id="scan" opacity="0">
-            <line class="beam" x1="378" y1="0" x2="462" y2="0"/>
-            <path class="bracket" d="M394 -46 h-16 v14 M446 -46 h16 v14 M394 12 h-16 v-14 M446 12 h16 v-14"/>
-          </g>
-
-          <!-- arm -->
           <g id="arm">
-            <g id="carriage">
-              <rect class="mach" x="-56" y="70" width="112" height="42" rx="12"/>
-              <rect class="mach-edge" x="-56" y="70" width="112" height="42" rx="12"/>
-              <circle cx="-34" cy="91" r="4" fill="#5FE3B4" opacity=".8"/>
-              <circle cx="34" cy="91" r="3" fill="#7FC5EE" opacity=".5"/>
-              <rect class="mach" x="-14" y="106" width="28" height="16" rx="5"/>
-            </g>
-            <line id="link1" class="link" stroke-width="17"/>
+            <path class="plinth" d="M430 512 L456 452 h88 l26 60 z"/>
+            <rect class="base" x="462" y="404" width="76" height="52" rx="14"/>
+            <circle cx="482" cy="430" r="3.5" fill="#5FE3B4" opacity=".75"/>
+            <circle cx="518" cy="430" r="3" fill="#7FC5EE" opacity=".45"/>
+            <line id="link1" class="link" stroke-width="18"/>
             <line id="link1c" class="link-core" stroke-width="5"/>
-            <line id="link2" class="link" stroke-width="13"/>
+            <line id="link2" class="link" stroke-width="14"/>
             <line id="link2c" class="link-core" stroke-width="4"/>
-            <circle id="jointS" class="joint" r="11"/>
-            <circle id="jointE" class="joint" r="9"/>
-            <g id="grip">
-              <rect class="grip-body" x="-21" y="-16" width="42" height="21" rx="6"/>
-              <rect id="fingerL" class="finger" x="-3" y="0" width="6" height="30" rx="3"/>
-              <rect id="fingerR" class="finger" x="-3" y="0" width="6" height="30" rx="3"/>
+            <circle id="jointS" class="joint" r="12"/>
+            <circle id="jointE" class="joint" r="9.5"/>
+            <g id="tool">
+              <rect class="tool-body" x="-16" y="-11" width="32" height="20" rx="6"/>
+              <rect id="fingerL" class="finger" x="-3" y="7" width="6" height="20" rx="3"/>
+              <rect id="fingerR" class="finger" x="-3" y="7" width="6" height="20" rx="3"/>
+              <circle id="payload" class="payload" cx="0" cy="20" r="7" opacity="0"/>
             </g>
           </g>
-
-          <text class="tag" x="30" y="512">UNBAGGED SPECIMENS</text>
-          <text class="tag" x="378" y="512">READ &amp; DECIDE</text>
         </svg>
-        <div class="hud">
-          <p class="hud-state"><span class="dot"></span><span id="hud-state">Standby</span></p>
-          <p class="hud-tube" id="hud-tube">Waiting for specimen</p>
-          <p class="hud-test" id="hud-test">Label, tube type, fill volume, integrity</p>
-          <p class="hud-route" id="hud-route">Idle</p>
-        </div>
-        <div class="hud-count"><span>Received</span><strong id="hud-count">00</strong></div>
       </div>
-      <figcaption class="cell-note">Concept animation. It shows the workflow the station is being trained to perform. It is not footage of a deployed system.</figcaption>
+      <figcaption class="cell-note">Illustrative animation. Not footage of the station.</figcaption>
     </figure>
   </div>
 </section>
@@ -476,273 +412,169 @@ ul,ol{margin:0;padding:0;list-style:none}
   var byId = function(id){ return document.getElementById(id); };
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---- geometry ---- */
-  var BELT_TOP = 430, PICK_X = 420, TUBE_GAP = 78, GRIP_DY = 60;
-  var SLOT_BOTTOM = 464, RACK_TOP = 400;
-  var GRIP_Y_PICK = BELT_TOP - GRIP_DY;
-  var GRIP_Y_PLACE = SLOT_BOTTOM - GRIP_DY;
-  var SHOULDER_Y = 118, L1 = 152, L2 = 152;
-  var PARK_X = 470, PARK_Y = 296, LIFT_Y = 258, HOVER_Y = 310;
-  var BELT_SPEED = 96; /* px per second */
+  /* base of the arm, link lengths, and the polar frame everything moves in */
+  var BX = 500, BY = 430, L1 = 152, L2 = 134;
+  var RAD = Math.PI/180;
+  var SOURCE = { a: 196*RAD, r: 252 };   /* where a new element is handed over */
+  var HOME   = { a: 250*RAD, r: 150 };   /* folded, waiting */
 
-  var RACKS = [
-    { key:'spin',   label:'SPIN',    sub:'CENTRIFUGE',  x:540 },
-    { key:'nospin', label:'NO SPIN', sub:'TO ANALYZER', x:690 },
-    { key:'hold',   label:'HOLD',    sub:'PERSON RULES',x:840 }
-  ];
-  RACKS.forEach(function(r){
-    r.slots = [null,null,null,null];
-    r.slotX = function(i){ return r.x + 21 + i*27.5; };
-  });
-  var rackFor = function(key){
-    for(var i=0;i<RACKS.length;i++){ if(RACKS[i].key===key) return RACKS[i]; }
-    return RACKS[0];
-  };
-
-  var TYPES = [
-    { cap:'#C0AEEA', name:'Lavender · K2 EDTA',        test:'CBC with differential',  dest:'nospin' },
-    { cap:'#7CC5EE', name:'Blue · sodium citrate',     test:'PT / INR',               dest:'spin' },
-    { cap:'#EBC55C', name:'Gold · SST',                test:'Comprehensive metabolic',dest:'spin' },
-    { cap:'#93D9AE', name:'Green · lithium heparin',   test:'Lactate',                dest:'spin' },
-    { cap:'#C0AEEA', name:'Lavender · K2 EDTA',        test:'PT / INR ordered',       dest:'hold', flag:'Wrong tube for the ordered test' },
-    { cap:'#7CC5EE', name:'Blue · sodium citrate',     test:'PT / INR',               dest:'hold', flag:'Underfilled, below the fill line', low:true }
-  ];
-  function pickType(){
-    var r = Math.random();
-    if(r < 0.72) return TYPES[Math.floor(Math.random()*4)];
-    return TYPES[4 + Math.floor(Math.random()*2)];
+  /* the places a payload can land: an arc above the arm */
+  var NODES = [];
+  for(var i=0;i<8;i++){
+    var ang = (214 + i*17.5) * RAD;
+    NODES.push({ a:ang, r:252, x:BX + 252*Math.cos(ang), y:BY + 252*Math.sin(ang), lit:false });
   }
 
-  /* ---- scene ---- */
-  var back = byId('layer-back'), tubesLayer = byId('layer-tubes'), front = byId('layer-front');
-
-  function el(tag, attrs){
-    var n = document.createElementNS(NS, tag);
-    for(var k in attrs){ n.setAttribute(k, attrs[k]); }
-    return n;
-  }
-
-  /* belt */
-  var beltG = el('g', {});
-  beltG.innerHTML =
-    '<rect class="mach-2" x="24" y="470" width="466" height="34" rx="6"/>' +
-    '<rect class="belt-body" x="24" y="428" width="466" height="42" rx="8"/>' +
-    '<g clip-path="url(#clipBelt)"><g id="belt-stripes"></g></g>' +
-    '<rect class="mach-edge" x="24" y="428" width="466" height="42" rx="8"/>' +
-    '<circle class="roller" cx="46" cy="449" r="14"/>' +
-    '<circle class="roller" cx="468" cy="449" r="14"/>' +
-    '<rect class="mach" x="60" y="504" width="16" height="46" rx="4"/>' +
-    '<rect class="mach" x="428" y="504" width="16" height="46" rx="4"/>';
-  back.appendChild(beltG);
-  var stripes = byId('belt-stripes');
-  for(var s=-1; s<14; s++){
-    stripes.appendChild(el('rect', {'class':'belt-stripe', x:24 + s*40, y:428, width:9, height:42}));
-  }
-
-  /* racks */
-  RACKS.forEach(function(r){
-    var b = el('g', {});
-    var slotMarks = '';
-    for(var i=0;i<4;i++){
-      slotMarks += '<rect class="rack-slot" x="' + (r.slotX(i)-11) + '" y="' + (RACK_TOP-3) + '" width="22" height="12" rx="3"/>';
-    }
-    b.innerHTML = '<rect class="rack-body" x="' + r.x + '" y="' + RACK_TOP + '" width="124" height="72" rx="9"/>' + slotMarks;
-    r.bodyEl = b.firstChild;
-    back.appendChild(b);
-
-    var f = el('g', {});
-    f.innerHTML =
-      '<rect class="rack-front" x="' + r.x + '" y="' + (RACK_TOP+34) + '" width="124" height="38" rx="9"/>' +
-      '<text class="rack-label" x="' + (r.x+62) + '" y="' + (RACK_TOP+55) + '">' + r.label + '</text>' +
-      '<text class="rack-sub" x="' + (r.x+62) + '" y="' + (RACK_TOP+68) + '">' + r.sub + '</text>' +
-      '<rect class="mach-2" x="' + (r.x+18) + '" y="' + (RACK_TOP+72) + '" width="88" height="26" rx="5"/>';
-    front.appendChild(f);
-  });
-
-  /* ---- tubes ---- */
-  var tubes = [];
-  function makeTube(type){
-    var g = el('g', {'class':'tube'});
-    var fy = type.low ? -32 : -50, fh = type.low ? 30 : 48;
+  var nodeLayer = byId('layer-nodes');
+  NODES.forEach(function(n){
+    var g = document.createElementNS(NS, 'g');
+    var cx = n.x.toFixed(1), cy = n.y.toFixed(1);
     g.innerHTML =
-      '<rect class="glass" x="-11" y="-78" width="22" height="78" rx="10"/>' +
-      '<rect class="blood" x="-8" y="' + fy + '" width="16" height="' + fh + '" rx="7"/>' +
-      '<rect class="sticker" x="-10" y="-66" width="20" height="24" rx="2"/>' +
-      '<path class="bars" d="M-6 -62 v16 M-3.2 -62 v16 M-0.4 -62 v16 M3 -62 v16 M6 -62 v16"/>' +
-      '<rect class="neck" x="-11" y="-85" width="22" height="9" rx="3"/>' +
-      '<rect x="-13" y="-96" width="26" height="14" rx="4" fill="' + type.cap + '"/>' +
-      '<path class="shine" d="M-6 -70 v54"/>';
-    return g;
-  }
-  function spawn(){
-    var type = pickType();
-    var t = { type:type, x:-34, state:'belt', el:makeTube(type) };
-    t.el.setAttribute('transform', 'translate(' + t.x + ',' + BELT_TOP + ')');
-    tubesLayer.appendChild(t.el);
-    tubes.push(t);
-    return t;
-  }
-  function beltTubes(){
-    return tubes.filter(function(t){ return t.state === 'belt'; })
-                .sort(function(a,b){ return b.x - a.x; });
-  }
+      '<circle class="node" cx="' + cx + '" cy="' + cy + '" r="11"/>' +
+      '<circle class="node-halo" cx="' + cx + '" cy="' + cy + '" r="15" opacity="0"/>' +
+      '<circle class="node-fill" cx="' + cx + '" cy="' + cy + '" r="6" opacity="0"/>' +
+      '<circle class="node-ring" cx="' + cx + '" cy="' + cy + '" r="11" opacity="0"/>';
+    nodeLayer.appendChild(g);
+    n.halo = g.childNodes[1];
+    n.fill = g.childNodes[2];
+    n.ring = g.childNodes[3];
+  });
 
-  /* ---- arm ---- */
-  var arm = { cx:PARK_X, ty:PARK_Y, g:1 };
-  var carriage = byId('carriage'), grip = byId('grip');
   var link1 = byId('link1'), link1c = byId('link1c'), link2 = byId('link2'), link2c = byId('link2c');
-  var jointS = byId('jointS'), jointE = byId('jointE');
+  var jointS = byId('jointS'), jointE = byId('jointE'), tool = byId('tool');
   var fingerL = byId('fingerL'), fingerR = byId('fingerR');
-  var scanG = byId('scan'), beam = scanG.querySelector('.beam'), bracket = scanG.querySelector('.bracket');
+  var payload = byId('payload'), feedDot = byId('feed-dot');
+  var trail = byId('trail'), trailGlow = byId('trail-glow'), grad = byId('gTrail');
 
-  function ik(sx, sy, tx, ty){
-    var dx = tx - sx, dy = ty - sy;
+  /* arm state lives in polar coordinates, which is what makes the moves arc */
+  var arm = { a:HOME.a, r:HOME.r, grip:1, carrying:0 };
+  var buf = [], BUF_MAX = 34;
+  var bob = 0;
+
+  function ik(tx, ty){
+    var dx = tx - BX, dy = ty - BY;
     var d = Math.sqrt(dx*dx + dy*dy);
-    var max = L1 + L2 - 1, min = 46;
+    var max = L1 + L2 - 1, min = Math.abs(L1 - L2) + 26;
     if(d > max){ dx *= max/d; dy *= max/d; d = max; }
     else if(d < min){ var k = min/(d || 1); dx *= k; dy *= k; d = min; }
-    var a = Math.atan2(dy, dx);
-    var c = (d*d + L1*L1 - L2*L2) / (2*d*L1);
-    c = Math.max(-1, Math.min(1, c));
-    var ang = a - Math.acos(c);
-    return { ex: sx + L1*Math.cos(ang), ey: sy + L1*Math.sin(ang), tx: sx + dx, ty: sy + dy };
+    var base = Math.atan2(dy, dx);
+    var c = Math.max(-1, Math.min(1, (d*d + L1*L1 - L2*L2)/(2*d*L1)));
+    /* elbow always breaks to the same side, so the arm keeps one silhouette */
+    var ang = base - Math.acos(c);
+    return { ex: BX + L1*Math.cos(ang), ey: BY + L1*Math.sin(ang), tx: BX + dx, ty: BY + dy };
   }
 
   function render(){
-    var sx = arm.cx, sy = SHOULDER_Y;
-    var k = ik(sx, sy, arm.cx, arm.ty);
-    carriage.setAttribute('transform', 'translate(' + sx.toFixed(2) + ',0)');
-    link1.setAttribute('x1', sx); link1.setAttribute('y1', sy);
+    var r = arm.r + Math.sin(bob)*3;
+    var tx = BX + r*Math.cos(arm.a), ty = BY + r*Math.sin(arm.a);
+    var k = ik(tx, ty);
+
+    link1.setAttribute('x1', BX); link1.setAttribute('y1', BY);
     link1.setAttribute('x2', k.ex); link1.setAttribute('y2', k.ey);
-    link1c.setAttribute('x1', sx); link1c.setAttribute('y1', sy);
+    link1c.setAttribute('x1', BX); link1c.setAttribute('y1', BY);
     link1c.setAttribute('x2', k.ex); link1c.setAttribute('y2', k.ey);
     link2.setAttribute('x1', k.ex); link2.setAttribute('y1', k.ey);
     link2.setAttribute('x2', k.tx); link2.setAttribute('y2', k.ty);
     link2c.setAttribute('x1', k.ex); link2c.setAttribute('y1', k.ey);
     link2c.setAttribute('x2', k.tx); link2c.setAttribute('y2', k.ty);
-    jointS.setAttribute('cx', sx); jointS.setAttribute('cy', sy);
+    jointS.setAttribute('cx', BX); jointS.setAttribute('cy', BY);
     jointE.setAttribute('cx', k.ex); jointE.setAttribute('cy', k.ey);
-    grip.setAttribute('transform', 'translate(' + k.tx.toFixed(2) + ',' + k.ty.toFixed(2) + ')');
-    var spread = 15 + 11*arm.g;
+
+    /* the tool points along the forearm */
+    var fa = Math.atan2(k.ty - k.ey, k.tx - k.ex)/RAD + 90;
+    tool.setAttribute('transform', 'translate(' + k.tx.toFixed(2) + ',' + k.ty.toFixed(2) + ') rotate(' + fa.toFixed(1) + ')');
+    var spread = 5 + 7*arm.grip;
     fingerL.setAttribute('transform', 'translate(' + (-spread) + ',0)');
     fingerR.setAttribute('transform', 'translate(' + spread + ',0)');
-    if(held){
-      held.el.setAttribute('transform', 'translate(' + k.tx.toFixed(2) + ',' + (k.ty + GRIP_DY).toFixed(2) + ')');
+    payload.setAttribute('opacity', arm.carrying.toFixed(2));
+
+    buf.push(k.tx, k.ty);
+    if(buf.length > BUF_MAX*2) buf.splice(0, buf.length - BUF_MAX*2);
+    var pts = '';
+    for(var i=0;i<buf.length;i+=2){ pts += buf[i].toFixed(1) + ',' + buf[i+1].toFixed(1) + ' '; }
+    trail.setAttribute('points', pts);
+    trailGlow.setAttribute('points', pts);
+    if(buf.length >= 4){
+      grad.setAttribute('x1', buf[0].toFixed(1)); grad.setAttribute('y1', buf[1].toFixed(1));
+      grad.setAttribute('x2', k.tx.toFixed(1));   grad.setAttribute('y2', k.ty.toFixed(1));
     }
   }
 
-  /* ---- HUD ---- */
-  var hState = byId('hud-state'), hTube = byId('hud-tube'), hTest = byId('hud-test'),
-      hRoute = byId('hud-route'), hCount = byId('hud-count');
-  var received = 0;
-  function hud(state, name, test, route, flagged){
-    if(state !== null) hState.textContent = state;
-    if(name !== null) hTube.textContent = name;
-    if(test !== null) hTest.textContent = test;
-    if(route !== null){
-      hRoute.textContent = route;
-      hRoute.setAttribute('data-flag', flagged ? '1' : '0');
-    }
-  }
-
-  /* ---- action queue ---- */
-  var queue = [], cur = null, curT = 0, held = null;
+  /* ---- action queue: every duration is in milliseconds ---- */
+  var queue = [], cur = null, curT = 0;
   function push(a){ queue.push(a); }
   var ease = function(p){ return p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3)/2; };
 
-  function move(nx, ny, dur){
+  function moveTo(target, dur){
     var s;
-    return { dur:dur, start:function(){ s = { x:arm.cx, y:arm.ty }; },
-      update:function(e){ arm.cx = s.x + (nx - s.x)*e; arm.ty = s.y + (ny - s.y)*e; } };
+    return { dur:dur, start:function(){ s = { a:arm.a, r:arm.r }; },
+      update:function(e){
+        var da = target.a - s.a;
+        while(da > Math.PI) da -= 2*Math.PI;
+        while(da < -Math.PI) da += 2*Math.PI;
+        arm.a = s.a + da*e;
+        arm.r = s.r + (target.r - s.r)*e;
+      } };
   }
   function gripTo(to, dur, onEnd){
     var s;
-    return { dur:dur, start:function(){ s = arm.g; },
-      update:function(e){ arm.g = s + (to - s)*e; }, end:onEnd };
+    return { dur:dur, start:function(){ s = arm.grip; },
+      update:function(e){ arm.grip = s + (to - s)*e; }, end:onEnd };
   }
-  function wait(dur, onStart){ return { dur:dur, start:onStart }; }
-
-  function scanAction(tube){
-    return {
-      dur: 950,
-      start: function(){
-        scanG.setAttribute('opacity', '1');
-        hud('Reading', 'Scanning label', 'Tube type, additive, fill volume, integrity', 'Analysing', false);
+  function fade(prop, to, dur){
+    var s;
+    return { dur:dur, start:function(){ s = arm[prop]; },
+      update:function(e){ arm[prop] = s + (to - s)*e; } };
+  }
+  function light(node){
+    return { dur:420, start:function(){ node.lit = true; },
+      update:function(e){
+        node.fill.setAttribute('opacity', e.toFixed(2));
+        node.halo.setAttribute('opacity', (e*.2).toFixed(2));
+        node.ring.setAttribute('opacity', (e < .5 ? e : 1 - e).toFixed(2));
+        node.ring.setAttribute('r', (11 + 9*e).toFixed(1));
       },
-      update: function(e, p){
-        var y = 348 + (444 - 348) * (p < .5 ? p*2 : (1 - (p - .5)*2));
-        beam.setAttribute('transform', 'translate(0,' + y.toFixed(1) + ')');
-        bracket.setAttribute('transform', 'translate(0,398)');
-      },
-      end: function(){
-        scanG.setAttribute('opacity', '0');
-        var t = tube.type;
-        if(t.flag){
-          hud('Flagged', t.name, t.flag, 'Held · not accessioned', true);
-        }else{
-          hud('Accepted', t.name, t.test, t.dest === 'spin' ? 'Accessioned → spin' : 'Accessioned → no spin', false);
+      end:function(){ node.ring.setAttribute('opacity', '0'); node.ring.setAttribute('r', '11'); } };
+  }
+  function sweep(){
+    /* every position filled: run a pulse across them, then reset */
+    return { dur:1500,
+      update:function(e, p){
+        for(var i=0;i<NODES.length;i++){
+          var local = Math.max(0, 1 - Math.abs(p*1.45 - i/NODES.length*1.1)*7);
+          NODES[i].ring.setAttribute('opacity', (local*.9).toFixed(2));
+          NODES[i].ring.setAttribute('r', (11 + 10*local).toFixed(1));
+          var out = p > .82 ? Math.max(0, 1 - (p - .82)/.18) : 1;
+          NODES[i].fill.setAttribute('opacity', out.toFixed(2));
+          NODES[i].halo.setAttribute('opacity', (out*.2 + local*.25).toFixed(2));
         }
-      }
-    };
+      },
+      end:function(){
+        NODES.forEach(function(n){ n.lit = false; n.fill.setAttribute('opacity','0'); n.halo.setAttribute('opacity','0'); n.ring.setAttribute('opacity','0'); n.ring.setAttribute('r','11'); });
+      } };
+  }
+  function feed(on){
+    return { dur:1, start:function(){ feedDot.setAttribute('opacity', on ? '1' : '0'); } };
   }
 
-  function clearAction(rack){
-    var kept;
-    return {
-      dur: 900,
-      start: function(){
-        kept = rack.slots.filter(Boolean);
-        rack.bodyEl.classList.add('is-full');
-        hud('Ready', rack.label + ' rack full', 'Four specimens ready for staff', 'Rack handed off', false);
-      },
-      update: function(e){
-        for(var i=0;i<kept.length;i++){ kept[i].el.style.opacity = String(1 - e); }
-      },
-      end: function(){
-        for(var i=0;i<kept.length;i++){
-          if(kept[i].el.parentNode) kept[i].el.parentNode.removeChild(kept[i].el);
-          var idx = tubes.indexOf(kept[i]);
-          if(idx > -1) tubes.splice(idx, 1);
-        }
-        rack.slots = [null,null,null,null];
-        rack.bodyEl.classList.remove('is-full');
-      }
-    };
-  }
+  var next = 0;
+  function planCycle(){
+    var node = NODES[next];
+    next = (next + 1) % NODES.length;
 
-  function startCycle(){
-    var lead = beltTubes()[0];
-    if(!lead || lead.x < PICK_X - .5) return;
-    var rack = rackFor(lead.type.dest);
-    var slot = rack.slots.indexOf(null);
-    if(slot < 0){ push(clearAction(rack)); return; }
-    var sx = rack.slotX(slot);
-
-    push(scanAction(lead));
-    push(move(PICK_X, HOVER_Y, 520));
-    push(move(PICK_X, GRIP_Y_PICK, 340));
-    push(gripTo(0, 220, function(){
-      held = lead; lead.state = 'held';
-      hud('Lifting', null, null, null, !!lead.type.flag);
-    }));
-    push(move(PICK_X, LIFT_Y, 400));
-    push(move(sx, LIFT_Y, 780));
-    push(move(sx, GRIP_Y_PLACE, 380));
-    push(gripTo(1, 220, function(){
-      lead.state = 'racked';
-      rack.slots[slot] = lead;
-      lead.el.setAttribute('transform', 'translate(' + sx + ',' + SLOT_BOTTOM + ')');
-      held = null;
-      received++;
-      hCount.textContent = received < 10 ? '0' + received : String(received);
-      hud('Seated', null, null, null, null);
-    }));
-    push(move(sx, LIFT_Y, 360));
-    push(wait(260, function(){
-      hud('Standby', 'Waiting for specimen', 'Label, tube type, fill volume, integrity', 'Idle', false);
-    }));
-    push(move(PARK_X, PARK_Y, 620));
-    if(rack.slots.filter(Boolean).length >= 4) push(clearAction(rack));
+    push(moveTo(SOURCE, 760));
+    push(gripTo(0, 200));
+    push(feed(false));
+    push(fade('carrying', 1, 120));
+    push(moveTo({ a:node.a, r:node.r }, 940));
+    push(gripTo(1, 200));
+    push(fade('carrying', 0, 120));
+    push(light(node));
+    push(feed(true));
+    if(next === 0){
+      push(moveTo(HOME, 620));
+      push(sweep());
+    }
   }
 
   function stepQueue(dt){
@@ -761,35 +593,11 @@ ul,ol{margin:0;padding:0;list-style:none}
     }
   }
 
-  function updateBelt(dt){
-    var list = beltTubes();
-    var limit = PICK_X;
-    for(var i=0;i<list.length;i++){
-      var t = list[i];
-      t.x = Math.min(t.x + BELT_SPEED*dt, limit);
-      limit = t.x - TUBE_GAP;
-      t.el.setAttribute('transform', 'translate(' + t.x.toFixed(1) + ',' + BELT_TOP + ')');
-    }
-    var last = list[list.length - 1];
-    if(list.length < 5 && (!last || last.x > 46)) spawn();
-  }
-
-  /* ---- static fallback ---- */
+  /* ---- static frame when motion is turned down ---- */
   if(reduce){
-    var demo = [ {k:'spin',i:0}, {k:'spin',i:1}, {k:'nospin',i:0}, {k:'hold',i:0} ];
-    demo.forEach(function(d){
-      var type = d.k === 'hold' ? TYPES[5] : (d.k === 'nospin' ? TYPES[0] : TYPES[2]);
-      var t = { type:type, state:'racked', el:makeTube(type) };
-      var r = rackFor(d.k);
-      t.el.setAttribute('transform', 'translate(' + r.slotX(d.i) + ',' + SLOT_BOTTOM + ')');
-      tubesLayer.appendChild(t.el);
-      r.slots[d.i] = t;
-    });
-    var bt = spawn(); bt.x = PICK_X; bt.el.setAttribute('transform', 'translate(' + PICK_X + ',' + BELT_TOP + ')');
-    var bt2 = spawn(); bt2.x = PICK_X - TUBE_GAP; bt2.el.setAttribute('transform', 'translate(' + (PICK_X - TUBE_GAP) + ',' + BELT_TOP + ')');
-    arm.cx = PICK_X; arm.ty = HOVER_Y; arm.g = 1;
+    for(var j=0;j<5;j++){ NODES[j].fill.setAttribute('opacity','1'); NODES[j].halo.setAttribute('opacity','.2'); NODES[j].lit = true; }
+    arm.a = NODES[5].a; arm.r = NODES[5].r; arm.grip = 0; arm.carrying = 1;
     render();
-    hud('Paused', 'Motion reduced', 'Animation disabled by your system settings', 'Static view', false);
     return;
   }
 
@@ -801,8 +609,7 @@ ul,ol{margin:0;padding:0;list-style:none}
     }, { threshold:0 }).observe(svg);
   }
 
-  var seeded = spawn(); seeded.x = 292;
-  var last = 0, beltPhase = 0;
+  var last = 0;
   function frame(now){
     requestAnimationFrame(frame);
     if(!last){ last = now; return; }
@@ -810,12 +617,9 @@ ul,ol{margin:0;padding:0;list-style:none}
     last = now;
     if(!visible || document.hidden) return;
 
-    beltPhase = (beltPhase + BELT_SPEED*dt) % 40;
-    stripes.setAttribute('transform', 'translate(' + beltPhase.toFixed(1) + ',0)');
-
-    updateBelt(dt);
+    bob += dt*1.6;
     stepQueue(dt);
-    if(!cur && queue.length === 0 && !held) startCycle();
+    if(!cur && queue.length === 0) planCycle();
     render();
   }
   render();
