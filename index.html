@@ -158,6 +158,21 @@ ul,ol{margin:0;padding:0;list-style:none}
 .bracket{stroke:var(--mint);stroke-width:1.5;fill:none;opacity:.8}
 .tube{transition:opacity 400ms linear}
 
+/* Bench demo */
+.demo-grid{display:grid;gap:clamp(2rem,1.5rem + 3vw,4rem);grid-template-columns:1fr;align-items:center}
+@media (min-width:920px){.demo-grid{grid-template-columns:1fr minmax(300px,380px)}}
+.demo-copy .lead{margin-top:1.4rem;max-width:40rem}
+.demo-list{display:grid;gap:1px;margin-top:2rem;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.demo-list li{background:#fff;padding:1rem 1.2rem;display:grid;gap:.2rem}
+.demo-list b{font-weight:600;letter-spacing:-.015em}
+.demo-list span{font-size:var(--t-sm);color:var(--muted);line-height:1.55}
+.demo-video{margin:0;display:grid;gap:.9rem;justify-items:center}
+.demo-video video{
+  width:100%;max-width:380px;aspect-ratio:9/16;border-radius:var(--r);background:var(--ink);
+  border:1px solid var(--line);box-shadow:0 30px 60px -40px rgba(10,18,22,.55);object-fit:cover;
+}
+.demo-video figcaption{font-size:var(--t-xs);letter-spacing:.02em;color:var(--muted);text-align:center;max-width:32ch;line-height:1.5}
+
 /* Stats */
 .stats{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;grid-template-columns:1fr}
 @media (min-width:900px){.stats{grid-template-columns:repeat(3,1fr)}}
@@ -205,6 +220,7 @@ ul,ol{margin:0;padding:0;list-style:none}
     <b>Kinesis</b><span>Labs</span>
   </a>
   <span class="nav-links">
+    <a href="#demo">Demo</a>
     <a href="#problem">Problem</a>
     <a href="#station">Station</a>
     <a href="#physical-ai">Physical AI</a>
@@ -315,6 +331,32 @@ ul,ol{margin:0;padding:0;list-style:none}
         </svg>
       </div>
       <figcaption class="cell-note">Concept animation. It shows the workflow the station is being trained to perform. It is not footage of a deployed system.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- Bench demo -->
+<section class="sec" id="demo" aria-labelledby="demo-h">
+  <div class="wrap demo-grid">
+    <div class="demo-copy">
+      <p class="label">On the bench</p>
+      <h2 id="demo-h">The prototype, working real tubes.</h2>
+      <p class="lead">A minute at the bench: the arm reads each specimen, decides what happens to it, and checks the accepted ones into the LIS. Sound on.</p>
+      <ul class="demo-list">
+        <li><b>Reads the requirement</b><span>Reasons through what the ordered test needs, and takes only a specimen that satisfies it.</span></li>
+        <li><b>Holds the bad ones</b><span>Detects error specimens and sets them aside instead of passing them downstream.</span></li>
+        <li><b>Decides what gets spun</b><span>Knows which specimens go to the centrifuge, and runs it.</span></li>
+        <li><b>Accessions in the LIS</b><span>Checks each accepted specimen in directly, so the order and the physical tube are linked.</span></li>
+      </ul>
+    </div>
+    <figure class="demo-video">
+      <video controls playsinline preload="metadata"
+             poster="assets/sample-receipt-poster.jpg"
+             aria-label="Bench demonstration of the receiving prototype handling blood tubes">
+        <source src="assets/sample-receipt-demo.mp4" type="video/mp4">
+        Your browser does not support embedded video.
+      </video>
+      <figcaption>Bench prototype, filmed August 2026. A working system on a bench, not a station deployed in a lab.</figcaption>
     </figure>
   </div>
 </section>
