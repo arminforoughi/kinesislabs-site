@@ -341,7 +341,7 @@ ul,ol{margin:0;padding:0;list-style:none}
     <div class="demo-copy">
       <p class="label">On the bench</p>
       <h2 id="demo-h">The prototype, working real tubes.</h2>
-      <p class="lead">A minute at the bench: the arm reads each specimen, decides what happens to it, and checks the accepted ones into the LIS. Sound on.</p>
+      <p class="lead">A minute at the bench: the arm reads each specimen, decides what happens to it, and checks the accepted ones into the LIS. It plays muted &mdash; unmute for the audio.</p>
       <ul class="demo-list">
         <li><b>Reads the requirement</b><span>Reasons through what the ordered test needs, and takes only a specimen that satisfies it.</span></li>
         <li><b>Holds the bad ones</b><span>Detects error specimens and sets them aside instead of passing them downstream.</span></li>
@@ -350,7 +350,7 @@ ul,ol{margin:0;padding:0;list-style:none}
       </ul>
     </div>
     <figure class="demo-video">
-      <video controls playsinline preload="metadata"
+      <video id="demo-video" controls autoplay muted loop playsinline preload="metadata"
              poster="assets/sample-receipt-poster.jpg"
              aria-label="Bench demonstration of the receiving prototype handling blood tubes">
         <source src="assets/sample-receipt-demo.mp4" type="video/mp4">
@@ -904,6 +904,25 @@ ul,ol{margin:0;padding:0;list-style:none}
   }
   render();
   requestAnimationFrame(frame);
+})();
+</script>
+<script>
+(function(){
+  var v = document.getElementById('demo-video');
+  if(!v || !('IntersectionObserver' in window)) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var started = false;
+  new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        if(!started){ started = true; }
+        var p = v.play();
+        if(p) p.catch(function(){ /* autoplay refused: the poster and controls stand in */ });
+      }else if(!v.paused){
+        v.pause();
+      }
+    });
+  }, { threshold: 0.35 }).observe(v);
 })();
 </script>
 </body>
