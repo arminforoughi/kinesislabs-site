@@ -103,16 +103,50 @@ ul,ol{margin:0;padding:0;list-style:none}
 .btn--lg{padding:.9rem 1.7rem;font-size:1rem}
 
 /* Hero */
-.hero{background:var(--ink);color:#fff;padding-block:clamp(7.5rem,6rem + 8vw,10rem) clamp(3rem,2rem + 3vw,4.5rem);position:relative;overflow:hidden}
+.hero{
+  background:var(--ink);color:#fff;position:relative;overflow:hidden;
+  min-height:100svh;display:flex;align-items:center;
+  padding-block:clamp(5.5rem,4.5rem + 4vw,7rem) clamp(2rem,1.5rem + 2vw,3rem);
+}
 .hero::after{content:"";position:absolute;inset:auto -20% -60% -20%;height:60%;background:radial-gradient(50% 100% at 50% 0,rgba(95,227,180,.14),transparent 70%);pointer-events:none}
-.hero h1{max-width:16ch;color:#fff}
-.hero .lead{margin-top:1.5rem;max-width:40rem;color:rgba(233,245,246,.82)}
-.hero-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:2.2rem}
+.hero-grid{display:grid;gap:clamp(1.5rem,1rem + 3vw,3.5rem);grid-template-columns:1fr;align-items:center;width:100%}
+@media (min-width:1000px){.hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.06fr)}}
+.hero h1{max-width:17ch;color:#fff;font-size:clamp(2.1rem,1rem + 2.9vw,4rem)}
+.hero .lead{margin-top:1.25rem;max-width:38rem;color:rgba(233,245,246,.82)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.75rem}
+/* short viewports: shrink the type before anything falls off the screen */
+@media (max-height:900px) and (min-width:1000px){
+  .hero h1{font-size:clamp(2.25rem,1.2rem + 2.6vw,3.4rem)}
+  .hero .lead{font-size:1.0625rem;margin-top:1rem}
+  .hero-actions{margin-top:1.4rem}
+}
+@media (max-width:999px){
+  .hero{padding-block:4.75rem 1.25rem}
+  .hero-grid{gap:1.1rem}
+  .hero h1{font-size:clamp(1.75rem,1.1rem + 2.9vw,2.4rem);max-width:20ch}
+  .hero .lead{font-size:.9375rem;line-height:1.45;margin-top:.75rem}
+  .hero-actions{margin-top:1rem;gap:.5rem}
+  .hero .btn--lg{padding:.65rem 1.15rem;font-size:.9375rem}
+  .eyebrow{margin-bottom:.75rem}
+  .cell-note{margin-top:.5rem;font-size:.6875rem;line-height:1.45}
+}
+/* a short phone has to give up something: the type gets smaller, nothing gets cut */
+@media (max-width:999px) and (max-height:740px){
+  .hero{padding-block:4.25rem .9rem}
+  .hero-grid{gap:.9rem}
+  .hero h1{font-size:1.55rem}
+  .hero .lead{font-size:.875rem;margin-top:.55rem}
+  .hero-actions{margin-top:.75rem}
+  .cell-note{margin-top:.4rem;font-size:.65rem}
+}
 .eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:var(--t-xs);letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--mint);margin-bottom:1.6rem}
 .eyebrow::before{content:"";width:26px;height:1px;background:var(--mint);opacity:.7}
 
 /* Machine cell */
-.cell-outer{margin-top:clamp(2.5rem,2rem + 3vw,4rem);position:relative;z-index:1}
+.cell-outer{margin:0;position:relative;z-index:1;min-width:0}
+.cell svg{max-height:min(52svh,420px)}
+@media (max-width:999px){.cell svg{max-height:30svh}}
+@media (max-width:999px) and (max-height:740px){.cell svg{max-height:23svh}}
 .cell{
   position:relative;border-radius:var(--r);overflow:hidden;
   background:linear-gradient(180deg,#0F1A21 0%,#0A1218 60%,#080E13 100%);
@@ -232,7 +266,8 @@ ul,ol{margin:0;padding:0;list-style:none}
 
 <!-- Hero -->
 <section class="hero" id="top" aria-labelledby="hero-h">
-  <div class="wrap">
+  <div class="wrap hero-grid">
+   <div class="hero-copy">
     <p class="eyebrow">Specimen receiving</p>
     <h1 id="hero-h">Most clinical lab errors happen before the analyzer.</h1>
     <p class="lead">Kinesis Labs builds a benchtop station that takes a sealed courier bag through unbagging, tube inspection, LIS accessioning, sorting and centrifugation &mdash; and hands finished racks to staff the same way at 3 a.m. as at 3 p.m.</p>
@@ -240,6 +275,7 @@ ul,ol{margin:0;padding:0;list-style:none}
       <a class="btn btn--mint btn--lg" href="#contact">Request a demo</a>
       <a class="btn btn--ghost btn--lg" href="#station">See how it works</a>
     </div>
+   </div>
 
     <figure class="cell-outer">
       <div class="cell">
