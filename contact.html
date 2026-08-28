@@ -31,14 +31,14 @@
   <div class="wrap page-head">
     <p class="label">Get in touch</p>
     <h1 style="font-size:var(--t-h2);max-width:20ch">Tell us about your receiving bench.</h1>
-    <p class="lead">We are looking for labs to build this with. Tell us what arrives at your bench and we will show you where the station is today &mdash; honestly, including what it cannot do yet. Pick a time on the right if you would rather just talk.</p>
+    <p class="lead">We are looking for labs to build this with. Tell us what arrives at your bench and we will show you where the station is today &mdash; honestly, including what it cannot do yet. Or pick a time and we will confirm it by email.</p>
   </div>
 
   <div class="wrap contact-grid">
     <!-- form -->
     <section class="panel" id="form" aria-labelledby="form-h">
       <h2 id="form-h">Send us the details</h2>
-      <p class="sub">Six fields. Alina reads every one of these herself.</p>
+      <p class="sub">Six fields. We read every one of them ourselves.</p>
 
       <form id="contact-form" novalidate>
         <div class="fields">
@@ -108,7 +108,7 @@
     <!-- calendar -->
     <section class="panel" aria-labelledby="cal-h">
       <h2 id="cal-h">Pick a time</h2>
-      <p class="sub">Twenty minutes with Alina, a licensed CLS who worked the receiving desk for ten years. No slides.</p>
+      <p class="sub">Twenty minutes with us &mdash; including Alina, a licensed CLS who worked a receiving desk for ten years. No slides.</p>
 
       <div id="calendly-embed" hidden></div>
 
@@ -132,9 +132,11 @@
         </div>
 
         <div class="picked" id="picked" hidden></div>
+        <button class="btn btn--mint btn--lg" type="button" id="cal-submit" style="width:100%;margin-top:1rem" disabled>Pick a time first</button>
+        <p class="form-status" id="cal-status" data-state="" role="status" style="margin-top:.75rem"></p>
       </div>
 
-      <p class="sub" style="margin:1.25rem 0 0">Or email her directly: <a href="mailto:alina@kinesislabs.tech" style="color:var(--mint)">alina@kinesislabs.tech</a></p>
+      <p class="sub" style="margin:1.25rem 0 0">Or email us: <a href="mailto:alina@kinesislabs.tech" style="color:var(--mint)">alina@kinesislabs.tech</a></p>
     </section>
   </div>
 </main>

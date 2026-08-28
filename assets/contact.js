@@ -5,9 +5,13 @@
      CALENDLY_URL  - Alina's scheduling link, e.g. https://calendly.com/alina-kinesislabs/20min
                      Set it and Calendly's real calendar replaces the built-in
                      picker below, with live availability.
-     FORM_ENDPOINT - a Formspree/Basin/Tally URL, e.g. https://formspree.io/f/abcdwxyz
-                     Set it and the form posts there. Left blank, the form
-                     composes the same submission in the visitor's mail client.
+     FORM_ENDPOINT - the URL that receives requests. Deploy contact-endpoint.gs
+                     as a Google Apps Script web app and paste its /exec URL
+                     here: it emails us the request, emails the sender a
+                     confirmation, and logs a row to a sheet. A Formspree or
+                     Basin URL works too, minus the confirmation email.
+                     Until it is set the form cannot send, and says so - it
+                     never opens the visitor's mail client behind their back.
 
    The built-in picker offers weekday slots in Pacific business hours and sends
    the chosen time along with the form. It is a *request*: nothing is reserved
@@ -105,6 +109,24 @@ var HORIZON    = 45;     // days ahead
   var view = { y: today.getFullYear(), m: today.getMonth() };
   var selDay = null, selSlot = null;
 
+  /* how many offerable days a month holds */
+  function monthDayCount(y, m) {
+    var days = new Date(Date.UTC(y, m + 1, 0)).getUTCDate(), n = 0;
+    for (var d = 1; d <= days; d++) if (dayHasSlots(y, m, d)) n++;
+    return n;
+  }
+  function firstDayOf(y, m) {
+    var days = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+    for (var d = 1; d <= days; d++) if (dayHasSlots(y, m, d)) return d;
+    return null;
+  }
+  /* a month showing one lonely square reads as broken; move to the next one */
+  if (monthDayCount(view.y, view.m) < 3) {
+    var nm = view.m + 1, ny = view.y;
+    if (nm > 11) { nm = 0; ny++; }
+    if (monthDayCount(ny, nm) > 0) { view.m = nm; view.y = ny; }
+  }
+
   function fmtMonth(y, m) {
     return new Date(Date.UTC(y, m, 1)).toLocaleDateString(undefined, { month: "long", year: "numeric", timeZone: "UTC" });
   }
@@ -171,12 +193,19 @@ var HORIZON    = 45;     // days ahead
     });
   }
 
+  var calBtn = document.getElementById("cal-submit");
+  var calStatus = document.getElementById("cal-status");
+
   function showPicked() {
+    if (calBtn) {
+      calBtn.disabled = !selSlot;
+      calBtn.textContent = selSlot ? "Request this time" : "Pick a time first";
+    }
     if (!selSlot) { picked.hidden = true; timeField.value = ""; return; }
     var work = selSlot.toLocaleString("en-US", { timeZone: WORK_TZ, weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
     picked.hidden = false;
     picked.innerHTML = "<b>" + fmtDayLong(selSlot) + " at " + fmtTime(selSlot) + "</b>" +
-      '<span class="note">' + work + " Pacific &middot; sent with your message. Nothing is booked until Alina confirms by email.</span>";
+      '<span class="note">' + work + " Pacific &middot; we will confirm by email. Nothing is held until then.</span>";
     timeField.value = selSlot.toISOString() + " (" + fmtDayLong(selSlot) + " " + fmtTime(selSlot) + " " + localTZ + ")";
   }
 
@@ -193,6 +222,9 @@ var HORIZON    = 45;     // days ahead
   prevBtn.addEventListener("click", function () { view.m--; if (view.m < 0) { view.m = 11; view.y--; } renderMonth(); });
   nextBtn.addEventListener("click", function () { view.m++; if (view.m > 11) { view.m = 0; view.y++; } renderMonth(); });
 
+  /* land on a day so the times are visible without a click */
+  var d0 = firstDayOf(view.y, view.m);
+  if (d0) selDay = { y: view.y, m: view.m, d: d0 };
   renderMonth();
   renderSlots();
 
@@ -232,16 +264,37 @@ var HORIZON    = 45;     // days ahead
     return v;
   }
 
-  function mailtoURL(v) {
-    var body = [
-      "Name: " + v.name, "Title: " + v.title, "Lab or company: " + v.organization,
-      "Email: " + v.email, "Type of lab: " + v.lab_type,
-      "Specimens received per day: " + v.samples_per_day,
-      "Preferred time: " + (v.preferred_time || "none selected"), "", v.message
-    ].join("\n");
-    return "mailto:" + CONTACT_EMAIL +
-      "?subject=" + encodeURIComponent("Kinesis Labs - " + v.organization) +
-      "&body=" + encodeURIComponent(body);
+  function send(v, statusEl, btn) {
+    if (!FORM_ENDPOINT) {
+      statusEl.dataset.state = "err";
+      statusEl.innerHTML = 'The form is not connected yet. Please email <a href="mailto:' +
+        CONTACT_EMAIL + '">' + CONTACT_EMAIL + "</a> and we will pick it up from there.";
+      return;
+    }
+    if (btn) btn.disabled = true;
+    statusEl.dataset.state = "";
+    statusEl.textContent = "Sending\u2026";
+    /* text/plain keeps this a simple request, so no CORS preflight - Apps Script
+       cannot answer one. The body is still JSON. */
+    fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(v)
+    }).then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.text();
+    }).then(function () {
+      form.reset();
+      selSlot = null; showPicked(); renderSlots();
+      statusEl.dataset.state = "ok";
+      statusEl.textContent = v.preferred_time
+        ? "Request received. Check your inbox - we have sent a confirmation, and we will reply to lock the time in."
+        : "Request received. Check your inbox for a confirmation. We reply within a day or two.";
+    }).catch(function () {
+      statusEl.dataset.state = "err";
+      statusEl.innerHTML = 'That did not send. Please email <a href="mailto:' + CONTACT_EMAIL + '">' +
+        CONTACT_EMAIL + "</a> instead.";
+    }).finally(function () { if (btn) btn.disabled = false; });
   }
 
   form.addEventListener("submit", function (e) {
@@ -252,33 +305,19 @@ var HORIZON    = 45;     // days ahead
       status.textContent = "Please fix the fields marked above.";
       return;
     }
-    var v = values();
-    if (!FORM_ENDPOINT) {
-      window.location.href = mailtoURL(v);
-      status.dataset.state = "";
-      status.innerHTML = 'Opening your mail client. If nothing happens, email <a href="mailto:' +
-        CONTACT_EMAIL + '">' + CONTACT_EMAIL + "</a> directly.";
-      return;
-    }
-    submit.disabled = true;
-    status.dataset.state = "";
-    status.textContent = "Sending…";
-    fetch(FORM_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(v)
-    }).then(function (r) {
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      form.reset();
-      selSlot = null; showPicked(); renderSlots();
-      status.dataset.state = "ok";
-      status.textContent = v.preferred_time
-        ? "Thank you. Alina will confirm that time by email."
-        : "Thank you. Alina will reply within a day or two.";
-    }).catch(function () {
-      status.dataset.state = "err";
-      status.innerHTML = 'That did not send. Please email <a href="mailto:' + CONTACT_EMAIL + '">' +
-        CONTACT_EMAIL + "</a> instead.";
-    }).finally(function () { submit.disabled = false; });
+    send(values(), status, submit);
   });
+
+  /* the button beside the calendar sends the same request */
+  if (calBtn) {
+    calBtn.addEventListener("click", function () {
+      if (!validate()) {
+        calStatus.dataset.state = "err";
+        calStatus.textContent = "We need your details first - the form on the left.";
+        document.getElementById("c-name").scrollIntoView({ block: "center", behavior: "smooth" });
+        return;
+      }
+      send(values(), calStatus, calBtn);
+    });
+  }
 })();
