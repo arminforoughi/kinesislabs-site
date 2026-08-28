@@ -18,7 +18,7 @@
    on anyone's calendar until Alina replies. The copy says so.
 --------------------------------------------------------------------------- */
 var CALENDLY_URL  = "";
-var FORM_ENDPOINT = "";
+var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwrQnxy3QPq1yTxa4SHqjCrZ5cp_zFQGUljnhDewbhmOs4ePeHjPt-Rj1mEdS-4zcLLUw/exec";
 var CONTACT_EMAIL = "alina@kinesislabs.tech";
 
 var WORK_TZ    = "America/Los_Angeles";
