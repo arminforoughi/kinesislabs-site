@@ -197,10 +197,7 @@ var HORIZON    = 45;     // days ahead
   var calStatus = document.getElementById("cal-status");
 
   function showPicked() {
-    if (calBtn) {
-      calBtn.disabled = !selSlot;
-      calBtn.textContent = selSlot ? "Request this time" : "Pick a time first";
-    }
+    if (calBtn) calBtn.textContent = "Request this time";
     if (!selSlot) { picked.hidden = true; timeField.value = ""; return; }
     var work = selSlot.toLocaleString("en-US", { timeZone: WORK_TZ, weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
     picked.hidden = false;
@@ -311,6 +308,12 @@ var HORIZON    = 45;     // days ahead
   /* the button beside the calendar sends the same request */
   if (calBtn) {
     calBtn.addEventListener("click", function () {
+      if (!selSlot) {
+        calStatus.dataset.state = "err";
+        calStatus.textContent = "Choose a time above first.";
+        (document.querySelector(".slot") || calBtn).scrollIntoView({ block: "center", behavior: "smooth" });
+        return;
+      }
       if (!validate()) {
         calStatus.dataset.state = "err";
         calStatus.textContent = "We need your details first - the form on the left.";
