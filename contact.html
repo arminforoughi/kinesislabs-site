@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — Kinesis Labs</title>
+<meta name="description" content="Tell Kinesis Labs about your receiving bench, or pick a time to talk it through with Alina, a licensed clinical laboratory scientist.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<nav class="nav" aria-label="Main navigation">
+  <a class="mark" href="index.html">
+    <svg class="glyph" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1v14M1 8h14" stroke="#5FE3B4" stroke-width="1.6"/><circle cx="8" cy="8" r="3.2" fill="none" stroke="#fff" stroke-width="1.6"/></svg>
+    <b>Kinesis</b><span>Labs</span>
+  </a>
+  <span class="nav-links">
+    <a href="index.html#demo">Demo</a>
+    <a href="index.html#problem">Problem</a>
+    <a href="index.html#station">Station</a>
+    <a href="index.html#physical-ai">Physical AI</a>
+  </span>
+  <a class="btn btn--mint" href="#form">Get in touch</a>
+</nav>
+
+<main id="main" class="dark" style="min-height:100vh">
+  <div class="wrap page-head">
+    <p class="label">Get in touch</p>
+    <h1 style="font-size:var(--t-h2);max-width:20ch">Tell us about your receiving bench.</h1>
+    <p class="lead">We are looking for labs to build this with. Tell us what arrives at your bench and we will show you where the station is today &mdash; honestly, including what it cannot do yet. Pick a time on the right if you would rather just talk.</p>
+  </div>
+
+  <div class="wrap contact-grid">
+    <!-- form -->
+    <section class="panel" id="form" aria-labelledby="form-h">
+      <h2 id="form-h">Send us the details</h2>
+      <p class="sub">Six fields. Alina reads every one of these herself.</p>
+
+      <form id="contact-form" novalidate>
+        <div class="fields">
+          <div class="f">
+            <label for="c-name">Name</label>
+            <input type="text" id="c-name" name="name" autocomplete="name" required aria-describedby="e-name">
+            <p class="err" id="e-name"></p>
+          </div>
+          <div class="f">
+            <label for="c-title">Title</label>
+            <input type="text" id="c-title" name="title" autocomplete="organization-title" placeholder="Lab manager, director, CLS&hellip;" required aria-describedby="e-title">
+            <p class="err" id="e-title"></p>
+          </div>
+          <div class="f">
+            <label for="c-org">Lab or company</label>
+            <input type="text" id="c-org" name="organization" autocomplete="organization" required aria-describedby="e-org">
+            <p class="err" id="e-org"></p>
+          </div>
+          <div class="f">
+            <label for="c-email">Work email</label>
+            <input type="email" id="c-email" name="email" autocomplete="email" required aria-describedby="e-email">
+            <p class="err" id="e-email"></p>
+          </div>
+          <div class="f">
+            <label for="c-type">Type of lab</label>
+            <select id="c-type" name="lab_type" required aria-describedby="e-type">
+              <option value="">Select one</option>
+              <option>Clinical</option>
+              <option>Research</option>
+              <option>Pharma</option>
+              <option>Other</option>
+            </select>
+            <p class="err" id="e-type"></p>
+          </div>
+          <div class="f">
+            <label for="c-vol">Specimens received per day</label>
+            <select id="c-vol" name="samples_per_day" required aria-describedby="e-vol">
+              <option value="">Select one</option>
+              <option>Under 100</option>
+              <option>100 to 500</option>
+              <option>500 to 1,000</option>
+              <option>1,000 to 2,500</option>
+              <option>Over 2,500</option>
+              <option>Not sure</option>
+            </select>
+            <p class="err" id="e-vol"></p>
+          </div>
+          <div class="f f--full">
+            <label for="c-msg">Anything else <span class="hint">Optional</span></label>
+            <textarea id="c-msg" name="message" placeholder="How receiving runs today, how many shifts it is staffed, what goes wrong most often."></textarea>
+          </div>
+        </div>
+
+        <input type="hidden" name="preferred_time" id="c-time">
+        <div class="hp" aria-hidden="true">
+          <label for="c-fax">Leave this field empty</label>
+          <input type="text" id="c-fax" name="_gotcha" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="form-foot">
+          <button class="btn btn--mint btn--lg" type="submit" id="c-submit">Send</button>
+          <p class="form-status" id="c-status" data-state="" role="status"></p>
+        </div>
+      </form>
+    </section>
+
+    <!-- calendar -->
+    <section class="panel" aria-labelledby="cal-h">
+      <h2 id="cal-h">Pick a time</h2>
+      <p class="sub">Twenty minutes with Alina, a licensed CLS who worked the receiving desk for ten years. No slides.</p>
+
+      <div id="calendly-embed" hidden></div>
+
+      <div id="cal-native">
+        <div class="cal-top">
+          <span class="cal-month" id="cal-month"></span>
+          <span class="cal-nav">
+            <button type="button" id="cal-prev" aria-label="Previous month">&#8249;</button>
+            <button type="button" id="cal-next" aria-label="Next month">&#8250;</button>
+          </span>
+        </div>
+        <div class="cal-dow" aria-hidden="true">
+          <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+        </div>
+        <div class="cal-grid" id="cal-grid" role="group" aria-label="Choose a day"></div>
+
+        <div class="slots">
+          <h3 id="slots-h">Select a day</h3>
+          <p class="tz" id="slots-tz"></p>
+          <div class="slot-grid" id="slot-grid"></div>
+        </div>
+
+        <div class="picked" id="picked" hidden></div>
+      </div>
+
+      <p class="sub" style="margin:1.25rem 0 0">Or email her directly: <a href="mailto:alina@kinesislabs.tech" style="color:var(--mint)">alina@kinesislabs.tech</a></p>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>&copy; 2026 Kinesis Labs</p>
+    <p><a href="mailto:alina@kinesislabs.tech">alina@kinesislabs.tech</a></p>
+  </div>
+</footer>
+
+<script src="assets/contact.js"></script>
+</body>
+</html>
