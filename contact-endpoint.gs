@@ -18,9 +18,16 @@
  * The /exec URL stays the same.
  */
 
-var TEAM = ['alina@kinesislabs.tech'];   // add armin@... when the mailbox exists
+var TEAM = ['alina@kinesislabs.tech'];   // who receives the requests
 var SHEET_ID = '';                       // optional: log every request to this sheet
 var FROM_NAME = 'Kinesis Labs';
+
+/* Mail is sent by the Google account that deploys this, so by default the
+   confirmation arrives from that account's gmail address. To send it as
+   alina@kinesislabs.tech instead: in Gmail, Settings -> Accounts -> "Send mail
+   as" -> add alina@kinesislabs.tech and verify it, then set FROM_ALIAS below.
+   Leave it blank until the alias is verified or sending will fail. */
+var FROM_ALIAS = '';
 
 function doPost(e) {
   try {
@@ -44,7 +51,7 @@ function doPost(e) {
       d.message || '(no message)'
     ].join('\n');
 
-    MailApp.sendEmail({
+    send_({
       to: TEAM.join(','),
       subject: 'Kinesis Labs — ' + (d.organization || d.name || 'new request') +
                (when ? ' — time requested' : ''),
@@ -68,7 +75,7 @@ function doPost(e) {
          '',
          'What you sent us:'].join('\n');
 
-    MailApp.sendEmail({
+    send_({
       to: d.email,
       subject: 'We got your note — Kinesis Labs',
       body: confirm + '\n\n' + lines + '\n\n— Kinesis Labs\nkinesislabs.tech',
@@ -86,6 +93,13 @@ function doPost(e) {
   } catch (err) {
     return json({ ok: false, error: String(err) });
   }
+}
+
+/* one place that knows about the alias */
+function send_(opts) {
+  opts.name = opts.name || FROM_NAME;
+  if (FROM_ALIAS) opts.from = FROM_ALIAS;
+  GmailApp.sendEmail(opts.to, opts.subject, opts.body, opts);
 }
 
 function doGet() {
