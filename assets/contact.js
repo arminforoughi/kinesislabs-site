@@ -232,7 +232,7 @@ var HORIZON    = 45;     // days ahead
   var submit = document.getElementById("c-submit");
   var FIELDS = [
     ["c-name", "e-name", "Name"], ["c-title", "e-title", "Title"], ["c-org", "e-org", "Lab or company"],
-    ["c-email", "e-email", "Work email"], ["c-type", "e-type", "Type of lab"], ["c-vol", "e-vol", "Specimens per day"]
+    ["c-email", "e-email", "Work email"], ["c-type", "e-type", "Type of lab"]
   ];
 
   function setErr(id, eid, msg) {
@@ -258,6 +258,7 @@ var HORIZON    = 45;     // days ahead
     var v = {};
     ["name", "title", "organization", "email", "lab_type", "samples_per_day", "message", "preferred_time"]
       .forEach(function (k) { var el = form.elements[k]; v[k] = el ? el.value.trim() : ""; });
+    if (!v.samples_per_day) v.samples_per_day = "not given";
     return v;
   }
 
