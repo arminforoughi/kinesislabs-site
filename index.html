@@ -236,6 +236,38 @@ ul,ol{margin:0;padding:0;list-style:none}
 .callout{margin-top:clamp(2.25rem,1.8rem + 2vw,3.25rem);max-width:52rem;font-size:var(--t-lead);line-height:1.45;letter-spacing:-.015em;border-left:3px solid var(--amber);padding-left:1.2rem}
 .callout strong{font-weight:600}
 
+/* Contact */
+.contact{background:var(--ink);color:var(--muted-d)}
+.contact h2,.contact h3{color:#fff}
+.contact-grid{display:grid;gap:clamp(2rem,1.5rem + 3vw,3.5rem);grid-template-columns:1fr;align-items:start}
+@media (min-width:940px){.contact-grid{grid-template-columns:minmax(0,1.25fr) minmax(0,.85fr)}}
+.fields{display:grid;gap:1rem;grid-template-columns:1fr;margin-top:1.75rem}
+@media (min-width:560px){.fields{grid-template-columns:1fr 1fr}.f--full{grid-column:1/-1}}
+.f{display:grid;gap:.4rem;min-width:0}
+.f label{font-size:var(--t-sm);font-weight:500;color:#fff}
+.f .hint{font-weight:400;color:rgba(214,236,240,.5)}
+.f input,.f select,.f textarea{
+  font-family:inherit;font-size:var(--t-sm);color:#fff;background:var(--panel);
+  border:1px solid var(--line-d);border-radius:10px;padding:.7rem .8rem;width:100%;
+  transition:border-color var(--dur) var(--ease);
+}
+.f textarea{min-height:6.5rem;resize:vertical}
+.f select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,rgba(214,236,240,.6) 50%),linear-gradient(135deg,rgba(214,236,240,.6) 50%,transparent 50%);background-position:calc(100% - 18px) 52%,calc(100% - 13px) 52%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:2.2rem}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--mint);outline:none}
+.f input[aria-invalid="true"],.f select[aria-invalid="true"]{border-color:var(--amber)}
+.err{margin:0;font-size:var(--t-xs);color:var(--amber);min-height:1em}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-top:1.5rem}
+.form-status{margin:0;font-size:var(--t-sm)}
+.form-status[data-state="ok"]{color:var(--mint)}
+.form-status[data-state="err"]{color:var(--amber)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.book{border:1px solid var(--line-d);border-radius:var(--r);padding:clamp(1.5rem,1.2rem + 1vw,2rem);background:var(--panel)}
+.book h3{margin-bottom:.6rem}
+.book p{font-size:var(--t-sm);color:var(--muted-d);margin-bottom:1.25rem}
+.book .btn{width:100%}
+.book .direct{margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--line-d);font-size:var(--t-sm);margin-bottom:0}
+.book .direct a{color:var(--mint)}
+
 /* CTA + footer */
 .cta{background:var(--ink);color:#fff;text-align:center}
 .cta h2{max-width:22ch;margin-inline:auto}
@@ -519,12 +551,84 @@ ul,ol{margin:0;padding:0;list-style:none}
   </div>
 </section>
 
-<!-- CTA -->
-<section class="sec cta" id="contact" aria-labelledby="cta-h">
-  <div class="wrap">
-    <p class="label">See it on your workflow</p>
-    <h2 id="cta-h">Hand the receiving desk to the station.</h2>
-    <a class="btn btn--mint btn--lg" href="mailto:hello@kinesislabs.com?subject=Demo%20request">hello@kinesislabs.com</a>
+<!-- Contact -->
+<section class="sec contact" id="contact" aria-labelledby="contact-h">
+  <div class="wrap contact-grid">
+    <div>
+      <p class="label">Get in touch</p>
+      <h2 id="contact-h">Tell us about your receiving bench.</h2>
+      <p class="lead" style="margin-top:1.25rem;max-width:44rem">We are looking for labs to build this with. Tell us what arrives at your bench and we will show you where the station is today &mdash; honestly, including what it cannot do yet.</p>
+
+      <form id="contact-form" novalidate>
+        <div class="fields">
+          <div class="f">
+            <label for="c-name">Name</label>
+            <input type="text" id="c-name" name="name" autocomplete="name" required aria-describedby="e-name">
+            <p class="err" id="e-name"></p>
+          </div>
+          <div class="f">
+            <label for="c-title">Title</label>
+            <input type="text" id="c-title" name="title" autocomplete="organization-title" placeholder="Lab manager, director, CLS&hellip;" required aria-describedby="e-title">
+            <p class="err" id="e-title"></p>
+          </div>
+          <div class="f">
+            <label for="c-org">Lab or company</label>
+            <input type="text" id="c-org" name="organization" autocomplete="organization" required aria-describedby="e-org">
+            <p class="err" id="e-org"></p>
+          </div>
+          <div class="f">
+            <label for="c-email">Work email</label>
+            <input type="email" id="c-email" name="email" autocomplete="email" required aria-describedby="e-email">
+            <p class="err" id="e-email"></p>
+          </div>
+          <div class="f">
+            <label for="c-type">Type of lab</label>
+            <select id="c-type" name="lab_type" required aria-describedby="e-type">
+              <option value="">Select one</option>
+              <option>Clinical</option>
+              <option>Research</option>
+              <option>Pharma</option>
+              <option>Other</option>
+            </select>
+            <p class="err" id="e-type"></p>
+          </div>
+          <div class="f">
+            <label for="c-vol">Specimens received per day</label>
+            <select id="c-vol" name="samples_per_day" required aria-describedby="e-vol">
+              <option value="">Select one</option>
+              <option>Under 100</option>
+              <option>100 to 500</option>
+              <option>500 to 1,000</option>
+              <option>1,000 to 2,500</option>
+              <option>Over 2,500</option>
+              <option>Not sure</option>
+            </select>
+            <p class="err" id="e-vol"></p>
+          </div>
+          <div class="f f--full">
+            <label for="c-msg">Anything else <span class="hint">Optional</span></label>
+            <textarea id="c-msg" name="message" placeholder="How receiving runs today, how many shifts it is staffed, what goes wrong most often."></textarea>
+          </div>
+        </div>
+
+        <div class="hp" aria-hidden="true">
+          <label for="c-fax">Leave this field empty</label>
+          <input type="text" id="c-fax" name="_gotcha" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="form-foot">
+          <button class="btn btn--mint btn--lg" type="submit" id="c-submit">Send</button>
+          <p class="form-status" id="c-status" data-state="" role="status"></p>
+        </div>
+      </form>
+    </div>
+
+    <aside class="book">
+      <h3>Rather just talk?</h3>
+      <p>Book twenty minutes with Alina, a licensed CLS who worked the receiving desk for ten years. No slides.</p>
+      <a class="btn btn--ghost btn--lg" id="book-btn" href="mailto:alina@kinesislabs.tech?subject=Time%20to%20talk" target="_blank" rel="noopener">Find a time</a>
+      <p class="direct">Or email her directly: <a href="mailto:alina@kinesislabs.tech">alina@kinesislabs.tech</a></p>
+    </aside>
   </div>
 </section>
 
@@ -533,7 +637,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 <footer class="foot">
   <div class="wrap">
     <p>&copy; 2026 Kinesis Labs</p>
-    <p><a href="mailto:hello@kinesislabs.com">hello@kinesislabs.com</a></p>
+    <p><a href="mailto:alina@kinesislabs.tech">alina@kinesislabs.tech</a></p>
   </div>
 </footer>
 
@@ -959,6 +1063,119 @@ ul,ol{margin:0;padding:0;list-style:none}
       }
     });
   }, { threshold: 0.35 }).observe(v);
+})();
+</script>
+<script>
+/* ---------------------------------------------------------------------------
+   Contact. Two things to fill in when you have them:
+     CALENDLY_URL  - Alina's scheduling link, e.g. https://calendly.com/alina-kinesislabs/20min
+     FORM_ENDPOINT - a Formspree/Basin/Tally URL, e.g. https://formspree.io/f/abcdwxyz
+   With CALENDLY_URL blank the "Find a time" button just emails her.
+   With FORM_ENDPOINT blank the form composes the same email in the visitor's
+   mail client instead of posting anywhere. Nothing is ever faked as sent.
+--------------------------------------------------------------------------- */
+const CALENDLY_URL  = "";
+const FORM_ENDPOINT = "";
+const CONTACT_EMAIL = "alina@kinesislabs.tech";
+
+(function(){
+  /* ---- book a time ---- */
+  var btn = document.getElementById('book-btn');
+  if(btn && CALENDLY_URL){
+    var css = document.createElement('link');
+    css.rel = 'stylesheet'; css.href = 'https://assets.calendly.com/assets/external/widget.css';
+    document.head.appendChild(css);
+    var s = document.createElement('script');
+    s.src = 'https://assets.calendly.com/assets/external/widget.js'; s.async = true;
+    document.head.appendChild(s);
+    btn.href = CALENDLY_URL;
+    btn.addEventListener('click', function(e){
+      if(window.Calendly){ e.preventDefault(); window.Calendly.initPopupWidget({url: CALENDLY_URL}); }
+      /* if the widget script has not loaded, the href opens the page normally */
+    });
+  }
+
+  /* ---- the form ---- */
+  var form = document.getElementById('contact-form');
+  if(!form) return;
+  var status = document.getElementById('c-status');
+  var submit = document.getElementById('c-submit');
+  var FIELDS = [
+    ['c-name','e-name','Name'], ['c-title','e-title','Title'], ['c-org','e-org','Lab or company'],
+    ['c-email','e-email','Work email'], ['c-type','e-type','Type of lab'], ['c-vol','e-vol','Specimens per day']
+  ];
+
+  function setErr(id, eid, msg){
+    var el = document.getElementById(id), err = document.getElementById(eid);
+    err.textContent = msg || '';
+    if(msg) el.setAttribute('aria-invalid','true'); else el.removeAttribute('aria-invalid');
+    return !msg;
+  }
+
+  function validate(){
+    var ok = true, first = null;
+    FIELDS.forEach(function(f){
+      var el = document.getElementById(f[0]), v = el.value.trim();
+      var msg = '';
+      if(!v) msg = f[2] + ' is required.';
+      else if(f[0] === 'c-email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) msg = 'That email address does not look right.';
+      if(!setErr(f[0], f[1], msg)){ ok = false; if(!first) first = el; }
+    });
+    if(first) first.focus();
+    return ok;
+  }
+
+  function values(){
+    var v = {};
+    ['name','title','organization','email','lab_type','samples_per_day','message'].forEach(function(k){
+      var el = form.elements[k]; v[k] = el ? el.value.trim() : '';
+    });
+    return v;
+  }
+
+  function mailtoFallback(v){
+    var body = [
+      'Name: ' + v.name, 'Title: ' + v.title, 'Lab or company: ' + v.organization,
+      'Email: ' + v.email, 'Type of lab: ' + v.lab_type,
+      'Specimens received per day: ' + v.samples_per_day, '', v.message
+    ].join('\n');
+    return 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Kinesis Labs - ' + v.organization) +
+           '&body=' + encodeURIComponent(body);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(form.elements['_gotcha'] && form.elements['_gotcha'].value) return;   /* bot */
+    if(!validate()){
+      status.dataset.state = 'err';
+      status.textContent = 'Please fix the fields marked above.';
+      return;
+    }
+    var v = values();
+    if(!FORM_ENDPOINT){
+      window.location.href = mailtoFallback(v);
+      status.dataset.state = '';
+      status.innerHTML = 'Opening your mail client. If nothing happens, email <a href="mailto:' +
+                         CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a> directly.';
+      return;
+    }
+    submit.disabled = true;
+    status.dataset.state = '';
+    status.textContent = 'Sending\u2026';
+    fetch(FORM_ENDPOINT, {
+      method: 'POST', headers: {'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(v)
+    }).then(function(r){
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      form.reset();
+      status.dataset.state = 'ok';
+      status.textContent = 'Thank you. Alina will reply within a day or two.';
+    }).catch(function(){
+      status.dataset.state = 'err';
+      status.innerHTML = 'That did not send. Please email <a href="mailto:' + CONTACT_EMAIL + '">' +
+                         CONTACT_EMAIL + '</a> instead.';
+    }).finally(function(){ submit.disabled = false; });
+  });
 })();
 </script>
 </body>
