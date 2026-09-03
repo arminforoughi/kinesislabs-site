@@ -4,18 +4,83 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kinesis Labs — specimen receiving, automated at the bench</title>
-<meta name="description" content="Kinesis Labs builds a benchtop station that takes a sealed courier bag through unbagging, tube inspection, LIS accessioning, sorting and centrifugation — the same way on every shift.">
+<meta name="description" content="A benchtop station that takes a sealed courier bag through unbagging, tube inspection, LIS accessioning, sorting and centrifugation — the same on every shift.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://kinesislabs.tech/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#070C10">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kinesis Labs">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://kinesislabs.tech/">
+<meta property="og:title" content="Kinesis Labs — specimen receiving, automated at the bench">
+<meta property="og:description" content="A benchtop station that takes a sealed courier bag through unbagging, tube inspection, LIS accessioning, sorting and centrifugation — the same on every shift.">
+<meta property="og:image" content="https://kinesislabs.tech/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kinesis Labs — most clinical lab errors happen before the analyzer">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kinesis Labs — specimen receiving, automated at the bench">
+<meta name="twitter:description" content="A benchtop station that takes a sealed courier bag through unbagging, tube inspection, LIS accessioning, sorting and centrifugation — the same on every shift.">
+<meta name="twitter:image" content="https://kinesislabs.tech/assets/og-image.png">
+<link rel="apple-touch-icon" href="assets/icon-512.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=4">
+<link rel="stylesheet" href="assets/site.css?v=23">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://kinesislabs.tech/#organization",
+      "name": "Kinesis Labs",
+      "url": "https://kinesislabs.tech/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://kinesislabs.tech/assets/icon-512.png",
+        "width": 512,
+        "height": 512
+      },
+      "email": "alina@kinesislabs.tech",
+      "description": "Kinesis Labs builds a benchtop station that takes a sealed courier bag through unbagging, tube inspection, LIS accessioning, sorting and centrifugation.",
+      "knowsAbout": [
+        "clinical laboratory automation",
+        "specimen receiving",
+        "pre-analytical error",
+        "laboratory robotics"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://kinesislabs.tech/#website",
+      "url": "https://kinesislabs.tech/",
+      "name": "Kinesis Labs",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://kinesislabs.tech/#organization"
+      }
+    },
+    {
+      "@type": "Service",
+      "name": "Specimen receiving automation",
+      "serviceType": "Clinical laboratory automation",
+      "provider": {
+        "@id": "https://kinesislabs.tech/#organization"
+      },
+      "description": "A benchtop station that unbags a sealed courier bag, inspects each tube, accessions it into the LIS, sorts it into spin, no-spin or hold racks, and runs the centrifuge."
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
 
 <nav class="nav" aria-label="Main navigation">
   <a class="mark" href="#top">
-    <svg class="glyph" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1v14M1 8h14" stroke="#5FE3B4" stroke-width="1.6"/><circle cx="8" cy="8" r="3.2" fill="none" stroke="#fff" stroke-width="1.6"/></svg>
+    <svg class="glyph" viewBox="0 0 16 16" aria-hidden="true"><rect x="6.5" y="2.8" width="3" height="10.4" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 5.6v4.8M12.5 5.6v4.8" stroke="#5FE3B4" stroke-width="1.8" stroke-linecap="round"/></svg>
     <b>Kinesis</b><span>Labs</span>
   </a>
   <span class="nav-links">
@@ -27,10 +92,14 @@
   <a class="btn btn--mint" href="contact.html">Request a demo</a>
 </nav>
 
+<canvas id="mesh" class="page-mesh" aria-hidden="true"></canvas>
+<canvas id="mesh-front" class="page-mesh-front" aria-hidden="true"></canvas>
+
 <main id="main">
 
 <!-- Hero -->
-<section class="hero" id="top" aria-labelledby="hero-h">
+<section class="hero" id="top" aria-labelledby="hero-h" data-mesh="0.78 0.47 1.00 1.00">
+  <div class="hero-stage">
   <div class="wrap hero-grid">
    <div class="hero-copy">
     <p class="eyebrow">Specimen receiving</p>
@@ -40,104 +109,14 @@
       <a class="btn btn--mint btn--lg" href="contact.html">Request a demo</a>
       <a class="btn btn--ghost btn--lg" href="#station">See how it works</a>
     </div>
+    <p class="hero-note">Concept animation. It shows the workflow the station is being trained to perform. It is not footage of a deployed system.</p>
    </div>
-
-    <figure class="cell-outer">
-      <div class="cell">
-        <svg id="cell" viewBox="0 0 1000 600" role="img" aria-labelledby="cell-title cell-desc" preserveAspectRatio="xMidYMid meet">
-          <title id="cell-title">Concept animation of the receiving station</title>
-          <desc id="cell-desc">A gantry robot lifts each blood tube off a conveyor, reads its label, and seats it in the spin, no-spin or hold rack.</desc>
-          <defs>
-            <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#DCEAF0" stop-opacity=".5"/>
-              <stop offset=".35" stop-color="#FFFFFF" stop-opacity=".2"/>
-              <stop offset="1" stop-color="#7FA8B8" stop-opacity=".4"/>
-            </linearGradient>
-            <linearGradient id="gBeam" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#5FE3B4" stop-opacity="0"/>
-              <stop offset=".5" stop-color="#5FE3B4" stop-opacity="1"/>
-              <stop offset="1" stop-color="#5FE3B4" stop-opacity="0"/>
-            </linearGradient>
-            <radialGradient id="gVig" cx=".5" cy=".2" r=".9">
-              <stop offset="0" stop-color="#5FE3B4" stop-opacity=".07"/>
-              <stop offset="1" stop-color="#050A0E" stop-opacity=".55"/>
-            </radialGradient>
-            <pattern id="pGrid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path class="grid-line" d="M40 0H0V40"/>
-            </pattern>
-            <clipPath id="clipBelt"><rect x="-30" y="428" width="520" height="42" rx="8"/></clipPath>
-            <radialGradient id="gGlowMint"><stop offset="0" stop-color="#5FE3B4" stop-opacity=".5"/><stop offset="1" stop-color="#5FE3B4" stop-opacity="0"/></radialGradient>
-            <radialGradient id="gGlowAmber"><stop offset="0" stop-color="#FF9455" stop-opacity=".5"/><stop offset="1" stop-color="#FF9455" stop-opacity="0"/></radialGradient>
-            <linearGradient id="gShaft" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#5FE3B4" stop-opacity=".22"/>
-              <stop offset=".55" stop-color="#5FE3B4" stop-opacity=".06"/>
-              <stop offset="1" stop-color="#5FE3B4" stop-opacity="0"/>
-            </linearGradient>
-            <linearGradient id="gSweep" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#5FE3B4" stop-opacity="0"/>
-              <stop offset=".5" stop-color="#9BF3D6" stop-opacity=".07"/>
-              <stop offset="1" stop-color="#5FE3B4" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-
-          <rect width="1000" height="600" fill="url(#pGrid)" opacity=".45"/>
-          <rect width="1000" height="600" fill="url(#gVig)"/>
-          <rect id="sweep" class="sweep" x="-320" y="0" width="320" height="600"/>
-          <g id="dust"></g>
-          <path id="shaft" d="M404 110 L436 110 L466 430 L374 430 Z" fill="url(#gShaft)" opacity=".2"/>
-
-          <!-- overhead rail -->
-          <g id="rail">
-            <rect class="rail" x="90" y="82" width="880" height="22" rx="11"/>
-            <line class="rail-line" x1="102" y1="93" x2="958" y2="93"/>
-            <rect class="mach" x="90" y="60" width="26" height="24" rx="6"/>
-            <rect class="mach" x="944" y="60" width="26" height="24" rx="6"/>
-          </g>
-
-          <g id="layer-back"></g>
-          <g id="layer-tubes"></g>
-          <g id="layer-front"></g>
-
-          <!-- read station -->
-          <g id="scan" opacity="0">
-            <line class="beam" x1="378" y1="0" x2="462" y2="0"/>
-            <path class="bracket" d="M394 -46 h-16 v14 M446 -46 h16 v14 M394 12 h-16 v-14 M446 12 h16 v-14"/>
-          </g>
-          <circle id="ping" class="ping" cx="420" cy="386" r="6" opacity="0"/>
-          <circle id="seat-ring" class="ping" r="6" opacity="0"/>
-          <circle id="carry-glow" class="carry-glow" r="34" opacity="0"/>
-
-          <!-- arm -->
-          <g id="arm">
-            <g id="carriage">
-              <rect class="mach" x="-56" y="70" width="112" height="42" rx="12"/>
-              <rect class="mach-edge" x="-56" y="70" width="112" height="42" rx="12"/>
-              <circle id="carriage-led" cx="-34" cy="91" r="4" fill="#5FE3B4" opacity=".85"/>
-              <circle cx="34" cy="91" r="3" fill="#7FC5EE" opacity=".5"/>
-              <rect class="mach" x="-14" y="106" width="28" height="16" rx="5"/>
-            </g>
-            <line id="link1" class="link" stroke-width="17"/>
-            <line id="link1c" class="link-core" stroke-width="5"/>
-            <line id="link2" class="link" stroke-width="13"/>
-            <line id="link2c" class="link-core" stroke-width="4"/>
-            <circle id="jointS" class="joint" r="11"/>
-            <circle id="jointE" class="joint" r="9"/>
-            <g id="grip">
-              <rect class="grip-body" x="-21" y="-16" width="42" height="21" rx="6"/>
-              <rect id="fingerL" class="finger" x="-3" y="0" width="6" height="30" rx="3"/>
-              <rect id="fingerR" class="finger" x="-3" y="0" width="6" height="30" rx="3"/>
-            </g>
-          </g>
-
-        </svg>
-      </div>
-      <figcaption class="cell-note">Concept animation. It shows the workflow the station is being trained to perform. It is not footage of a deployed system.</figcaption>
-    </figure>
+  </div>
   </div>
 </section>
 
 <!-- Bench demo -->
-<section class="sec" id="demo" aria-labelledby="demo-h">
+<section class="sec" id="demo" aria-labelledby="demo-h" data-mesh="0.34 0.72 0.60 0.60">
   <div class="wrap demo-grid">
     <div class="demo-copy">
       <p class="label">On the bench</p>
@@ -163,7 +142,7 @@
 </section>
 
 <!-- 1. The problem, in numbers -->
-<section class="sec" id="problem" aria-labelledby="problem-h">
+<section class="sec" id="problem" aria-labelledby="problem-h" data-mesh="0.78 0.40 0.65 0.60">
   <div class="wrap">
     <div class="head">
       <p class="label">The problem, in numbers</p>
@@ -204,7 +183,7 @@
 </section>
 
 <!-- 2. How it works -->
-<section class="sec dark" id="station" aria-labelledby="station-h">
+<section class="sec dark" id="station" aria-labelledby="station-h" data-mesh="0.80 0.76 0.62 0.95">
   <div class="wrap">
     <div class="head">
       <p class="label">How it works</p>
@@ -253,7 +232,7 @@
 </section>
 
 <!-- 3. Physical AI -->
-<section class="sec" id="physical-ai" aria-labelledby="pai-h">
+<section class="sec" id="physical-ai" aria-labelledby="pai-h" data-mesh="0.30 0.62 0.65 0.60">
   <div class="wrap">
     <div class="head">
       <p class="label">Physical AI</p>
@@ -285,7 +264,7 @@
 </section>
 
 <!-- Closing CTA -->
-<section class="sec cta" id="contact" aria-labelledby="cta-h">
+<section class="sec cta" id="contact" aria-labelledby="cta-h" data-mesh="0.22 0.64 0.80 0.95">
   <div class="wrap">
     <p class="label">See it on your workflow</p>
     <h2 id="cta-h">Hand the receiving desk to the station.</h2>
@@ -296,7 +275,7 @@
 
 </main>
 
-<footer class="foot">
+<footer class="foot" data-mesh="0.22 0.47 0.95 0.85">
   <div class="wrap">
     <p>&copy; 2026 Kinesis Labs</p>
     <p><a href="mailto:alina@kinesislabs.tech">alina@kinesislabs.tech</a></p>
@@ -304,408 +283,652 @@
 </footer>
 
 <script>
-(function(){
-  var svg = document.getElementById('cell');
-  if(!svg) return;
-  var NS = 'http://www.w3.org/2000/svg';
-  var byId = function(id){ return document.getElementById(id); };
+/* Background animation: a wireframe receiving station, drawn on canvas.
+ *
+ * No dependencies and no build step, same as the rest of this file. A small 3D
+ * renderer draws the arm as a point cloud and runs one pick-and-place cycle per
+ * tube: lift it off the input tray, stand it upright, seat it in the spin,
+ * no-spin or hold rack.
+ *
+ * Scrubbed by scroll, over the whole document, so the machine keeps working the
+ * length of the page. Drag back up and the station runs in reverse and un-seats
+ * the tubes.
+ *
+ * It sits BEHIND the page. That is not incidental: body is ink and the
+ * ink-coloured sections are transparent, so the machine shows through them, while
+ * a paper section paints straight over it. It is therefore structurally unable to
+ * land on the demo video or a paragraph of body copy. See the README before
+ * making a light section transparent.
+ *
+ * Where it sits in each section is markup, not code -- see data-mesh and
+ * placement() below.
+ *
+ * The arm runs on inverse kinematics rather than hand-keyed joint angles. The
+ * cycle is written as a path of tool-tip targets and the joints are solved to
+ * hit them, which is what lets a tube be grasped and released without a jump:
+ * at the grasp frame the gripper is exactly on the tube by construction, so
+ * parenting it to the wrist is seamless.
+ */
+(function () {
+  'use strict';
+
+  var cv = document.getElementById('mesh');
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d');
+
+  /* A second canvas, in front of the page. The one behind can only be seen
+     through the ink sections; a paper section paints over it. So the paper
+     sections get the machine drawn on top instead, in dark ink and far fainter
+     -- a watermark rather than a subject, which is the only way it can sit over
+     body copy without being in the way. Clipped to those sections exactly, so
+     nothing of it strays onto an ink one. */
+  var cvF = document.getElementById('mesh-front');
+  var ctxF = cvF && cvF.getContext ? cvF.getContext('2d') : null;
+  var tgt = ctx;                      // which context the paint helpers write to
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---- geometry ---- */
-  var BELT_TOP = 430, PICK_X = 420, TUBE_GAP = 78, GRIP_DY = 60;
-  var SLOT_BOTTOM = 464, RACK_TOP = 400;
-  var GRIP_Y_PICK = BELT_TOP - GRIP_DY;
-  var GRIP_Y_PLACE = SLOT_BOTTOM - GRIP_DY;
-  var SHOULDER_Y = 118, L1 = 152, L2 = 152;
-  var PARK_X = 470, PARK_Y = 296, LIFT_Y = 258, HOVER_Y = 310;
-  var BELT_SPEED = 96; /* px per second */
+  var W = 0, H = 0, DPR = 1;
 
-  var RACKS = [
-    { key:'spin',   hue:'#5FE3B4', x:540 },
-    { key:'nospin', hue:'#7FC5EE', x:690 },
-    { key:'hold',   hue:'#FF9455', x:840 }
-  ];
-  RACKS.forEach(function(r){
-    r.slots = [null,null,null,null];
-    r.slotX = function(i){ return r.x + 21 + i*27.5; };
-  });
-  var rackFor = function(key){
-    for(var i=0;i<RACKS.length;i++){ if(RACKS[i].key===key) return RACKS[i]; }
-    return RACKS[0];
-  };
-
-  var TYPES = [
-    { cap:'#C0AEEA', name:'Lavender · K2 EDTA',        test:'CBC with differential',  dest:'nospin' },
-    { cap:'#7CC5EE', name:'Blue · sodium citrate',     test:'PT / INR',               dest:'spin' },
-    { cap:'#EBC55C', name:'Gold · SST',                test:'Comprehensive metabolic',dest:'spin' },
-    { cap:'#93D9AE', name:'Green · lithium heparin',   test:'Lactate',                dest:'spin' },
-    { cap:'#C0AEEA', name:'Lavender · K2 EDTA',        test:'PT / INR ordered',       dest:'hold', flag:'Wrong tube for the ordered test' },
-    { cap:'#7CC5EE', name:'Blue · sodium citrate',     test:'PT / INR',               dest:'hold', flag:'Underfilled, below the fill line', low:true }
-  ];
-  function pickType(){
-    var r = Math.random();
-    if(r < 0.72) return TYPES[Math.floor(Math.random()*4)];
-    return TYPES[4 + Math.floor(Math.random()*2)];
-  }
-
-  /* ---- scene ---- */
-  var back = byId('layer-back'), tubesLayer = byId('layer-tubes'), front = byId('layer-front');
-
-  function el(tag, attrs){
-    var n = document.createElementNS(NS, tag);
-    for(var k in attrs){ n.setAttribute(k, attrs[k]); }
-    return n;
-  }
-
-  /* belt */
-  var beltG = el('g', {});
-  beltG.innerHTML =
-    '<rect class="mach-2" x="-30" y="470" width="520" height="34" rx="6"/>' +
-    '<rect class="belt-body" x="-30" y="428" width="520" height="42" rx="8"/>' +
-    '<g clip-path="url(#clipBelt)"><g id="belt-stripes"></g></g>' +
-    '<rect class="mach-edge" x="-30" y="428" width="520" height="42" rx="8"/>' +
-    '<circle class="roller" cx="468" cy="449" r="14"/>' +
-    '<g id="spokeB"><line class="spoke" x1="468" y1="440" x2="468" y2="458"/></g>' +
-    '<rect class="mach" x="60" y="504" width="16" height="46" rx="4"/>' +
-    '<rect class="mach" x="428" y="504" width="16" height="46" rx="4"/>';
-  back.appendChild(beltG);
-  var stripes = byId('belt-stripes');
-  for(var s=-1; s<15; s++){
-    stripes.appendChild(el('rect', {'class':'belt-stripe', x:-30 + s*40, y:428, width:9, height:42}));
-  }
-
-  /* racks */
-  RACKS.forEach(function(r){
-    var b = el('g', {});
-    var slotMarks = '';
-    for(var i=0;i<4;i++){
-      slotMarks += '<rect class="rack-slot" x="' + (r.slotX(i)-11) + '" y="' + (RACK_TOP-3) + '" width="22" height="12" rx="3"/>';
+  /* ---------------------------------------------------------------- matrices
+   * Row-major 4x4, translation in the last column. p' = M p.
+   */
+  function mul(a, b) {
+    var o = new Array(16), r, c, a0, a1, a2, a3;
+    for (r = 0; r < 4; r++) {
+      a0 = a[r * 4]; a1 = a[r * 4 + 1]; a2 = a[r * 4 + 2]; a3 = a[r * 4 + 3];
+      for (c = 0; c < 4; c++) o[r * 4 + c] = a0 * b[c] + a1 * b[4 + c] + a2 * b[8 + c] + a3 * b[12 + c];
     }
-    b.innerHTML = '<rect class="rack-body" x="' + r.x + '" y="' + RACK_TOP + '" width="124" height="72" rx="9"/>' + slotMarks;
-    r.bodyEl = b.firstChild;
-    back.appendChild(b);
-
-    var f = el('g', {});
-    var mx = r.x + 22, my = RACK_TOP + 53;
-    f.innerHTML =
-      '<rect class="rack-front" x="' + r.x + '" y="' + (RACK_TOP+34) + '" width="124" height="38" rx="9"/>' +
-      '<line class="meter-track" x1="' + mx + '" y1="' + my + '" x2="' + (mx+80) + '" y2="' + my + '"/>' +
-      '<line class="meter-fill" x1="' + mx + '" y1="' + my + '" x2="' + mx + '" y2="' + my + '" stroke="' + r.hue + '" opacity="0"/>' +
-      '<rect class="mach-2" x="' + (r.x+18) + '" y="' + (RACK_TOP+72) + '" width="88" height="26" rx="5"/>';
-    front.appendChild(f);
-    r.meter = f.childNodes[2];
-    r.meterX = mx;
-    r.setMeter = function(n, bright){
-      r.meter.setAttribute('x2', (mx + 80*(n/4)).toFixed(1));
-      r.meter.setAttribute('opacity', n ? (bright || .85).toFixed(2) : '0');
-    };
-  });
-
-  /* ---- tubes ---- */
-  var tubes = [];
-  function makeTube(type){
-    var g = el('g', {'class':'tube'});
-    var fy = type.low ? -32 : -50, fh = type.low ? 30 : 48;
-    g.innerHTML =
-      '<ellipse class="shadow" cx="1" cy="1" rx="13" ry="3.5"/>' +
-      '<rect class="glass" x="-11" y="-78" width="22" height="78" rx="10"/>' +
-      '<rect class="blood" x="-8" y="' + fy + '" width="16" height="' + fh + '" rx="7"/>' +
-      '<rect class="sticker" x="-10" y="-66" width="20" height="24" rx="2"/>' +
-      '<path class="bars" d="M-6 -62 v16 M-3.2 -62 v16 M-0.4 -62 v16 M3 -62 v16 M6 -62 v16"/>' +
-      '<rect class="neck" x="-11" y="-85" width="22" height="9" rx="3"/>' +
-      '<rect x="-13" y="-96" width="26" height="14" rx="4" fill="' + type.cap + '"/>' +
-      '<path class="shine" d="M-6 -70 v54"/>';
-    return g;
+    return o;
   }
-  function spawn(){
-    var type = pickType();
-    var t = { type:type, x:-34, state:'belt', el:makeTube(type) };
-    t.el.setAttribute('transform', 'translate(' + t.x + ',' + BELT_TOP + ')');
-    tubesLayer.appendChild(t.el);
-    tubes.push(t);
-    return t;
-  }
-  function beltTubes(){
-    return tubes.filter(function(t){ return t.state === 'belt'; })
-                .sort(function(a,b){ return b.x - a.x; });
-  }
+  function ident() { return [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]; }
+  function tr(x, y, z) { return [1,0,0,x, 0,1,0,y, 0,0,1,z, 0,0,0,1]; }
+  function rx(a) { var s = Math.sin(a), c = Math.cos(a); return [1,0,0,0, 0,c,-s,0, 0,s,c,0, 0,0,0,1]; }
+  function ry(a) { var s = Math.sin(a), c = Math.cos(a); return [c,0,s,0, 0,1,0,0, -s,0,c,0, 0,0,0,1]; }
+  function rz(a) { var s = Math.sin(a), c = Math.cos(a); return [c,-s,0,0, s,c,0,0, 0,0,1,0, 0,0,0,1]; }
 
-  /* ---- arm ---- */
-  var arm = { cx:PARK_X, ty:PARK_Y, g:1 };
-  var carriage = byId('carriage'), grip = byId('grip');
-  var link1 = byId('link1'), link1c = byId('link1c'), link2 = byId('link2'), link2c = byId('link2c');
-  var jointS = byId('jointS'), jointE = byId('jointE');
-  var fingerL = byId('fingerL'), fingerR = byId('fingerR');
-  var scanG = byId('scan'), beam = scanG.querySelector('.beam'), bracket = scanG.querySelector('.bracket');
+  function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function smooth(t) { return t * t * (3 - 2 * t); }
 
-  function ik(sx, sy, tx, ty){
-    var dx = tx - sx, dy = ty - sy;
-    var d = Math.sqrt(dx*dx + dy*dy);
-    var max = L1 + L2 - 1, min = 46;
-    if(d > max){ dx *= max/d; dy *= max/d; d = max; }
-    else if(d < min){ var k = min/(d || 1); dx *= k; dy *= k; d = min; }
-    var a = Math.atan2(dy, dx);
-    var c = (d*d + L1*L1 - L2*L2) / (2*d*L1);
-    c = Math.max(-1, Math.min(1, c));
-    var ang = a - Math.acos(c);
-    return { ex: sx + L1*Math.cos(ang), ey: sy + L1*Math.sin(ang), tx: sx + dx, ty: sy + dy };
-  }
-
-  function render(){
-    var sx = arm.cx, sy = SHOULDER_Y;
-    var k = ik(sx, sy, arm.cx, arm.ty);
-    carriage.setAttribute('transform', 'translate(' + sx.toFixed(2) + ',0)');
-    link1.setAttribute('x1', sx); link1.setAttribute('y1', sy);
-    link1.setAttribute('x2', k.ex); link1.setAttribute('y2', k.ey);
-    link1c.setAttribute('x1', sx); link1c.setAttribute('y1', sy);
-    link1c.setAttribute('x2', k.ex); link1c.setAttribute('y2', k.ey);
-    link2.setAttribute('x1', k.ex); link2.setAttribute('y1', k.ey);
-    link2.setAttribute('x2', k.tx); link2.setAttribute('y2', k.ty);
-    link2c.setAttribute('x1', k.ex); link2c.setAttribute('y1', k.ey);
-    link2c.setAttribute('x2', k.tx); link2c.setAttribute('y2', k.ty);
-    jointS.setAttribute('cx', sx); jointS.setAttribute('cy', sy);
-    jointE.setAttribute('cx', k.ex); jointE.setAttribute('cy', k.ey);
-    grip.setAttribute('transform', 'translate(' + k.tx.toFixed(2) + ',' + k.ty.toFixed(2) + ')');
-    var spread = 15 + 11*arm.g;
-    fingerL.setAttribute('transform', 'translate(' + (-spread) + ',0)');
-    fingerR.setAttribute('transform', 'translate(' + spread + ',0)');
-    if(held){
-      held.el.setAttribute('transform', 'translate(' + k.tx.toFixed(2) + ',' + (k.ty + GRIP_DY).toFixed(2) + ')');
-      carryGlow.setAttribute('cx', k.tx.toFixed(1));
-      carryGlow.setAttribute('cy', (k.ty + GRIP_DY - 40).toFixed(1));
-      carryGlow.setAttribute('opacity', '1');
-    }else{
-      carryGlow.setAttribute('opacity', '0');
-    }
-  }
-
-  /* ---- read-out without words: an LED, a ping, a glow ---- */
-  var led = byId('carriage-led'), ping = byId('ping'), carryGlow = byId('carry-glow');
-  var shaft = byId('shaft'), seatRing = byId('seat-ring');
-  var seat = { t:0 };
-  var MINT = '#5FE3B4', AMBER = '#FF9455';
-
-  /* ---- action queue ---- */
-  var queue = [], cur = null, curT = 0, held = null;
-  function push(a){ queue.push(a); }
-  var ease = function(p){ return p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3)/2; };
-
-  function move(nx, ny, dur){
-    var s;
-    return { dur:dur, start:function(){ s = { x:arm.cx, y:arm.ty }; },
-      update:function(e){ arm.cx = s.x + (nx - s.x)*e; arm.ty = s.y + (ny - s.y)*e; } };
-  }
-  function gripTo(to, dur, onEnd){
-    var s;
-    return { dur:dur, start:function(){ s = arm.g; },
-      update:function(e){ arm.g = s + (to - s)*e; }, end:onEnd };
-  }
-  function wait(dur, onStart){ return { dur:dur, start:onStart }; }
-
-  function scanAction(tube){
+  /* -------------------------------------------------------------- primitives */
+  function box(w, h, d, oy) {
+    oy = oy || 0;
+    var x = w / 2, z = d / 2, y0 = oy, y1 = oy + h;
     return {
-      dur: 950,
-      start: function(){
-        scanG.setAttribute('opacity', '1');
-      },
-      update: function(e, p){
-        var y = 348 + (444 - 348) * (p < .5 ? p*2 : (1 - (p - .5)*2));
-        beam.setAttribute('transform', 'translate(0,' + y.toFixed(1) + ')');
-        bracket.setAttribute('transform', 'translate(0,398)');
-      },
-      end: function(){
-        scanG.setAttribute('opacity', '0');
-      }
+      v: [[-x,y0,-z],[x,y0,-z],[x,y0,z],[-x,y0,z],[-x,y1,-z],[x,y1,-z],[x,y1,z],[-x,y1,z]],
+      e: [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]
     };
   }
-
-  function pingAction(tube){
-    var hue = tube.type.flag ? AMBER : MINT;
-    return { dur:520,
-      start:function(){ ping.setAttribute('stroke', hue); led.setAttribute('fill', hue); },
-      update:function(e, pr){
-        ping.setAttribute('r', (7 + 30*e).toFixed(1));
-        ping.setAttribute('opacity', (1 - pr).toFixed(2));
-      },
-      end:function(){ ping.setAttribute('opacity', '0'); } };
+  // Ring-and-rail cylinder. axis 'y' grows along +Y from oy; 'x' along +X.
+  function cyl(r, h, seg, oy, axis) {
+    oy = oy || 0;
+    var v = [], e = [], i, a, c, s;
+    for (i = 0; i < seg; i++) {
+      a = i / seg * Math.PI * 2; c = Math.cos(a) * r; s = Math.sin(a) * r;
+      if (axis === 'x') { v.push([oy, c, s], [oy + h, c, s]); }
+      else { v.push([c, oy, s], [c, oy + h, s]); }
+    }
+    for (i = 0; i < seg; i++) {
+      var p = i * 2, q = ((i + 1) % seg) * 2;
+      e.push([p, q], [p + 1, q + 1], [p, p + 1]);
+    }
+    return { v: v, e: e };
+  }
+  function ring(r, seg, y) {
+    var v = [], e = [], i;
+    for (i = 0; i < seg; i++) {
+      var a = i / seg * Math.PI * 2;
+      v.push([Math.cos(a) * r, y, Math.sin(a) * r]);
+      e.push([i, (i + 1) % seg]);
+    }
+    return { v: v, e: e };
   }
 
-  function clearAction(rack){
-    var kept;
-    return {
-      dur: 900,
-      start: function(){
-        kept = rack.slots.filter(Boolean);
-        rack.bodyEl.classList.add('is-full');
-      },
-      update: function(e, pr){
-        for(var i=0;i<kept.length;i++){
-          kept[i].el.style.opacity = String(1 - e);
-          kept[i].el.setAttribute('transform', 'translate(' + kept[i].sx + ',' + (SLOT_BOTTOM - 18*e).toFixed(1) + ')');
-        }
-        rack.setMeter(4, pr < .5 ? 1 : Math.max(0, 1 - (pr - .5)*2));
-      },
-      end: function(){
-        for(var i=0;i<kept.length;i++){
-          if(kept[i].el.parentNode) kept[i].el.parentNode.removeChild(kept[i].el);
-          var idx = tubes.indexOf(kept[i]);
-          if(idx > -1) tubes.splice(idx, 1);
-        }
-        rack.slots = [null,null,null,null];
-        rack.setMeter(0);
-        rack.bodyEl.classList.remove('is-full');
+  /* ------------------------------------------------------------------ scene */
+  var NODES = [], EDGES = [];
+
+  function addGeom(g, part, dens) {
+    var base = NODES.length, i, k;
+    for (i = 0; i < g.v.length; i++) NODES.push({ x: g.v[i][0], y: g.v[i][1], z: g.v[i][2], p: part });
+    for (i = 0; i < g.e.length; i++) {
+      var a = g.e[i][0], b = g.e[i][1];
+      EDGES.push(base + a, base + b);
+      var va = g.v[a], vb = g.v[b];
+      var L = Math.sqrt((vb[0]-va[0])*(vb[0]-va[0]) + (vb[1]-va[1])*(vb[1]-va[1]) + (vb[2]-va[2])*(vb[2]-va[2]));
+      var n = clamp(Math.round(L * dens) - 1, 0, 9);
+      for (k = 1; k <= n; k++) {
+        var t = k / (n + 1);
+        NODES.push({
+          x: va[0] + (vb[0]-va[0]) * t,
+          y: va[1] + (vb[1]-va[1]) * t,
+          z: va[2] + (vb[2]-va[2]) * t,
+          p: part
+        });
       }
-    };
-  }
-
-  function startCycle(){
-    var lead = beltTubes()[0];
-    if(!lead || lead.x < PICK_X - .5) return;
-    var rack = rackFor(lead.type.dest);
-    var slot = rack.slots.indexOf(null);
-    if(slot < 0){ push(clearAction(rack)); return; }
-    var sx = rack.slotX(slot);
-
-    push(scanAction(lead));
-    push(pingAction(lead));
-    push(move(PICK_X, HOVER_Y, 520));
-    push(move(PICK_X, GRIP_Y_PICK, 340));
-    push(gripTo(0, 220, function(){
-      held = lead; lead.state = 'held';
-      carryGlow.setAttribute('fill', lead.type.flag ? 'url(#gGlowAmber)' : 'url(#gGlowMint)');
-    }));
-    push(move(PICK_X, LIFT_Y, 400));
-    push(move(sx, LIFT_Y, 780));
-    push(move(sx, GRIP_Y_PLACE, 380));
-    push(gripTo(1, 220, function(){
-      lead.state = 'racked';
-      lead.sx = sx;
-      rack.slots[slot] = lead;
-      lead.el.setAttribute('transform', 'translate(' + sx + ',' + SLOT_BOTTOM + ')');
-      held = null;
-      led.setAttribute('fill', MINT);
-      rack.setMeter(rack.slots.filter(Boolean).length);
-      seat.t = .42; seat.x = sx; seat.hue = rack.hue;
-      seatRing.setAttribute('stroke', rack.hue);
-      seatRing.setAttribute('cx', sx);
-      seatRing.setAttribute('cy', RACK_TOP + 4);
-    }));
-    push(move(sx, LIFT_Y, 360));
-    push(wait(260));
-    push(move(PARK_X, PARK_Y, 620));
-    if(rack.slots.filter(Boolean).length >= 4) push(clearAction(rack));
-  }
-
-  function stepQueue(dt){
-    if(!cur){
-      cur = queue.shift() || null;
-      curT = 0;
-      if(cur && cur.start) cur.start();
-      if(!cur) return;
-    }
-    curT += dt*1000;
-    var p = cur.dur ? Math.min(1, curT/cur.dur) : 1;
-    if(cur.update) cur.update(ease(p), p);
-    if(p >= 1){
-      if(cur.end) cur.end();
-      cur = null;
     }
   }
-
-  function updateBelt(dt){
-    var list = beltTubes();
-    var limit = PICK_X;
-    for(var i=0;i<list.length;i++){
-      var t = list[i];
-      t.x = Math.min(t.x + BELT_SPEED*dt, limit);
-      limit = t.x - TUBE_GAP;
-      t.el.setAttribute('transform', 'translate(' + t.x.toFixed(1) + ',' + BELT_TOP + ')');
+  function bake(dst, g, m) {
+    var off = dst.v.length, i;
+    for (i = 0; i < g.v.length; i++) {
+      var x = g.v[i][0], y = g.v[i][1], z = g.v[i][2];
+      dst.v.push([m[0]*x + m[1]*y + m[2]*z + m[3],
+                  m[4]*x + m[5]*y + m[6]*z + m[7],
+                  m[8]*x + m[9]*y + m[10]*z + m[11]]);
     }
-    var last = list[list.length - 1];
-    if(list.length < 5 && (!last || last.x > 46)) spawn();
+    for (i = 0; i < g.e.length; i++) dst.e.push([off + g.e[i][0], off + g.e[i][1]]);
   }
 
-  /* ---- static fallback ---- */
-  if(reduce){
-    var demo = [ {k:'spin',i:0}, {k:'spin',i:1}, {k:'nospin',i:0}, {k:'hold',i:0} ];
-    demo.forEach(function(d){
-      var type = d.k === 'hold' ? TYPES[5] : (d.k === 'nospin' ? TYPES[0] : TYPES[2]);
-      var t = { type:type, state:'racked', el:makeTube(type) };
-      var r = rackFor(d.k);
-      t.el.setAttribute('transform', 'translate(' + r.slotX(d.i) + ',' + SLOT_BOTTOM + ')');
-      tubesLayer.appendChild(t.el);
-      r.slots[d.i] = t;
+  /* Link lengths. The bench surface is y = 0. */
+  var BASE_H = 0.17, SHOULDER_H = 0.30, L1 = 1.08, L2 = 0.88, WRIST = 0.20;
+  var TOOL = 0.15, FINGER_L = 0.21;
+  var TUBE_L = 0.34, TUBE_R = 0.055;
+  var SEAT_Y = 0.11;
+
+  /* The tool frame's rotation is just ry(j1) -- the wrist cancels j2+j3 -- so a
+     roll of j6 about the tool's X puts the tube's axis at
+     (sin j1 cos j6, -sin j6, cos j1 cos j6).  j6 = 0 leaves it flat as grasped;
+     STAND puts it upright, which is how it goes into a rack. */
+  var STAND = -Math.PI / 2;
+
+  /* Parts
+   *   0 bench grid + dust     1 base        2 shoulder    3 upper arm
+   *   4 forearm               5 wrist link  6 gripper     7,8 fingers
+   *   9 fixtures (tray, racks)            10..12 the three tubes
+   */
+  var P_WORLD = 0, P_FIX = 9, P_TUBE0 = 10, N_TUBES = 3;
+
+  addGeom(cyl(0.44, BASE_H, 16), 1, 9);
+  addGeom(box(0.40, SHOULDER_H, 0.42), 2, 11);
+  addGeom(cyl(0.15, 0.30, 10, -0.15, 'x'), 3, 12);
+  addGeom(box(0.19, L1, 0.19), 3, 11);
+  addGeom(cyl(0.13, 0.26, 10, -0.13, 'x'), 4, 12);
+  addGeom(box(0.155, L2, 0.155), 4, 11);
+  addGeom(cyl(0.10, WRIST, 10), 5, 13);
+  addGeom(box(0.20, 0.09, 0.17, -0.045), 6, 13);
+  addGeom(box(0.034, FINGER_L, 0.055), 7, 14);
+  addGeom(box(0.034, FINGER_L, 0.055), 8, 14);
+
+  /* Bench: a hairline grid that dissolves outward. */
+  (function () {
+    var R = 2.9, STEP = 0.4, v = [], e = [], i, n;
+    for (i = -R; i <= R + 1e-6; i += STEP) {
+      n = v.length;
+      v.push([i, 0, -R], [i, 0, R], [-R, 0, i], [R, 0, i]);
+      e.push([n, n + 1], [n + 2, n + 3]);
+    }
+    addGeom({ v: v, e: e }, P_WORLD, 2.6);
+  })();
+
+  /* The tubes arrive lying flat on the input tray. A tube's resting yaw is not
+     arbitrary: at the grasp frame the fingers close across the arm's working
+     plane, so the tube has to lie perpendicular to it. */
+  var TUBES = [];
+  var FEED = [[-0.55, 1.45], [-0.95, 1.22], [-1.35, 1.00]];
+  for (var ti = 0; ti < N_TUBES; ti++) {
+    var tx = FEED[ti][0], tz = FEED[ti][1];
+    TUBES.push({
+      x: tx, z: tz,
+      rest: mul(tr(tx, TUBE_R, tz), ry(Math.atan2(-tz, tx) - Math.PI / 2)),
+      state: 0,          /* 0 on the tray, 1 in the gripper, 2 seated */
+      seated: null,      /* where it ends up; derived, never accumulated */
+      graspAt: 0, releaseAt: 0
     });
-    RACKS.forEach(function(r){ r.setMeter(r.slots.filter(Boolean).length); });
-    var bt = spawn(); bt.x = PICK_X; bt.el.setAttribute('transform', 'translate(' + PICK_X + ',' + BELT_TOP + ')');
-    var bt2 = spawn(); bt2.x = PICK_X - TUBE_GAP; bt2.el.setAttribute('transform', 'translate(' + (PICK_X - TUBE_GAP) + ',' + BELT_TOP + ')');
-    arm.cx = PICK_X; arm.ty = HOVER_Y; arm.g = 1;
-    render();
-    return;
+    addGeom(cyl(TUBE_R, TUBE_L, 8, -TUBE_L / 2, 'x'), P_TUBE0 + ti, 24);
   }
 
-  /* ---- loop ---- */
-  var visible = true;
-  if('IntersectionObserver' in window){
-    new IntersectionObserver(function(entries){
-      visible = entries[0].isIntersecting;
-    }, { threshold:0 }).observe(svg);
+  /* One rack per destination, one tube to each: spin, no-spin, hold. */
+  var RACKS = [
+    { key: 'spin',   x: 1.58, z: 0.26 },
+    { key: 'nospin', x: 1.46, z: 0.92 },
+    { key: 'hold',   x: 1.12, z: 1.48 }
+  ];
+  var ROUTE = [0, 1, 2], SEAT_IX = [0, 0, 0];
+
+  RACKS.forEach(function (r) {
+    r.yaw = Math.atan2(-r.z, r.x);
+    // Seats run across the rack, i.e. perpendicular to the arm's reach.
+    r.seat = function (i) {
+      var off = (i - 0.5) * 0.20;
+      return { x: r.x + Math.sin(r.yaw) * off, z: r.z - Math.cos(r.yaw) * off };
+    };
+  });
+
+  /* Where each tube ends up. Derived up front rather than frozen at the moment
+     of release, so scrubbing backwards puts it back exactly where it came from.
+     This has to equal the held pose at the release frame or the tube visibly
+     jumps out of the gripper: held = tool * ry(-90), and the tool's rotation at
+     that instant is ry(j1) * rx(STAND). */
+  for (var si = 0; si < N_TUBES; si++) {
+    var sst = RACKS[ROUTE[si]].seat(SEAT_IX[si]);
+    TUBES[si].seat = sst;
+    TUBES[si].seated = mul(mul(mul(
+      tr(sst.x, SEAT_Y + TUBE_L / 2, sst.z),
+      ry(Math.atan2(-sst.z, sst.x))), rx(STAND)), ry(-Math.PI / 2));
   }
 
-  var seeded = spawn(); seeded.x = 292;
-  var sweepEl = byId('sweep'), spokeB = byId('spokeB');
+  (function () {
+    var fix = { v: [], e: [] }, i, j;
+    // the input tray, aligned with the line the tubes arrive on
+    bake(fix, box(1.05, 0.045, 0.30), mul(tr(-0.95, 0, 1.225), ry(2.629)));
+    for (i = 0; i < RACKS.length; i++) {
+      var r = RACKS[i];
+      bake(fix, box(0.46, 0.11, 0.26), mul(tr(r.x, 0, r.z), ry(r.yaw)));
+      for (j = 0; j < 2; j++) {
+        var st = r.seat(j);
+        bake(fix, ring(TUBE_R + 0.018, 10, 0), tr(st.x, SEAT_Y + 0.002, st.z));
+      }
+    }
+    addGeom(fix, P_FIX, 18);
+  })();
 
-  var dustLayer = byId('dust'), dust = [];
-  for(var d=0; d<16; d++){
-    var c = el('circle', { r:(0.8 + Math.random()*1.4).toFixed(1), fill:'#9BF3D6',
-                           opacity:(0.08 + Math.random()*0.14).toFixed(2) });
-    dustLayer.appendChild(c);
-    dust.push({ el:c, x:Math.random()*1000, y:80 + Math.random()*440,
-                vx:7 + Math.random()*14, vy:-2 - Math.random()*5 });
+  /* Dust, so the grid reads as a bench and not a chart. */
+  for (var d = 0; d < 300; d++) {
+    var da = Math.random() * Math.PI * 2, dr = 0.9 + Math.random() * 2.4;
+    NODES.push({ x: Math.cos(da) * dr, y: Math.random() * 0.9, z: Math.sin(da) * dr, p: P_WORLD });
   }
-  var last = 0, beltPhase = 0, sweepX = -320;
-  function frame(now){
+
+  /* -------------------------------------------------------- flatten to arrays */
+  var N = NODES.length;
+  var LX = new Float32Array(N), LY = new Float32Array(N), LZ = new Float32Array(N);
+  var NP = new Uint8Array(N);
+  for (var i0 = 0; i0 < N; i0++) {
+    LX[i0] = NODES[i0].x; LY[i0] = NODES[i0].y; LZ[i0] = NODES[i0].z; NP[i0] = NODES[i0].p;
+  }
+  var EI = new Uint16Array(EDGES);
+  var SX = new Float32Array(N), SY = new Float32Array(N), SA = new Float32Array(N);
+  var NPARTS = P_TUBE0 + N_TUBES;
+  var partM = new Array(NPARTS), MV = new Array(NPARTS);
+
+  /* ---------------------------------------------------------------------- IK
+   * The wrist roll about the link axis is unused, which keeps the chain planar
+   * after the base yaw. So this is a base yaw plus a closed-form two-link solve,
+   * with the wrist taking up whatever is left to hold the tool pointing down.
+   */
+  var SH_Y = BASE_H + SHOULDER_H, LA = L1, LB = L2 + WRIST;
+
+  function solve(t) {
+    var j1 = Math.atan2(-t.z, t.x);
+    var dr = Math.sqrt(t.x * t.x + t.z * t.z);
+    var dy = t.y + TOOL - SH_Y;
+    var D = clamp(Math.sqrt(dr * dr + dy * dy), Math.abs(LA - LB) + 1e-3, LA + LB - 1e-3);
+    var delta = Math.acos(clamp((D * D - LA * LA - LB * LB) / (2 * LA * LB), -1, 1));
+    var phi1 = Math.atan2(dr, dy) - Math.atan2(LB * Math.sin(delta), LA + LB * Math.cos(delta));
+    var j2 = -phi1, j3 = -delta;
+    return { j1: j1, j2: j2, j3: j3, j5: -j2 - j3, j6: t.j6, g: t.g };
+  }
+
+  function chain(p) {
+    var m = new Array(NPARTS), i;
+    m[P_WORLD] = ident();
+    m[1] = ident();
+    m[P_FIX] = ident();
+    m[2] = mul(tr(0, BASE_H, 0), ry(p.j1));
+    m[3] = mul(mul(m[2], tr(0, SHOULDER_H, 0)), rz(p.j2));
+    m[4] = mul(mul(m[3], tr(0, L1, 0)), rz(p.j3));
+    m[5] = mul(m[4], tr(0, L2, 0));
+    var wrist = mul(mul(m[5], tr(0, WRIST, 0)), rz(p.j5));
+    // The roll pivots about the grasp point, so standing the tube up does not
+    // drag it out of the fingers.
+    var tool = mul(mul(wrist, tr(0, -TOOL, 0)), rx(p.j6));
+    m[6] = mul(tool, tr(0, TOOL, 0));
+    m[7] = mul(m[6], tr(-p.g, -FINGER_L, 0));
+    m[8] = mul(m[6], tr(p.g, -FINGER_L, 0));
+
+    for (i = 0; i < N_TUBES; i++) {
+      var tb = TUBES[i];
+      // Held: the tube's long axis runs along the tool's Z, across the fingers.
+      m[P_TUBE0 + i] = tb.state === 1 ? mul(tool, ry(-Math.PI / 2))
+                     : tb.state === 2 ? tb.seated
+                     : tb.rest;
+    }
+    return m;
+  }
+
+  /* ---------------------------------------------------------------- the cycle
+   * A flat timeline of legs, each a straight run of the tool tip. `d` is
+   * relative duration, not seconds -- the whole thing is normalised and indexed
+   * by scroll progress.
+   */
+  var OPEN = 0.115, SHUT = 0.072;
+  var PARK = { x: 1.05, y: 0.70, z: -0.55, j6: 0, g: OPEN };
+
+  function legsFor(i) {
+    var tb = TUBES[i], st = tb.seat, seatY = SEAT_Y + TUBE_L / 2;
+    return [
+      { d: 0.85, x: tb.x, y: 0.42,   z: tb.z, j6: 0,     g: OPEN },
+      { d: 0.50, x: tb.x, y: TUBE_R, z: tb.z, j6: 0,     g: OPEN },
+      { d: 0.30, x: tb.x, y: TUBE_R, z: tb.z, j6: 0,     g: SHUT, grasp: true },
+      { d: 0.60, x: tb.x, y: 0.50,   z: tb.z, j6: 0,     g: SHUT },
+      { d: 0.95, x: st.x, y: 0.62,   z: st.z, j6: STAND, g: SHUT },
+      { d: 0.65, x: st.x, y: seatY,  z: st.z, j6: STAND, g: SHUT },
+      { d: 0.30, x: st.x, y: seatY,  z: st.z, j6: STAND, g: OPEN, release: true },
+      { d: 0.70, x: st.x, y: 0.78,   z: st.z, j6: 0,     g: OPEN }
+    ];
+  }
+
+  var TIMELINE = [], TOTAL = 0;
+  (function () {
+    var prev = PARK, i, j, ls, lg, seg;
+    for (i = 0; i < N_TUBES; i++) {
+      ls = legsFor(i);
+      for (j = 0; j < ls.length; j++) {
+        lg = ls[j];
+        TIMELINE.push({ from: prev, to: lg, t0: TOTAL, t1: TOTAL + lg.d, tube: i,
+                        grasp: !!lg.grasp, release: !!lg.release });
+        TOTAL += lg.d;
+        prev = lg;
+      }
+    }
+    // settle back to the park pose, so the last frame is a clean rest
+    TIMELINE.push({ from: prev, to: PARK, t0: TOTAL, t1: TOTAL + 0.9, tube: -1 });
+    TOTAL += 0.9;
+    for (i = 0; i < TIMELINE.length; i++) {
+      seg = TIMELINE[i];
+      if (seg.grasp) TUBES[seg.tube].graspAt = seg.t1;
+      if (seg.release) TUBES[seg.tube].releaseAt = seg.t1;
+    }
+  })();
+
+  function sampleAt(p) {
+    var T = p * TOTAL, k = 0, i;
+    while (k < TIMELINE.length - 1 && T > TIMELINE[k].t1) k++;
+    var seg = TIMELINE[k];
+    var t = smooth(clamp((T - seg.t0) / (seg.t1 - seg.t0), 0, 1));
+    // Tube state is read off the timeline, never accumulated, so scrubbing
+    // backwards lifts each tube back out of its rack.
+    for (i = 0; i < N_TUBES; i++) {
+      TUBES[i].state = T >= TUBES[i].releaseAt ? 2 : (T >= TUBES[i].graspAt ? 1 : 0);
+    }
+    return {
+      x: lerp(seg.from.x, seg.to.x, t), y: lerp(seg.from.y, seg.to.y, t),
+      z: lerp(seg.from.z, seg.to.z, t),
+      j6: lerp(seg.from.j6, seg.to.j6, t), g: lerp(seg.from.g, seg.to.g, t)
+    };
+  }
+
+  /* ------------------------------------------------------------------ camera */
+  var cycleP = 0, camX = 0, camY = 0.86, camZ = 0;
+  var plX = 0.62, plY = 0.47, plS = 1, plO = 1;
+
+  /* The cycle runs on the whole document, so the machine is still working as you
+     pass the sections further down rather than finishing in the first screen. */
+  function pageProgress() {
+    var d = document.documentElement;
+    var runway = d.scrollHeight - window.innerHeight;
+    if (runway <= 0) return 0;
+    return clamp((window.pageYOffset || d.scrollTop || 0) / runway, 0, 1);
+  }
+
+  /* The paper sections. The machine is drawn over these, faintly, because the
+     canvas behind the page cannot be seen through them. */
+  var paperEls = [];
+  function collectPaper() {
+    paperEls = [].slice.call(document.querySelectorAll('.sec:not(.dark):not(.cta)'));
+  }
+  function paperBands() {
+    var out = [], i, r;
+    for (i = 0; i < paperEls.length; i++) {
+      r = paperEls[i].getBoundingClientRect();
+      if (r.bottom > 0 && r.top < H && r.height > 0) out.push([r.top, r.height]);
+    }
+    return out;
+  }
+
+  /* Every section says where the machine should sit inside it, because one fixed
+     position cannot suit a page whose columns move around: the hero is copy-left
+     so the machine takes the right, the demo section is full (copy AND video) so
+     it drops small and faint out of the way, the CTA is centred so it goes wide
+     left. Read off data-mesh rather than hard-coded here, so moving it is a
+     markup edit.
+     x, y are fractions of the viewport; s scales it; o is how present it is. */
+  var PLACE_DEFAULT = [0.62, 0.47, 1, 0.6];
+  var placeEls = [];
+  function collectPlaces() {
+    placeEls = [];
+    var els = document.querySelectorAll('[data-mesh]'), i, n;
+    for (i = 0; i < els.length; i++) {
+      n = els[i].getAttribute('data-mesh').trim().split(/\s+/).map(Number);
+      if (n.length === 4 && n.every(function (v) { return v === v; })) {
+        placeEls.push({ el: els[i], p: n });
+      }
+    }
+  }
+
+  /* Weighted by how much of the viewport each section currently fills, so the
+     machine slides from one section's spot to the next across the boundary
+     instead of jumping when the midpoint crosses. */
+  function placement() {
+    var ax = 0, ay = 0, as = 0, ao = 0, tot = 0, i, r, vis;
+    for (i = 0; i < placeEls.length; i++) {
+      r = placeEls[i].el.getBoundingClientRect();
+      vis = Math.min(H, r.bottom) - Math.max(0, r.top);
+      if (vis <= 0) continue;
+      var p = placeEls[i].p;
+      ax += p[0] * vis; ay += p[1] * vis; as += p[2] * vis; ao += p[3] * vis;
+      tot += vis;
+    }
+    if (!tot) return PLACE_DEFAULT;
+    return [ax / tot, ay / tot, as / tot, ao / tot];
+  }
+
+  /* ------------------------------------------------------------------ render */
+  var BUCKETS = 5, paths = [], pts = [];
+  var MINT = '95,227,180';
+  var INK_LIGHT = '246,246,242', INK_DARK = '10,18,22';
+  /* How much of the machine survives onto a paper section. Deliberately low:
+     it is a watermark under the copy, not a second subject. */
+  var FRONT_K = 0.20;
+
+  /* The swell through the middle of the page, and it is meant to be a lot: the
+     machine opens small on the right, then drives in until it is cropped by the
+     viewport and reads as line and dot rather than as a robot, before drawing
+     back out. DOLLY moves the camera in (subtracted from a radius of 6.6, so it
+     is in scene units); GAIN scales the projection on top of it, and the two
+     multiply -- roughly 4x through the middle. Both ride the same arc, so they
+     return together and the bottom of the page looks like the top. */
+  var ZOOM_DOLLY = 2.45, ZOOM_GAIN = 1.55;
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    [cv, cvF].forEach(function (c) {
+      if (!c) return;
+      c.width = Math.round(W * DPR); c.height = Math.round(H * DPR);
+      c.style.width = W + 'px'; c.style.height = H + 'px';
+      c.getContext('2d').setTransform(DPR, 0, 0, DPR, 0, 0);
+    });
+    draw();
+  }
+
+  function draw() {
+    if (!W || !H) return;
+    var t = (typeof performance !== 'undefined' ? performance.now() : Date.now()) * 0.001;
+
+    cycleP += (pageProgress() - cycleP) * (reduce ? 1 : 0.14);
+    var cp = reduce ? 0 : cycleP;       /* cycle + camera: the whole page */
+
+    var target = sampleAt(cp);
+    var pose = solve(target);
+    var mats = chain(pose);
+    var pi;
+    for (pi = 0; pi < NPARTS; pi++) partM[pi] = mats[pi];
+
+    /* Scroll swings the camera round and dollies it in; a slow idle drift keeps
+       it from ever looking frozen while the page is still. */
+    var idle = reduce ? 0 : 1;
+    /* A single arc over the length of the page: nothing at both ends, full in the
+       middle. The machine starts small and to the left, the camera dollies in and
+       it spreads across the page as you scroll, then it draws back to where it
+       began. sin() rather than a ramp precisely so the end matches the start. */
+    var arc = Math.sin(Math.PI * clamp(cp, 0, 1));
+
+    /* Stacked on a phone the placements do not apply: they are written for a
+       two-column page, and centred on a narrow screen the machine sits straight
+       behind the headline. It gets the full swell -- that is the whole effect --
+       but it is anchored low so the ends stay clear of the copy, and it rises as
+       it grows so the big middle is framed rather than hanging off the bottom. */
+    var wide = W >= 1000;
+    var arcN = arc;
+
+    var yaw = -0.52 + cp * 0.70 + Math.sin(t * 0.16) * 0.030 * idle;
+    var pitch = 0.24 + cp * 0.12 + Math.sin(t * 0.21) * 0.015 * idle;
+    var rad = 6.6 - ZOOM_DOLLY * arcN;
+
+    camX += (target.x * 0.22 - camX) * (reduce ? 1 : 0.05);
+    camZ += (target.z * 0.22 - camZ) * (reduce ? 1 : 0.05);
+    camY += (0.80 + target.y * 0.18 - camY) * (reduce ? 1 : 0.05);
+
+    var view = mul(mul(mul(tr(0, 0, -rad), rx(-pitch)), ry(-yaw)), tr(-camX, -camY, -camZ));
+    // Fold the view into each part matrix, so the node loop is one 4x4 multiply
+    // per point rather than two.
+    for (pi = 0; pi < NPARTS; pi++) MV[pi] = mul(view, partM[pi]);
+
+    var pl = placement();
+    var e = reduce ? 1 : 0.07;
+    plX += (pl[0] - plX) * e; plY += (pl[1] - plY) * e;
+    plS += (pl[2] - plS) * e; plO += (pl[3] - plO) * e;
+
+    var f = Math.min(W, H) * (wide ? 1.02 : 0.64) * plS * (1 + ZOOM_GAIN * arcN);
+    var cx = W * (wide ? plX : 0.56);
+    var cy = H * (wide ? plY : 0.85 - 0.26 * arc);
+
+    var i, k, b, a;
+    for (i = 0; i < N; i++) {
+      var m = MV[NP[i]];
+      var x = LX[i], y = LY[i], z = LZ[i];
+      var vx = m[0]*x + m[1]*y + m[2]*z + m[3];
+      var vy = m[4]*x + m[5]*y + m[6]*z + m[7];
+      var vz = m[8]*x + m[9]*y + m[10]*z + m[11];
+      if (vz > -0.35) { SA[i] = 0; continue; }
+      var inv = 1 / -vz;
+      SX[i] = cx + f * vx * inv;
+      SY[i] = cy - f * vy * inv;
+
+      a = clamp(1.25 - (-vz - 2.2) / 5.6, 0.05, 1);
+      if (NP[i] === P_WORLD) {
+        /* Dissolve the bench outward so it reads as a patch of surface, not a
+           plane running off the edges of the hero. */
+        a *= 0.46 * clamp(1.3 - Math.sqrt(x * x + z * z) / 2.6, 0, 1);
+      } else if (NP[i] === P_FIX) {
+        a *= 0.78;
+      } else if (NP[i] >= P_TUBE0) {
+        a *= 1.3;
+      } else {
+        a *= 1.1;
+      }
+      SA[i] = a;
+    }
+
+    ctx.clearRect(0, 0, W, H);
+
+    /* Bucket edges and points by depth, so painting is a handful of calls
+       rather than hundreds. Built once, painted twice. */
+    for (b = 0; b < BUCKETS; b++) { paths[b] = []; pts[b] = []; }
+    var mintPath = [], mintPts = [];
+    for (k = 0; k < EI.length; k += 2) {
+      i = EI[k]; var j = EI[k + 1];
+      if (SA[i] === 0 || SA[j] === 0) continue;
+      var held = NP[i] >= P_TUBE0 && TUBES[NP[i] - P_TUBE0].state === 1;
+      var dst = held ? mintPath : paths[clamp(((SA[i] + SA[j]) * 0.5 * BUCKETS) | 0, 0, BUCKETS - 1)];
+      dst.push(SX[i], SY[i], SX[j], SY[j]);
+    }
+    for (i = 0; i < N; i++) {
+      if (SA[i] === 0) continue;
+      if (NP[i] >= P_TUBE0 && TUBES[NP[i] - P_TUBE0].state === 1) { mintPts.push(SX[i], SY[i]); continue; }
+      pts[clamp((SA[i] * BUCKETS) | 0, 0, BUCKETS - 1)].push(SX[i], SY[i]);
+    }
+
+    tgt = ctx;
+    ctx.lineWidth = 1;
+    inkPass(INK_LIGHT, plO);
+
+    /* Same geometry again, in front, dark and much fainter, clipped to the paper
+       sections. Held right down: this is the one pass that lands on body copy. */
+    if (ctxF) {
+      ctxF.clearRect(0, 0, W, H);
+      var bands = paperBands();
+      if (bands.length) {
+        ctxF.save();
+        ctxF.beginPath();
+        for (b = 0; b < bands.length; b++) ctxF.rect(0, bands[b][0], W, bands[b][1]);
+        ctxF.clip();
+        tgt = ctxF;
+        ctxF.lineWidth = 1;
+        inkPass(INK_DARK, FRONT_K * plO);
+        ctxF.restore();
+        tgt = ctx;
+      }
+    }
+
+    // Mint reads on both grounds, so the specimen in flight is painted once.
+    // Mint reads on both grounds, so the specimen in flight is painted once.
+    strokeSegs(mintPath, 'rgba(' + MINT + ',' + (0.85 * plO).toFixed(3) + ')');
+    fillPts(mintPts, 'rgba(' + MINT + ',' + (0.9 * plO).toFixed(3) + ')', 1.9);
+
+  }
+
+  function inkPass(ink, k) {
+    if (k < 0.015) return;
+    var b, m = k;
+    for (b = 0; b < BUCKETS; b++) {
+      strokeSegs(paths[b], 'rgba(' + ink + ',' + ((0.035 + b * 0.048) * m).toFixed(3) + ')');
+    }
+    for (b = 0; b < BUCKETS; b++) {
+      fillPts(pts[b], 'rgba(' + ink + ',' + ((0.11 + b * 0.18) * m).toFixed(3) + ')', 0.9 + b * 0.34);
+    }
+  }
+
+  function strokeSegs(seg, style) {
+    if (!seg.length) return;
+    tgt.strokeStyle = style;
+    tgt.beginPath();
+    for (var i = 0; i < seg.length; i += 4) {
+      tgt.moveTo(seg[i], seg[i + 1]);
+      tgt.lineTo(seg[i + 2], seg[i + 3]);
+    }
+    tgt.stroke();
+  }
+  function fillPts(pts, style, sz) {
+    if (!pts.length) return;
+    tgt.fillStyle = style;
+    for (var i = 0; i < pts.length; i += 2) tgt.fillRect(pts[i] - sz / 2, pts[i + 1] - sz / 2, sz, sz);
+  }
+
+  /* ------------------------------------------------------------------- driver
+   * The machine runs the length of the page, so there is nothing to observe
+   * going off screen -- only the tab going away. A marketing page has no
+   * business burning a phone battery in a background tab.
+   */
+  var running = false, visible = true;
+
+  function frame() {
+    if (!running) return;
+    draw();
     requestAnimationFrame(frame);
-    if(!last){ last = now; return; }
-    var dt = Math.min(0.05, (now - last)/1000);
-    last = now;
-    if(!visible || document.hidden) return;
-
-    beltPhase = (beltPhase + BELT_SPEED*dt) % 40;
-    stripes.setAttribute('transform', 'translate(' + beltPhase.toFixed(1) + ',0)');
-    spokeB.setAttribute('transform', 'rotate(' + (beltPhase*9).toFixed(1) + ',468,449)');
-
-    for(var di=0; di<dust.length; di++){
-      var pt = dust[di];
-      pt.x += pt.vx*dt; pt.y += pt.vy*dt;
-      if(pt.x > 1010){ pt.x = -10; pt.y = 120 + Math.random()*420; }
-      if(pt.y < 60){ pt.y = 540; }
-      pt.el.setAttribute('cx', pt.x.toFixed(1));
-      pt.el.setAttribute('cy', pt.y.toFixed(1));
-    }
-
-    /* the read station breathes, and flares while it is looking */
-    var lit = scanG.getAttribute('opacity') === '1';
-    shaft.setAttribute('opacity', (lit ? .5 : .17 + Math.sin(now/900)*.05).toFixed(3));
-
-    if(seat.t > 0){
-      seat.t -= dt;
-      var sp = Math.max(0, seat.t/.42);
-      seatRing.setAttribute('r', (7 + 22*(1 - sp)).toFixed(1));
-      seatRing.setAttribute('opacity', sp.toFixed(2));
-    }
-
-    sweepX += 210*dt;
-    if(sweepX > 1000) sweepX = -900 - Math.random()*700;
-    sweepEl.setAttribute('transform', 'translate(' + sweepX.toFixed(0) + ',0)');
-
-    updateBelt(dt);
-    stepQueue(dt);
-    if(!cur && queue.length === 0 && !held) startCycle();
-    render();
   }
-  render();
-  requestAnimationFrame(frame);
+  function sync() {
+    var should = visible && !reduce;
+    if (should && !running) { running = true; requestAnimationFrame(frame); }
+    else if (!should) { running = false; }
+  }
+
+  window.addEventListener('resize', resize, { passive: true });
+  // Belt and braces: if rAF is not running for any reason, scrolling still paints.
+  window.addEventListener('scroll', function () { if (!running && !reduce) draw(); }, { passive: true });
+  document.addEventListener('visibilitychange', function () {
+    visible = !document.hidden; sync();
+  });
+
+  collectPlaces();
+  collectPaper();
+  window.addEventListener('load', function () { collectPlaces(); collectPaper(); });
+  resize();
+  if (reduce) {
+    /* Reduced motion gets one static frame and no scrubbing. */
+    draw();
+  } else {
+    sync();
+  }
 })();
 </script>
 <script>

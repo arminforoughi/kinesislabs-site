@@ -37,7 +37,7 @@
 
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--text);font-family:var(--font);font-size:var(--t-base);line-height:1.6;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--ink);color:var(--text);font-family:var(--font);font-size:var(--t-base);line-height:1.6;-webkit-font-smoothing:antialiased}
 h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.035em;line-height:1.04}
 h1{font-size:var(--t-h1)}
 h2{font-size:var(--t-h2)}
@@ -53,15 +53,16 @@ ul,ol{margin:0;padding:0;list-style:none}
 .skip:focus{left:1rem;top:1rem}
 
 .wrap{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:clamp(1.25rem,4vw,2.5rem)}
-.sec{padding-block:var(--pad)}
+.sec{padding-block:var(--pad);background:var(--paper)}
 .lead{font-size:var(--t-lead);line-height:1.45;letter-spacing:-.015em;color:var(--muted)}
 .label{display:inline-block;font-size:var(--t-xs);font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--mint-deep);margin:0 0 1.4rem}
 .head{max-width:56rem;margin-bottom:clamp(2.25rem,1.8rem + 2.4vw,4rem)}
 .head .lead{margin-top:1.4rem;max-width:46rem}
-.dark{background:var(--ink);color:var(--muted-d)}
+.dark{background:transparent;color:var(--muted-d)}
 .dark h2,.dark h3{color:#fff}
 .dark .label{color:var(--mint)}
 .dark .lead{color:var(--muted-d)}
+
 
 /* Nav */
 .nav{
@@ -92,14 +93,20 @@ ul,ol{margin:0;padding:0;list-style:none}
 .btn--lg{padding:.9rem 1.7rem;font-size:1rem}
 
 /* Hero */
+/* A normal full-height hero. It carried a 220svh sticky runway while the cycle
+   was scrubbed by the hero alone; the cycle runs on the whole document now, so
+   that runway was only making you scroll a screen of nothing to reach the demo. */
 .hero{
-  background:var(--ink);color:#fff;position:relative;overflow:hidden;
+  position:relative;background:transparent;color:#fff;
+}
+.hero-stage{
+  position:relative;overflow:hidden;
   min-height:100svh;display:flex;align-items:center;
   padding-block:clamp(5.5rem,4.5rem + 4vw,7rem) clamp(2rem,1.5rem + 2vw,3rem);
 }
-.hero::after{content:"";position:absolute;inset:auto -20% -60% -20%;height:60%;background:radial-gradient(50% 100% at 50% 0,rgba(95,227,180,.14),transparent 70%);pointer-events:none}
+.hero-stage::after{content:"";position:absolute;inset:auto -20% -60% -20%;height:60%;background:radial-gradient(50% 100% at 50% 0,rgba(95,227,180,.14),transparent 70%);pointer-events:none}
 .hero-grid{display:grid;gap:clamp(1.5rem,1rem + 3vw,3.5rem);grid-template-columns:1fr;align-items:center;width:100%}
-@media (min-width:1000px){.hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.06fr)}}
+@media (min-width:1000px){.hero-copy{max-width:44rem}}
 .hero h1{max-width:17ch;color:#fff;font-size:clamp(2.1rem,1rem + 2.9vw,4rem)}
 .hero .lead{margin-top:1.25rem;max-width:38rem;color:rgba(233,245,246,.82)}
 .hero-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.75rem}
@@ -110,76 +117,56 @@ ul,ol{margin:0;padding:0;list-style:none}
   .hero-actions{margin-top:1.4rem}
 }
 @media (max-width:999px){
-  .hero{padding-block:4.75rem 1.25rem}
+  .hero-stage{padding-block:4.75rem 1.25rem}
   .hero-grid{gap:1.1rem}
   .hero h1{font-size:clamp(1.75rem,1.1rem + 2.9vw,2.4rem);max-width:20ch}
   .hero .lead{font-size:.9375rem;line-height:1.45;margin-top:.75rem}
   .hero-actions{margin-top:1rem;gap:.5rem}
   .hero .btn--lg{padding:.65rem 1.15rem;font-size:.9375rem}
   .eyebrow{margin-bottom:.75rem}
-  .cell-note{margin-top:.5rem;font-size:.6875rem;line-height:1.45}
+  .hero-note{margin-top:.5rem;font-size:.6875rem;line-height:1.45}
 }
 /* a short phone has to give up something: the type gets smaller, nothing gets cut */
 @media (max-width:999px) and (max-height:740px){
-  .hero{padding-block:4.25rem .9rem}
+  .hero-stage{padding-block:4.25rem .9rem}
   .hero-grid{gap:.9rem}
   .hero h1{font-size:1.55rem}
   .hero .lead{font-size:.875rem;margin-top:.55rem}
   .hero-actions{margin-top:.75rem}
-  .cell-note{margin-top:.4rem;font-size:.65rem}
+  .hero-note{margin-top:.4rem;font-size:.65rem}
 }
 .eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:var(--t-xs);letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--mint);margin-bottom:1.6rem}
 .eyebrow::before{content:"";width:26px;height:1px;background:var(--mint);opacity:.7}
 
-/* Machine cell */
-.cell-outer{margin:0;position:relative;z-index:1;min-width:0}
-.cell svg{max-height:min(52svh,420px)}
-@media (max-width:999px){.cell svg{max-height:30svh}}
-@media (max-width:999px) and (max-height:740px){.cell svg{max-height:23svh}}
-.cell{
-  position:relative;border-radius:var(--r);overflow:hidden;
-  background:linear-gradient(180deg,#0F1A21 0%,#0A1218 60%,#080E13 100%);
-  border:1px solid var(--line-d);
-  box-shadow:0 40px 90px -50px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.05);
+/* Hero animation
+   Full-bleed canvas behind the hero copy. It is decorative and aria-hidden;
+   the headline carries the meaning. The scrim keeps the type legible over it --
+   a horizontal wipe on wide screens where the copy sits in the left column,
+   and a vertical one when the layout stacks and the mesh drops to the bottom. */
+/* Behind the page, between the body's ink ground and the sections. It can never
+   land on the video or a paragraph: a paper section simply paints over it, and
+   in the ink sections it sits under type that is already light on ink.
+   main and .foot are lifted because a position:fixed canvas at z-index 0 paints
+   above non-positioned block content. The nav is left alone -- it is already
+   fixed at z-index 100, and position:relative drops it out of its centred pill. */
+.page-mesh{
+  position:fixed;inset:0;z-index:0;
+  width:100%;height:100%;display:block;pointer-events:none;
 }
-.cell svg{width:100%;height:auto;font-family:var(--font)}
-.cell-note{margin-top:1.1rem;max-width:44rem;font-size:var(--t-sm);color:rgba(219,236,239,.6);border-left:2px solid var(--amber);padding-left:.9rem}
-
-/* SVG machine styling */
-.grid-line{stroke:#284452;stroke-width:1;fill:none}
-.mach{fill:#1A2A34}
-.mach-2{fill:#22394666}
-.mach-edge{fill:none;stroke:rgba(150,215,235,.22);stroke-width:1}
-.belt-body{fill:#16242D}
-.belt-top{fill:#1E323D}
-.belt-stripe{fill:rgba(150,215,235,.13)}
-.roller{fill:#25404E;stroke:rgba(150,215,235,.25);stroke-width:1}
-.rack-body{fill:#152430;stroke:rgba(150,215,235,.18);stroke-width:1}
-.rack-front{fill:#1B2E3A;stroke:rgba(150,215,235,.22);stroke-width:1}
-.rack-slot{fill:#0A1218}
-.meter-track{stroke:rgba(150,215,235,.16);stroke-width:4;stroke-linecap:round}
-.meter-fill{stroke-width:4;stroke-linecap:round;transition:none}
-.ping{fill:none;stroke-width:2}
-.carry-glow{opacity:0}
-.sweep{fill:url(#gSweep);opacity:.5}
-.spoke{stroke:rgba(150,215,235,.35);stroke-width:1.5;stroke-linecap:round}
-.shadow{fill:#04090C;opacity:.45}
-.glass{fill:url(#gGlass);stroke:rgba(214,238,243,.4);stroke-width:1}
-.blood{fill:#8E2733;opacity:.92}
-.sticker{fill:#EEF2EC;opacity:.94}
-.bars{stroke:#0A1216;stroke-width:1.1;opacity:.75}
-.neck{fill:rgba(214,238,243,.28)}
-.shine{stroke:#fff;stroke-width:2;opacity:.34;stroke-linecap:round}
-.link{stroke:#2C4653;stroke-linecap:round;fill:none}
-.link-core{stroke:#4E7787;stroke-linecap:round;fill:none;opacity:.8}
-.joint{fill:#0D151B;stroke:rgba(95,227,180,.5);stroke-width:2}
-.grip-body{fill:#22394A;stroke:rgba(150,215,235,.3);stroke-width:1}
-.finger{fill:#31536A;stroke:rgba(150,215,235,.35);stroke-width:1}
-.rail{fill:#152530;stroke:rgba(150,215,235,.2);stroke-width:1}
-.rail-line{stroke:rgba(150,215,235,.25);stroke-width:1}
-.beam{stroke:url(#gBeam);stroke-width:2}
-.bracket{stroke:var(--mint);stroke-width:1.5;fill:none;opacity:.8}
-.tube{transition:opacity 400ms linear}
+/* The paper sections paint over the canvas above, so the machine is drawn over
+   them instead by a second canvas in front of the page -- far fainter, and
+   clipped to those sections by the script. Under the nav's z-index 100. */
+.page-mesh-front{
+  position:fixed;inset:0;z-index:60;
+  width:100%;height:100%;display:block;pointer-events:none;
+}
+main,.foot{position:relative;z-index:1}
+.hero-grid,.hero-copy{position:relative;z-index:1}
+.hero-note{
+  margin-top:1.6rem;max-width:38rem;font-size:var(--t-xs);line-height:1.5;
+  color:rgba(219,236,239,.6);border-left:2px solid var(--amber);padding-left:.9rem;
+}
+@media (max-width:999px){.hero-note{margin-top:1.1rem;font-size:.6875rem}}
 
 /* Bench demo */
 .demo-grid{display:grid;gap:clamp(2rem,1.5rem + 3vw,4rem);grid-template-columns:1fr;align-items:center}
@@ -258,10 +245,10 @@ ul,ol{margin:0;padding:0;list-style:none}
 .book .direct a{color:var(--mint)}
 
 /* CTA + footer */
-.cta{background:var(--ink);color:#fff;text-align:center}
+.cta{background:transparent;color:#fff;text-align:center}
 .cta h2{max-width:22ch;margin-inline:auto}
 .cta .btn{margin-top:2rem}
-.foot{background:var(--ink);color:rgba(214,236,240,.5);border-top:1px solid var(--line-d);padding-block:2.25rem;font-size:var(--t-sm)}
+.foot{background:transparent;color:rgba(214,236,240,.5);border-top:1px solid var(--line-d);padding-block:2.25rem;font-size:var(--t-sm)}
 .foot .wrap{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center}
 .foot a{color:rgba(214,236,240,.75)}
 

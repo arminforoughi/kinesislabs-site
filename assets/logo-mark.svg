@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <!-- Kinesis Labs: a gripper closing on a specimen tube.
+       Export source for assets/logo-email.png; keep the two in step. -->
+  <rect width="160" height="160" rx="34" fill="#070C10"/>
+  <rect x="65" y="31" width="30" height="104" rx="15"
+        fill="none" stroke="#F4F6F4" stroke-width="15"/>
+  <path d="M36 58v44M124 58v44"
+        stroke="#5FE3B4" stroke-width="17" stroke-linecap="round"/>
+</svg>
