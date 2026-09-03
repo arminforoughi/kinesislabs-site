@@ -191,5 +191,8 @@ is drawn in mint, so the specimen in flight is the only coloured object on scree
 `prefers-reduced-motion` gets a single static frame with no scrubbing. The loop
 stops when the tab is hidden.
 
-The caption beneath the hero copy labelling this a concept animation is
-deliberate and should stay while there is no footage of a working system.
+The hero carried a "concept animation" caption while the animation was a
+literal depiction of the receiving station. It is an abstract wireframe now and
+the caption has been removed. The claim that still matters is the one under the
+bench video in `#demo` — "a working system on a bench, not a station deployed in
+a lab" — and that one should stay accurate.
