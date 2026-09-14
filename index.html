@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://kinesislabs.tech/assets/og-image.png">
 <link rel="apple-touch-icon" href="assets/icon-512.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=25">
+<link rel="stylesheet" href="assets/site.css?v=26">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -119,7 +119,7 @@
     <div class="demo-copy">
       <p class="label">On the bench</p>
       <h2 id="demo-h">The prototype, working real tubes.</h2>
-      <p class="lead">A minute at the bench: the arm reads each specimen, decides what happens to it, and checks the accepted ones into the LIS. It plays muted &mdash; unmute for the audio.</p>
+      <p class="lead">Each task runs in simulation first, then on the bench: the arm reads each specimen, decides what happens to it, and checks the accepted ones into the LIS. The bench clip plays muted &mdash; unmute for the audio.</p>
       <ul class="demo-list">
         <li><b>Reads the requirement</b><span>Reasons through what the ordered test needs, and takes only a specimen that satisfies it.</span></li>
         <li><b>Holds the bad ones</b><span>Detects error specimens and sets them aside instead of passing them downstream.</span></li>
@@ -127,15 +127,28 @@
         <li><b>Accessions in the LIS</b><span>Checks each accepted specimen in directly, so the order and the physical tube are linked.</span></li>
       </ul>
     </div>
-    <figure class="demo-video">
-      <video id="demo-video" controls autoplay muted loop playsinline preload="metadata"
-             poster="assets/sample-receipt-poster.jpg"
-             aria-label="Bench demonstration of the receiving prototype handling blood tubes">
-        <source src="assets/sample-receipt-demo.mp4" type="video/mp4">
-        Your browser does not support embedded video.
-      </video>
-      <figcaption>Bench prototype, filmed August 2026. A working system on a bench, not a station deployed in a lab.</figcaption>
-    </figure>
+    <div class="demo-pair">
+      <figure class="demo-video">
+        <p class="demo-step"><span>01</span>Simulation</p>
+        <video controls autoplay muted loop playsinline preload="metadata"
+               poster="assets/sim-demo-poster.jpg"
+               aria-label="The receiving task running in simulation, seen from four camera angles">
+          <source src="assets/sim-demo.mp4" type="video/mp4">
+          Your browser does not support embedded video.
+        </video>
+        <figcaption>A simulated copy of the bench, where each task runs before it goes to the hardware.</figcaption>
+      </figure>
+      <figure class="demo-video">
+        <p class="demo-step"><span>02</span>Physical</p>
+        <video controls autoplay muted loop playsinline preload="metadata"
+               poster="assets/sample-receipt-poster.jpg"
+               aria-label="Bench demonstration of the receiving prototype handling blood tubes">
+          <source src="assets/sample-receipt-demo.mp4" type="video/mp4">
+          Your browser does not support embedded video.
+        </video>
+        <figcaption>Bench prototype, filmed August 2026. A working system on a bench, not a station deployed in a lab.</figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -931,21 +944,21 @@
 </script>
 <script>
 (function(){
-  var v = document.getElementById('demo-video');
-  if(!v || !('IntersectionObserver' in window)) return;
+  var vids = document.querySelectorAll('.demo-video video');
+  if(!vids.length || !('IntersectionObserver' in window)) return;
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var started = false;
-  new IntersectionObserver(function(entries){
+  var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
+      var v = e.target;
       if(e.isIntersecting){
-        if(!started){ started = true; }
         var p = v.play();
         if(p) p.catch(function(){ /* autoplay refused: the poster and controls stand in */ });
       }else if(!v.paused){
         v.pause();
       }
     });
-  }, { threshold: 0.35 }).observe(v);
+  }, { threshold: 0.35 });
+  Array.prototype.forEach.call(vids, function(v){ io.observe(v); });
 })();
 </script>
 

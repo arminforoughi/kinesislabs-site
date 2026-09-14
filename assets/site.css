@@ -163,12 +163,26 @@ main,.foot{position:relative;z-index:1}
 
 /* Bench demo */
 .demo-grid{display:grid;gap:clamp(2rem,1.5rem + 3vw,4rem);grid-template-columns:1fr;align-items:center}
-@media (min-width:920px){.demo-grid{grid-template-columns:1fr minmax(300px,380px)}}
+@media (min-width:1100px){.demo-grid{grid-template-columns:minmax(0,1fr) minmax(520px,620px)}}
 .demo-copy .lead{margin-top:1.4rem;max-width:40rem}
 .demo-list{display:grid;gap:1px;margin-top:2rem;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
 .demo-list li{background:#fff;padding:1rem 1.2rem;display:grid;gap:.2rem}
 .demo-list b{font-weight:600;letter-spacing:-.015em}
 .demo-list span{font-size:var(--t-sm);color:var(--muted);line-height:1.55}
+/* Simulation and bench clips side by side; a swipeable row on phones, where two
+   9:16 players next to each other would be too narrow to read the captions. */
+.demo-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.75rem,.5rem + 1vw,1.25rem);align-items:start;width:100%;max-width:620px;margin-inline:auto}
+@media (max-width:559px){
+  .demo-pair{
+    grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;width:auto;max-width:none;
+    overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
+    margin-inline:calc(-1 * clamp(1.25rem,4vw,2.5rem));padding-inline:clamp(1.25rem,4vw,2.5rem);scroll-padding-inline:clamp(1.25rem,4vw,2.5rem)
+  }
+  .demo-pair::-webkit-scrollbar{display:none}
+  .demo-pair>.demo-video{scroll-snap-align:start}
+}
+.demo-step{margin:0;display:flex;align-items:baseline;gap:.55rem;font-size:var(--t-xs);font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--text)}
+.demo-step span{font-family:var(--mono);letter-spacing:.06em;color:var(--mint-deep)}
 .demo-video{margin:0;display:grid;gap:.9rem;justify-items:center}
 .demo-video video{
   width:100%;max-width:380px;aspect-ratio:9/16;border-radius:var(--r);background:var(--ink);
