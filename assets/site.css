@@ -219,6 +219,22 @@ main,.foot{position:relative;z-index:1}
 .callout{margin-top:clamp(2.25rem,1.8rem + 2vw,3.25rem);max-width:52rem;font-size:var(--t-lead);line-height:1.45;letter-spacing:-.015em;border-left:3px solid var(--amber);padding-left:1.2rem}
 .callout strong{font-weight:600}
 
+/* Who we are -- an ink section after the closing CTA, so the panels carry the
+   separation rather than a change of ground. */
+.team{padding-block:clamp(2.5rem,2rem + 3vw,4.5rem)}
+.team .label{margin-bottom:1.5rem}
+.team-row{display:grid;gap:clamp(1rem,.8rem + 1vw,1.4rem);grid-template-columns:1fr}
+@media (min-width:860px){.team-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.person{border:1px solid var(--line-d);border-radius:var(--r);background:var(--panel);padding:clamp(1.4rem,1.2rem + 1vw,1.9rem)}
+.person-head{display:flex;align-items:center;gap:1rem;padding-bottom:1.2rem;margin-bottom:1.2rem;border-bottom:1px solid var(--line-d)}
+.person-head img{flex:none;width:4.5rem;height:4.5rem;border-radius:50%;object-fit:cover;background:var(--line-d)}
+.person h3{font-size:var(--t-h3)}
+.person-role{margin:.35rem 0 0;font-size:var(--t-xs);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mint)}
+.person-cred{margin:.2rem 0 0;font-size:var(--t-sm);line-height:1.45;color:var(--muted-d)}
+.person-list{display:grid;gap:.65rem}
+.person-list li{position:relative;padding-left:1.1rem;font-size:var(--t-sm);line-height:1.55;color:var(--muted-d)}
+.person-list li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:50%;background:var(--mint)}
+
 /* Contact */
 .contact{background:var(--ink);color:var(--muted-d)}
 .contact h2,.contact h3{color:#fff}
