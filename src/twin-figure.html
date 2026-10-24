@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clinical bench twin</title></head><body>
+<script src="core.js"></script>
+<script>
+/* Clinical bench, digital twin -- the Kinesis station working one blood tube through the nine steps on the site.
+   x = depth (front face at x = BW), y = along the bench (+y is viewer-left at the default view), z = up. 1 unit ~ 1 cm,
+   except the tube, drawn at 1.5x so it reads at bench scale.
+
+   HOW IT REALLY WORKS (where the tube is after each step)
+     1 Unbag       courier bag in the inbox is opened; arm A lifts the tube onto the inspection pad
+     2 Inspect     the camera over the pad reads label, tube type (gold top = serum), fill and integrity
+     3 Accession   the LIS links the tube to its order: COLLECTED -> IN-LAB; a barcode label goes on
+     4 Sort        it needs spinning, so arm A seats it in the SPIN rack (no-spin and hold racks beside it)
+     5 Centrifuge  arm B lifts the lid, sets the tube in a swing bucket, closes it, spins, opens it:
+                   the blood separates into clot, gel and serum
+     6 Aliquot and load  arm B decaps and moves the tube to the analyzer's load lane
+     7 Analyze     the lane carries it into the analyzer; the sample probe draws serum into the reaction ring,
+                   the photometer reads it, results are released to the LIS, the lane brings it back out
+     8 Unload and recap  arm B pulls it from the lane and caps it again
+     9 Archive     the archive fridge's glass lid slides back, arm B stores it in a rack at 4 C, the LIS gets
+                   its position
+
+   PARTS (each held by another)
+     BENCH       bench top . station deck (holds both arms, the camera mast, pad, racks, centrifuge, fridge)
+     STATION     arm A + arm B: base drum . turret . shoulder hub . upper arm . elbow hub . forearm . wrist hub .
+                 tool flange . two fingers .  camera mast: foot . pole . LIS screen on the pole . boom . camera head .
+                 lens . ring light .  inspection pad .  spin / no-spin / hold racks
+     DECK INSIDE policy computer . motor drivers . cable runs to each arm base and the camera mast
+     CENTRIFUGE  body . hinged lid with window . console with display .  inside: drive motor . shaft . rotor hub .
+                 four rotor arms . four swing buckets . lid lock
+     ANALYZER    body . screen . status light . service door . load slot .  load lane tray . lane puck .
+                 inside: rack lane rail . reaction ring + ring motor . reagent carousel + motor . photometer lamp +
+                 detector . sample-probe gantry rail . probe carriage . probe needle . syringe pump . power supply .
+                 main board
+     FRIDGE      body . display . vent grille . sliding glass lid .  inside: two archive racks with stored tubes .
+                 compressor . condenser coil . thermostat
+     INBOX       tray . courier bag . requisition
+     TUBE        glass . blood / clot . gel . serum . gold cap . barcode label                                  */
+
+const BW = 80, BL = 280, BH = 4, DK = BH + 3.5, LAB_H = 96;
+const TUBE_R = 1.5, TUBE_H = 11, CAP_H = 2.4, TUBE_TOP = TUBE_H + CAP_H;
+const GOLD = matOf('#e2b33a'), LAV = matOf('#a78bd8'), REDC = matOf('#e2483d');
+const BLOOD = matOf('#8e2328'), SERUM = matOf('#ecc865'), GEL = matOf('#dcd8cc');
+const TRAYM = matOf('#8d969a'), PADM = matOf('#e7ecea'), BAGM = matOf('#dce8ee'), RACKM = matOf('#eef2f1');
+const PCBM = { l:'#4fa36a', m:'#2f8a4a', d:'#1d5f31' }, INTM = matOf('#d7e3e6');
+const SCR = '#1d2a26', SCRT = '#8af0ae';
+
+const ARM_A = [35, 215], ARM_B = [40, 92], SH_Z = DK + 16, L1 = 48, L2 = 44, TOOL = 8;
+const REST_A = [54, 202, DK + 36], REST_B = [57, 104, DK + 36];
+const PAD = [55, 196], PAD_Z = DK + 1;
+const MAST = [26, 196], HEAD_Z = DK + 62;
+const RACKS = [ { key:'SPIN', y:150, col:'#5fe3b4' }, { key:'NO-SPIN', y:163, col:'#76a0e2' }, { key:'HOLD', y:176, col:'#f4b829' } ];
+const RX0 = 50, RX1 = 61, RTOP = DK + 5;
+const CEN = [56, 122], CEN_R = 11, CEN_TOP = DK + 16;
+const FR = [3, 30, 98, 146], FR_TOP = DK + 36, FR_RZ = DK + 20;
+const AN = [5, 60, 8, 80], AN_TOP = BH + 56;
+const TRAYB = [60, 76, 54, 72], TRAY_Z = BH + 3, PUCK = [70, 63];
+const INBOX = [40, 72, 238, 268], INBOX_Z = BH + 5;
+const DECKB = [2, 76, 85, 235];
+const LIFT = 28;
+
+const up = (p, dz) => [p[0], p[1], p[2] + dz];
+const addv = (a, b) => [a[0]+b[0], a[1]+b[1], a[2]+b[2]], scl = (a, k) => a.map(v => v*k);
+const lerp3 = (a, b, k) => a.map((v, i) => v + (b[i] - v)*k);
+const clamp01 = v => Math.max(0, Math.min(1, v));
+const win = (t, w) => !w ? 0 : clamp01((t - w[0]) / (w[1] - w[0]));
+const mixM = (a, b, k) => ({ l: mix(a.l, b.l, k), m: mix(a.m, b.m, k), d: mix(a.d, b.d, k) });
+const it = (b, svg) => ({ box: b, svg });
+const ringZ = (cx, cy, z, r, n = 28) => on(PZ(z), ellUV(cx, cy, r, r, n));
+
+const BAG_P = [55, 252, INBOX_Z + 4], INSP_P = [PAD[0], PAD[1], PAD_Z], SPIN_P = [55.5, 150, RTOP - 4];
+const CENT_P = a => [CEN[0] + 6*Math.cos(a), CEN[1] + 6*Math.sin(a), DK + 2];
+const TRAY_P = [PUCK[0], PUCK[1], TRAY_Z + 2], ARCH_P = [16, 122, FR_RZ];
+
+/* The nine steps. ap / ca / re: approach, carry and retreat windows of the arm, as fractions of the step. */
+const STEPS = [null,
+  { name:'Unbag', arm:'A', dur:3.4, ap:[.22,.42], ca:[.42,.84], re:[.84,1],
+    path:() => [BAG_P, up(BAG_P, LIFT), up(INSP_P, LIFT), INSP_P], note:'The bag is opened and the tube lifted onto the inspection pad' },
+  { name:'Inspect', dur:2.6, note:'The camera reads label, tube type, fill and integrity' },
+  { name:'Accession', dur:2.4, note:'Checked into the LIS and linked to its order' },
+  { name:'Sort', arm:'A', dur:3, ap:[0,.25], ca:[.25,.8], re:[.8,1],
+    path:() => [INSP_P, up(INSP_P, LIFT), up(SPIN_P, LIFT + 4), SPIN_P], note:'Serum test, so it goes to the spin rack' },
+  { name:'Centrifuge', arm:'B', dur:5.4, ap:[0,.18], ca:[.18,.46], re:[.46,.56],
+    path:() => [SPIN_P, up(SPIN_P, LIFT), up(CENT_P(0), LIFT), CENT_P(0)], note:'Spun at 3000 rpm: serum separates from the clot' },
+  { name:'Aliquot and load', arm:'B', dur:3.4, ap:[0,.2], ca:[.2,.8], re:[.8,1],
+    path:() => [CENT_P(0), up(CENT_P(0), LIFT), up(TRAY_P, LIFT), TRAY_P], note:'Decapped and loaded onto the analyzer lane' },
+  { name:'Analyze', dur:4.2, note:'Your analyzer runs it and releases results to the LIS' },
+  { name:'Unload and recap', arm:'B', dur:2.6, ap:[0,.35], ca:[.35,.75], re:null,
+    path:() => [TRAY_P, up(TRAY_P, 20)], note:'Pulled on result release and capped again' },
+  { name:'Archive', arm:'B', dur:3.8, ap:null, ca:[.12,.76], re:[.76,.9],
+    path:() => [up(TRAY_P, 20), up(TRAY_P, 52), [ARCH_P[0], ARCH_P[1], FR_TOP + 6], ARCH_P], note:'Stored at 4 C, its rack position written to the LIS' },
+];
+
+const prog = (st, i) => st.done >= i ? 1 : st.cur === i ? st.t : 0;
+function pathAt(pts, k){
+  const seg = []; let tot = 0;
+  for (let i = 1; i < pts.length; i++){ const l = Math.hypot(...sub(pts[i], pts[i-1])); seg.push(l); tot += l; }
+  let d = k*tot;
+  for (let i = 0; i < seg.length; i++){ if (d <= seg[i] || i === seg.length - 1) return lerp3(pts[i], pts[i+1], seg[i] ? Math.min(1, d/seg[i]) : 1); d -= seg[i]; }
+  return pts[pts.length - 1];
+}
+function rotorAngle(st){ return st.cur === 5 ? 2*Math.PI*14*ease(win(st.t, [.56,.9])) : 0; }
+function rpmOf(st){ if (st.cur !== 5) return 0; const w = win(st.t, [.56,.9]); return w <= 0 || w >= 1 ? 0 : Math.round(3000*Math.min(1, 4*w, 4*(1 - w))/10)*10; }
+function puckDx(st){ if (st.cur !== 7) return 0; const t = st.t; return -32*ease(win(t, [0,.22])) + 32*ease(win(t, [.8,1])); }
+function lidOpen(st){
+  if (st.cur === 5){ const t = st.t; return t < .46 ? win(t, [0,.12]) : t < .9 ? 1 - win(t, [.46,.56]) : win(t, [.9,1]); }
+  if (st.done === 5) return st.cur === 6 ? 1 - win(st.t, [.82,1]) : 1;
+  return 0;
+}
+function frSlide(st){ if (st.cur !== 9) return 0; const t = st.t; return t < .8 ? win(t, [0,.12]) : 1 - win(t, [.82,.98]); }
+function lisOf(st){ return prog(st,9) > .8 ? 'ARCHIVED' : prog(st,7) > .8 ? 'RESULTED' : prog(st,3) > .5 ? 'IN-LAB' : 'COLLECTED'; }
+
+function tubeState(st){
+  let p = BAG_P, held = null;
+  for (let i = 1; i <= 9; i++){
+    const pr = prog(st, i); if (pr <= 0) break;
+    const s = STEPS[i]; if (!s.path) continue;
+    const path = s.path(), c = pr >= 1 ? 1 : win(pr, s.ca);
+    if (c > 0) p = pathAt(path, ease(c));
+    if (c > 0 && c < 1) held = s.arm;
+    if (i === 8 && c > 0) held = 'B';
+    if (i === 9) held = c < 1 ? 'B' : null;
+  }
+  const inCent = st.done >= 5 && prog(st, 6) < (STEPS[6].ca[0] + .001) && !held;
+  if (inCent || (st.cur === 5 && st.t >= STEPS[5].ca[1])) p = CENT_P(rotorAngle(st));
+  const onLane = st.done >= 6 && !held && prog(st, 8) <= STEPS[8].ca[0];
+  if (onLane) p = addv(TRAY_P, [puckDx(st), 0, 0]);
+  let where = 'free';
+  if (prog(st, 1) < .3) where = 'bag';
+  else if (onLane && p[0] < 61) where = 'an';
+  else if (Math.hypot(p[0] - CEN[0], p[1] - CEN[1]) < CEN_R && p[2] < CEN_TOP) where = 'cent';
+  else if (p[0] > FR[0] && p[0] < FR[1] && p[1] > FR[2] && p[1] < FR[3] && p[2] < FR_TOP) where = 'fridge';
+  return { p, held, where,
+    capped: !(prog(st, 6) > .3 && prog(st, 8) < .55),
+    sep: ease(win(prog(st, 5), [.56,.9])),
+    label: prog(st, 3) > .5 };
+}
+
+/* ---------- the tube ---------- */
+function tubeSvg(p, o){
+  const [x, y, z0] = p, r = TUBE_R, top = z0 + 8.2;
+  let s = '';
+  if (o.sep > .02){ const zr = z0 + 4.4, zg = zr + 1.2*o.sep;
+    s += cyl(x, y, z0 + .2, zr, r, BLOOD, toneI, .5, 14) + cyl(x, y, zr, zg, r, GEL, toneI, .4, 14) + cyl(x, y, zg, top, r, mixM(BLOOD, SERUM, o.sep), toneI, .4, 14);
+  } else s += cyl(x, y, z0 + .2, top, r, BLOOD, toneI, .5, 14);
+  s += cyl(x, y, top, z0 + TUBE_H, r, CLEAR, toneI, .5, 14);
+  if (o.label){
+    s += cyl(x, y, z0 + 3, z0 + 8.8, r + .06, CERAMIC, toneI, .5, 14);
+    let bc = ''; for (let a = YAW - 55; a <= YAW + 55; a += 9){ const c = Math.cos(a*Math.PI/180)*(r + .1), d = Math.sin(a*Math.PI/180)*(r + .1);
+      bc += pd([[x + c, y + d, z0 + 3.8], [x + c, y + d, z0 + 7.9]], false); }
+    s += `<path d="${bc}" fill="none" stroke="${INK}" stroke-width="${a2(.3)}"/>`;
+  }
+  if (o.capped !== false) s += cyl(x, y, z0 + TUBE_H - .6, z0 + TUBE_TOP, r + .35, o.cap || GOLD, toneI, .8, 16);
+  else s += fill(pd(ringZ(x, y, z0 + TUBE_H + .02, r - .3, 12)), '#3b1214');
+  return s;
+}
+const a2 = w => w.toFixed(2);
+const tubeBox = p => [[p[0] - 1.9, p[1] - 1.9, p[2]], [p[0] + 1.9, p[1] + 1.9, p[2] + TUBE_TOP]];
+
+/* ---------- arms: a base yaw plus a two-link solve in the vertical plane through the target; the tool hangs straight down ---------- */
+function armSolve(base, tool){
+  const sp = [base[0], base[1], SH_Z]; let wr = addv(tool, [0, 0, TOOL]);
+  const dx = wr[0] - base[0], dy = wr[1] - base[1], d = Math.hypot(dx, dy), u = d > 1e-3 ? [dx/d, dy/d, 0] : [1, 0, 0];
+  const h = wr[2] - SH_Z, dd = Math.hypot(d, h), D = Math.max(Math.abs(L1 - L2) + .5, Math.min(L1 + L2 - .5, dd));
+  if (dd !== D){ const k = D/dd; wr = [base[0] + u[0]*d*k, base[1] + u[1]*d*k, SH_Z + h*k]; }
+  const a = Math.atan2(h, d), b = Math.acos(Math.max(-1, Math.min(1, (L1*L1 + D*D - L2*L2) / (2*L1*D))));
+  const th = a + b, el = [sp[0] + u[0]*L1*Math.cos(th), sp[1] + u[1]*L1*Math.cos(th), SH_Z + L1*Math.sin(th)];
+  return { sp, el, wr, u, n: [-u[1], u[0], 0], tip: addv(wr, [0, 0, -TOOL]) };
+}
+const rbox = (a, b, r) => [[Math.min(a[0], b[0]) - r, Math.min(a[1], b[1]) - r, Math.min(a[2], b[2]) - r], [Math.max(a[0], b[0]) + r, Math.max(a[1], b[1]) + r, Math.max(a[2], b[2]) + r]];
+const ubox = (p, q) => [[0,1,2].map(i => Math.min(p[0][i], q[0][i])), [0,1,2].map(i => Math.max(p[1][i], q[1][i]))];
+function armItems(base, tool, g, m, act){
+  const A = armSolve(base, tool), out = [], { sp, el, wr, n, tip } = A;
+  const hubAt = (c, half, r) => rod(addv(c, scl(n, -half)), addv(c, scl(n, half)), r, DARK, toneI, 1);
+  const glow = act ? matOf('#5fe3b4') : DARK;
+  out.push(it([[base[0] - 7.5, base[1] - 7.5, DK], [base[0] + 7.5, base[1] + 7.5, SH_Z - 4.2]],
+    cyl(base[0], base[1], DK, DK + 5, 7.5, DARK, toneI, 1.3, 28) + cyl(base[0], base[1], DK + 5, SH_Z - 4.2, 5, m, tone, 1.2, 24)
+    + ink(pd(ringZ(base[0], base[1], DK + 2.4, 7.55, 28)), .5)));
+  out.push(it(ubox(rbox(sp, el, 3), rbox(addv(sp, scl(n, -4.5)), addv(sp, scl(n, 4.5)), 4.2)), rod(sp, el, 3, m, tone, 1.3) + hubAt(sp, 4.5, 4.2)
+    + rod(addv(sp, scl(n, 4.5)), addv(sp, scl(n, 5.3)), 1.6, glow, toneI, .8)));
+  out.push(it(ubox(rbox(el, wr, 2.4), rbox(addv(el, scl(n, -3.6)), addv(el, scl(n, 3.6)), 3.4)), rod(el, wr, 2.4, CERAMIC, tone, 1.2) + hubAt(el, 3.6, 3.4)));
+  const fl = addv(wr, [0, 0, -4]);
+  out.push(it(ubox(rbox(wr, fl, 2), rbox(addv(wr, scl(n, -2.6)), addv(wr, scl(n, 2.6)), 2.4)), hubAt(wr, 2.6, 2.4) + rod(wr, fl, 2, METAL, toneI, .9)));
+  const gap = TUBE_R + .7 + 1.4*g;
+  for (const sg of [-1, 1]){ const a = addv(fl, scl(n, sg*gap)), b = addv(tip, scl(n, sg*gap));
+    out.push(it(rbox(a, b, .8), rod(a, b, .75, DARK, toneI, .8))); }
+  return { items: out, A };
+}
+function armShadow(A){ const pts = [], push = (p, r) => { pts.push([p[0] - r, p[1], p[2]], [p[0] + r, p[1], p[2]], [p[0], p[1] - r, p[2]], [p[0], p[1] + r, p[2]]); };
+  return [[A.sp, A.el, 3], [A.el, A.wr, 2.4], [A.wr, A.tip, 1.6]].map(([a, b, r]) => { const q = []; for (const p of [a, b]) for (const s2 of [-r, r]) q.push([p[0] + s2, p[1], p[2]], [p[0], p[1] + s2, p[2]]); return castShadow(q, DK); }).join(''); }
+
+/* arm tool targets */
+const gripAt = p => [p[0], p[1], p[2] + TUBE_TOP - 1.5];
+const arcL = (a, b, k) => addv(lerp3(a, b, k), [0, 0, Math.sin(Math.PI*k)*12]);
+function armTool(st, which, ts){
+  const rest = which === 'A' ? REST_A : REST_B;
+  if (ts.held === which) return { tool: gripAt(ts.p), g: 0, busy: true };
+  const s = STEPS[st.cur];
+  if (!st.cur || s.arm !== which) return { tool: rest, g: 1, busy: false };
+  const t = st.t, path = s.path();
+  if (s.re && t >= s.re[0]){ const r = win(t, s.re); return { tool: arcL(gripAt(path[path.length - 1]), rest, ease(r)), g: Math.min(1, r/.2), busy: true }; }
+  if (s.ap && t < s.ca[0]){ const a = win(t, s.ap); return { tool: arcL(rest, gripAt(path[0]), ease(a)), g: a > .85 ? 1 - (a - .85)/.15 : 1, busy: true }; }
+  return { tool: gripAt(ts.p), g: 0, busy: true };
+}
+
+/* ---------- instruments ---------- */
+function frontTx(x, y, z, str, size, col = INK, w = 800){ return facing([1,0,0]) ? tx(x + .06, y, z, str, size, col, w) : ''; }
+
+function deckSvg(st, m, k){
+  const [x0, x1, y0, y1] = DECKB;
+  let body = box(x0, y0, BH, x1, y1, DK, m, tone, 1.5) + frontTx(x1, 160, BH + 1.1, 'KINESIS LABS', 2.2, m.d);
+  if (k <= 0) return body;
+  // inside the deck: policy computer, motor drivers, cable runs to each arm and the camera mast
+  let mech = box(8, 140, BH + .3, 28, 172, DK - .4, PCBM, toneI, .8) + box(10, 100, BH + .3, 22, 116, DK - .4, matOf('#3f7fc0'), toneI, .7)
+    + box(12, 222, BH + .3, 22, 232, DK - .4, matOf('#3f7fc0'), toneI, .7);
+  for (const [cx, cy] of [[13, 146], [19, 146], [13, 154], [19, 154], [24, 162]]) mech += box(cx - 2, cy - 2, DK - .4, cx + 2, cy + 2, DK - .1, DARK, toneI, .5);
+  const wire = (pts, col) => `<path d="${pd(pts, false)}" fill="none" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/><path d="${pd(pts, false)}" fill="none" stroke="${col}" stroke-width="1.2" stroke-linejoin="round"/>`;
+  const zc = BH + 1.8;
+  mech += wire([[28, 168, zc], [32, 168, zc], [32, 200, zc], [35, 210, zc]], '#e2b33a') + wire([[17, 172, zc], [17, 222, zc]], '#e2b33a')
+    + wire([[28, 150, zc], [34, 150, zc], [34, 104, zc], [38, 96, zc]], '#e2b33a') + wire([[22, 108, zc], [36, 92, zc]], '#e2b33a')
+    + wire([[24, 172, zc], [24, 192, zc], [26, 196, zc]], '#76a0e2');
+  return `<g opacity="${f(1 - .7*k)}">${body}</g><g opacity="${f(k)}">${mech}</g>`;
+}
+
+function inboxSvg(st){
+  const [x0, x1, y0, y1] = INBOX, z1 = INBOX_Z, open = win(prog(st, 1), [0,.22]);
+  let s = box(x0, y0, BH, x1, y1, z1, TRAYM, tone, 1.4) + fill(pd(on(PZ(z1 + .02), rectUV(x0 + 1.6, y0 + 1.6, x1 - 1.6, y1 - 1.6))), mix(TRAYM.m, '#000000', .25));
+  const bh = 9 - 5*open, prof = rrUV(y0 + 3, z1, y1 - 3, z1 + bh, Math.min(3, bh/2), 4), bx0 = x0 + 3, bx1 = x1 - 3;
+  let bag = extrude(prof, bx0, bx1, BAGM, toneI);
+  if (facing([1,0,0])) bag += fill(pd(on(PX(bx1), prof)), toneI([1,0,0], BAGM)) + ink(pd(on(PX(bx1), prof)), .9);
+  else if (facing([-1,0,0])) bag += fill(pd(on(PX(bx0), prof)), toneI([-1,0,0], BAGM)) + ink(pd(on(PX(bx0), prof)), .9);
+  bag += hullInk([...on(PX(bx0), prof), ...on(PX(bx1), prof)], 1.6);
+  const zt = z1 + bh + .05, yc = (y0 + y1)/2;
+  bag += `<path d="${pd([[bx0 + 2, yc + 7, zt], [bx1 - 2, yc + 7, zt]], false)}" fill="none" stroke="${open > .5 ? '#3b3b3b' : '#e2483d'}" stroke-width="${open > .5 ? 1.6 : 1.3}" stroke-linecap="round"/>`;
+  if (bh > 6.5 && facing([1,0,0])) bag += tx(bx1 + .06, yc, z1 + 3.4, 'SPECIMEN', 2.2, '#c0392b', 800);
+  if (open > .6){ // the requisition, unfolded on the bag
+    bag += box(bx1 - 12, y0 + 5, zt, bx1 - 2, y0 + 14, zt + .3, CERAMIC, toneI, .6);
+    let ln = ''; for (let i = 0; i < 4; i++) ln += pd([[bx1 - 10.5 + i*2.2, y0 + 6.5, zt + .32], [bx1 - 10.5 + i*2.2, y0 + 12.5, zt + .32]], false);
+    bag += `<path d="${ln}" fill="none" stroke="#9aa3a8" stroke-width=".5"/>`;
+  }
+  return act('bag', s + bag);
+}
+
+function mastItems(st, k){
+  const [mx, my] = MAST, top = HEAD_Z + 1, items = [], flash = st.cur === 2 ? Math.sin(Math.PI*win(st.t, [.08,.92])) : 0;
+  items.push(it([[mx - 3, my - 3, DK], [mx + 3, my + 3, DK + 1.4]], box(mx - 3, my - 3, DK, mx + 3, my + 3, DK + 1.4, DARK, toneI, .9)));
+  items.push(it([[mx - 1.2, my - 1.2, DK + 1.4], [mx + 1.2, my + 1.2, top]], rod([mx, my, DK + 1.4], [mx, my, top], 1.2, METAL, toneI, .9)));
+  // LIS screen on the pole
+  const sx0 = mx + 1.2, sx1 = mx + 2.4, sy0 = my - 10, sy1 = my + 10, sz0 = DK + 22, sz1 = DK + 36;
+  let scr = box(sx0, sy0, sz0, sx1, sy1, sz1, DARK, toneI, 1);
+  if (facing([1,0,0])){ scr += fill(pd(on(PX(sx1 + .03), rectUV(sy0 + .8, sz0 + .8, sy1 - .8, sz1 - .8))), SCR);
+    const lis = lisOf(st), acc = prog(st, 3) > .5;
+    scr += tx(sx1 + .06, my, sz1 - 3.6, 'LIS', 2.4, SCRT, 800) + tx(sx1 + .06, my, sz1 - 7.4, acc ? 'ACC 1023-118' : 'ORDER 4471', 2, SCRT, 700)
+      + tx(sx1 + .06, my, sz1 - 11, lis, 2.4, lis === 'COLLECTED' ? '#f4b829' : SCRT, 800); }
+  items.push(it([[sx0, sy0, sz0], [sx1, sy1, sz1]], scr));
+  items.push(it([[mx - 1, my - 1, top - 1], [PAD[0] - 4, my + 1, top + 1]], rod([mx, my, top], [PAD[0] - 4, my, top], 1, METAL, toneI, .9)));
+  // camera head, lens, ring light
+  let head = box(PAD[0] - 4, PAD[1] - 4, HEAD_Z - 3, PAD[0] + 4, PAD[1] + 4, HEAD_Z + 3, DARK, tone, 1.2);
+  if (k > 0) head = `<g opacity="${f(1 - .7*k)}">${head}</g><g opacity="${f(k)}">${box(PAD[0] - 3, PAD[1] - 3, HEAD_Z - 1, PAD[0] + 3, PAD[1] + 3, HEAD_Z - .4, PCBM, toneI, .6)}${cyl(PAD[0], PAD[1], HEAD_Z - .4, HEAD_Z + 1.6, 1.8, matOf('#9fb6c9'), toneI, .6, 16)}</g>`;
+  let lens = cyl(PAD[0], PAD[1], HEAD_Z - 6, HEAD_Z - 3, 2.4, DARK, toneI, 1, 18);
+  const leds = ringZ(PAD[0], PAD[1], HEAD_Z - 3.05, 3.3, 10).map(p => fill(pd(ringZ(p[0], p[1], p[2], .5, 8)), flash > .05 ? '#eafff6' : '#c7d0cc')).join('');
+  items.push(it([[PAD[0] - 4, PAD[1] - 4, HEAD_Z - 6], [PAD[0] + 4, PAD[1] + 4, HEAD_Z + 3]], lens + head + (facing([0,0,-1]) ? leds : '')));
+  return { items, flash };
+}
+
+function padItem(){
+  const [px, py] = PAD;
+  return it([[px - 6, py - 6, DK], [px + 6, py + 6, PAD_Z]], box(px - 6, py - 6, DK, px + 6, py + 6, PAD_Z, PADM, toneI, .9)
+    + `<path d="${pd(ringZ(px, py, PAD_Z + .03, 3.6, 24))}" fill="none" stroke="#5fe3b4" stroke-width="1"/>`);
+}
+
+function rackItems(){
+  const out = [];
+  for (const r of RACKS){
+    let s = box(RX0, r.y - 4.5, DK, RX1, r.y + 4.5, RTOP, RACKM, toneI, 1);
+    for (const hx of [52.5, 55.5, 58.5]) s += fill(pd(ringZ(hx, r.y, RTOP + .02, 1.7, 12)), '#4a5256');
+    if (facing([1,0,0])) s += fill(pd(on(PX(RX1 + .03), rectUV(r.y - 4.5, DK + 1, r.y + 4.5, DK + 2.6))), r.col);
+    out.push(it([[RX0, r.y - 4.5, DK], [RX1, r.y + 4.5, RTOP]], s));
+  }
+  // the tubes already in the other two racks: a lavender top (no spin) and a held one with a red top
+  out.push(it(tubeBox([58.5, 163, RTOP - 4]), tubeSvg([58.5, 163, RTOP - 4], { cap: LAV, sep: 0, label: true })));
+  out.push(it(tubeBox([52.5, 176, RTOP - 4]), tubeSvg([52.5, 176, RTOP - 4], { cap: REDC, sep: 0, label: false })));
+  return out;
+}
+
+/* centrifuge */
+function rotorParts(st, ts, full){
+  const [cx, cy] = CEN, a0 = rotorAngle(st), parts = [];
+  if (full){
+    parts.push(it([[cx - 4, cy - 4, DK + .5], [cx + 4, cy + 4, DK + 5]], cyl(cx, cy, DK + .5, DK + 5, 4, DARK, toneI, .9, 20)));
+    parts.push(it([[cx - .8, cy - .8, DK + 5], [cx + .8, cy + .8, DK + 9]], rod([cx, cy, DK + 5], [cx, cy, DK + 9], .8, METAL, toneI, .6)));
+    parts.push(it([[cx + CEN_R - 2, cy - 1.2, CEN_TOP - 2.5], [cx + CEN_R - .5, cy + 1.2, CEN_TOP - .3]], box(cx + CEN_R - 2, cy - 1.2, CEN_TOP - 2.5, cx + CEN_R - .5, cy + 1.2, CEN_TOP - .3, REDC, toneI, .6)));
+  }
+  parts.push(it([[cx - 2.6, cy - 2.6, DK + 9], [cx + 2.6, cy + 2.6, DK + 10.5]], cyl(cx, cy, DK + 9, DK + 10.5, 2.6, METAL, toneI, .8, 18)));
+  for (let i = 0; i < 4; i++){ const a = a0 + i*Math.PI/2, bx = cx + 6*Math.cos(a), by = cy + 6*Math.sin(a);
+    parts.push(it(rbox([cx, cy, DK + 10], [bx, by, DK + 10], .6), rod([cx, cy, DK + 10], [bx, by, DK + 10], .6, METAL, toneI, .5)));
+    parts.push(it([[bx - 2.1, by - 2.1, DK + 1.5], [bx + 2.1, by + 2.1, DK + 11]], cyl(bx, by, DK + 1.5, DK + 11, 2.1, matOf('#b8c2c6'), toneI, .7, 16))); }
+  if (ts.where === 'cent') parts.push(it(tubeBox(ts.p), tubeSvg(ts.p, ts)));
+  return parts;
+}
+function centItems(st, m, ts, k){
+  const [cx, cy] = CEN, lo = lidOpen(st), out = [];
+  let body = cyl(cx, cy, DK, CEN_TOP, CEN_R, CERAMIC, tone, 1.8, 36) + ink(pd(ringZ(cx, cy, CEN_TOP - 3, CEN_R + .02, 36)), .6);
+  if (lo > .02){ const opening = ringZ(cx, cy, CEN_TOP + .03, CEN_R - 1.3, 32);
+    body += fill(pd(opening), '#2b2523') + (k > 0 ? '' : clipTo(opening, byDepth(rotorParts(st, ts, false)))) + ink(pd(opening), .9); }
+  if (k > 0) body = `<g opacity="${f(1 - .72*k)}">${body}</g><g opacity="${f(k)}">${byDepth(rotorParts(st, ts, true))}</g>`;
+  out.push(it([[cx - CEN_R, cy - CEN_R, DK], [cx + CEN_R, cy + CEN_R, CEN_TOP]], body));
+  // console with the rpm display
+  const qx0 = cx + CEN_R - 3, qx1 = cx + CEN_R + 2.5, rpm = rpmOf(st);
+  let con = box(qx0, cy - 6, DK, qx1, cy + 6, DK + 7.5, CERAMIC, tone, 1.1);
+  if (facing([1,0,0])){ con += fill(pd(on(PX(qx1 + .03), rectUV(cy - 4.6, DK + 2.4, cy + 4.6, DK + 6.4))), SCR) + tx(qx1 + .06, cy, DK + 3.6, String(rpm), 2.4, rpm ? SCRT : '#5b7a6c', 800); }
+  out.push(it([[qx0, cy - 6, DK], [qx1, cy + 6, DK + 7.5]], con));
+  // the lid, hinged at the back
+  const hx = cx - CEN_R, th = lo*100*Math.PI/180, c = Math.cos(th), s2 = Math.sin(th);
+  const rot = p => [hx + (p[0] - hx)*c - (p[2] - CEN_TOP)*s2, p[1], CEN_TOP + (p[0] - hx)*s2 + (p[2] - CEN_TOP)*c];
+  const A = ringZ(cx, cy, CEN_TOP, CEN_R - .3, 32).map(rot), B = ringZ(cx, cy, CEN_TOP + 2, CEN_R - .3, 32).map(rot), tn = [-s2, 0, c];
+  let lid = loft(A, B, nn => tone(nn, m));
+  if (vis(tn)){ lid += fill(pd(B), tone(tn, m)) + ink(pd(B), 1);
+    const w = ringZ(cx, cy, CEN_TOP + 2.03, 5, 24).map(rot); lid += fill(pd(w), rpm ? '#3a4a52' : '#55707a') + ink(pd(w), .7);
+    if (rpm) lid += `<path d="${pd(ringZ(cx, cy, CEN_TOP + 2.05, 3.4, 24).map(rot))}" fill="none" stroke="#cfe9f0" stroke-width="1.2" stroke-dasharray="2 1.4" opacity=".8"/>`; }
+  else if (vis(scl(tn, -1))) lid += fill(pd(A), tone(scl(tn, -1), m)) + ink(pd(A), 1);
+  lid += hullInk([...A, ...B], 1.6);
+  const lp = A.concat(B), lb = [[0,1,2].map(i => Math.min(...lp.map(p => p[i]))), [0,1,2].map(i => Math.max(...lp.map(p => p[i])))];
+  lb[0][2] = Math.max(lb[0][2], CEN_TOP);   // the lid is always above the body, so it sorts after it
+  out.push(it(lb, lid));
+  return out;
+}
+
+/* archive fridge */
+const STORED = [[10,106],[14,106],[18,106],[22,106],[10,110],[14,110],[22,110],[10,128],[14,128],[18,132],[22,136],[10,140]];
+const STORED_CAPS = [GOLD, LAV, GOLD, REDC, GOLD, GOLD, LAV, GOLD, LAV, GOLD, GOLD, LAV];
+function fridgeInside(ts){
+  const parts = [];
+  for (const [y0, y1] of [[103, 119], [123, 143]]){ let r = box(7, y0, FR_RZ - 1, 26, y1, FR_RZ + 3, matOf('#bcd6e4'), toneI, .7);
+    for (let x = 10; x <= 22; x += 4) for (let y = y0 + 3; y <= y1 - 3; y += 4) r += fill(pd(ringZ(x, y, FR_RZ + 3.02, .9, 8)), '#56707e');
+    parts.push(it([[7, y0, FR_RZ - 1], [26, y1, FR_RZ + 3]], r)); }
+  STORED.forEach(([x, y], i) => parts.push(it(tubeBox([x, y, FR_RZ]), tubeSvg([x, y, FR_RZ], { cap: STORED_CAPS[i], sep: 1, label: true }))));
+  if (ts.where === 'fridge') parts.push(it(tubeBox(ts.p), tubeSvg(ts.p, ts)));
+  return parts;
+}
+function fridgeItem(st, ts, k){
+  const [x0, x1, y0, y1] = FR, sl = frSlide(st)*24;
+  let body = box(x0, y0, DK, x1, y1, FR_TOP, CERAMIC, tone, 1.8);
+  if (facing([1,0,0])){
+    body += fill(pd(on(PX(x1 + .03), rectUV(128, FR_TOP - 10, 142, FR_TOP - 3))), SCR) + tx(x1 + .06, 135, FR_TOP - 7.6, '4.0 C', 2.6, SCRT, 800)
+      + tx(x1 + .06, 112, FR_TOP - 7.6, 'ARCHIVE', 2.6, INK, 800);
+    let v = ''; for (let z = DK + 2; z <= DK + 6; z += 1.3) v += pd([[x1 + .04, 104, z], [x1 + .04, 140, z]], false);
+    body += `<path d="${v}" fill="none" stroke="${INK}" stroke-width=".7" opacity=".7"/>`;
+  }
+  if (facing([-1,0,0])){ let v = ''; for (let z = DK + 6; z <= FR_TOP - 6; z += 2) v += pd([[x0 - .04, y0 + 6, z], [x0 - .04, y1 - 6, z]], false);
+    body += `<path d="${v}" fill="none" stroke="${INK}" stroke-width=".8" opacity=".55"/>`; }   // condenser grille on the back
+  const opening = on(PZ(FR_TOP + .03), rectUV(x0 + 2.2, y0 + 2.2, x1 - 2.2, y1 - 2.2));
+  body += fill(pd(opening), INTM.l) + (k > 0 ? '' : clipTo(opening, byDepth(fridgeInside(ts)))) + ink(pd(opening), .8);
+  // sliding glass lid
+  const gl = on(PZ(FR_TOP + .7), rectUV(x0 + .8, y0 + .8 + sl, x1 - .8, y1 - .8 + sl));
+  let glass = fill(pd(gl), '#cfe9f0', 'opacity=".38"') + ink(pd(gl), 1.1)
+    + `<path d="${pd([[x0 + 6, y0 + 8 + sl, FR_TOP + .72], [x0 + 12, y0 + 30 + sl, FR_TOP + .72]], false)}" stroke="#ffffff" stroke-width="1.2" opacity=".5" fill="none"/>`;
+  if (k > 0){ const mech = [...fridgeInside(ts),
+      it([[6, 134, DK + .5], [14, 142, DK + 8]], cyl(10, 138, DK + .5, DK + 8, 4, DARK, toneI, 1, 20)),
+      it([[25, 138, FR_TOP - 10], [28, 142, FR_TOP - 6]], box(25, 138, FR_TOP - 10, 28, 142, FR_TOP - 6, matOf('#3f7fc0'), toneI, .6))];
+    let coil = []; for (let i = 0; i <= 14; i++){ const y = 102 + i*40/14; coil.push([x0 + .7, y, i % 2 ? DK + 31 : DK + 10]); }
+    mech.push(it([[x0 + .4, 101, DK + 9], [x0 + 1, 143, DK + 32]], `<path d="${pd(coil, false)}" fill="none" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/><path d="${pd(coil, false)}" fill="none" stroke="#c6ccce" stroke-width=".8" stroke-linejoin="round"/>`));
+    body = `<g opacity="${f(1 - .72*k)}">${body}</g><g opacity="${f(k)}">${byDepth(mech)}</g>`;
+    glass = `<g opacity="${f(1 - .6*k)}">${glass}</g>`; }
+  return it([[x0, y0, DK], [x1, y1 + sl, FR_TOP + .8]], body + glass);
+}
+
+/* analyzer */
+function analyzerMech(st, ts){
+  const parts = [], running = st.cur === 7 && st.t > .22 && st.t < .8, ph = running ? (st.t - .22)/.58 : 0;
+  const ringA = running ? ph*Math.PI*3 : 0, py = running ? 51.5 + 11.5*Math.cos(ph*Math.PI*6) : 63, dip = running ? Math.max(0, Math.cos(ph*Math.PI*12)) : 0;
+  parts.push(it([[30, 58, BH + 1], [60, 68, BH + 2.5]], box(30, 58, BH + 1, 60, 68, BH + 2.5, METAL, toneI, .7)));
+  if (ts.where === 'an'){ parts.push(it([[ts.p[0] - 3, 60, TRAY_Z - 1], [ts.p[0] + 3, 66, TRAY_Z + 2]], cyl(ts.p[0], 63, TRAY_Z - 1, TRAY_Z + 2, 3, DARK, toneI, .8, 18)));
+    parts.push(it(tubeBox(ts.p), tubeSvg(ts.p, ts))); }
+  let ring = cyl(30, 40, BH + 26, BH + 29, 13, matOf('#cfd6d8'), toneI, 1, 36);
+  if (facing([0,0,1])) for (let i = 0; i < 24; i++){ const a = ringA + i*Math.PI/12, x = 30 + 11*Math.cos(a), y = 40 + 11*Math.sin(a);
+    ring += fill(pd(ringZ(x, y, BH + 29.03, .8, 6)), running ? '#e9c766' : '#7f9aa6'); }
+  parts.push(it([[17, 27, BH + 26], [43, 53, BH + 29]], ring));
+  parts.push(it([[27, 37, BH + 14], [33, 43, BH + 26]], cyl(30, 40, BH + 14, BH + 26, 3, DARK, toneI, .8, 16)));
+  let car = cyl(18, 66, BH + 18, BH + 30, 9.5, matOf('#a9c4d4'), toneI, 1, 32);
+  for (let i = 0; i < 8; i++){ const a = i*Math.PI/4; car += cyl(18 + 6*Math.cos(a), 66 + 6*Math.sin(a), BH + 30, BH + 32, 1.3, [GOLD, LAV, REDC, matOf('#5fe3b4')][i % 4], toneI, .5, 10); }
+  parts.push(it([[8.5, 56.5, BH + 18], [27.5, 75.5, BH + 32]], car));
+  parts.push(it([[15.5, 63.5, BH + 8], [20.5, 68.5, BH + 18]], cyl(18, 66, BH + 8, BH + 18, 2.5, DARK, toneI, .8, 16)));
+  parts.push(it([[27, 20, BH + 26], [33, 24, BH + 31]], box(27, 20, BH + 26, 33, 24, BH + 31, matOf('#f0c060'), toneI, .7)
+    + (running ? `<path d="${pd([[30, 24, BH + 28.5], [30, 56, BH + 28.5]], false)}" stroke="#ffd34d" stroke-width="1.6" opacity=".85" fill="none"/>` : '')));
+  parts.push(it([[27, 56, BH + 26], [33, 60, BH + 31]], box(27, 56, BH + 26, 33, 60, BH + 31, DARK, toneI, .7)));
+  parts.push(it([[42, 12, AN_TOP - 6.1], [44, 76, AN_TOP - 3.9]], rod([43, 12, AN_TOP - 5], [43, 76, AN_TOP - 5], 1.1, METAL, toneI, .7)));
+  const nz = AN_TOP - 8 - 6 - 14*dip;
+  parts.push(it([[40, py - 3, AN_TOP - 8], [46, py + 3, AN_TOP - 3]], box(40, py - 3, AN_TOP - 8, 46, py + 3, AN_TOP - 3, DARK, toneI, .8)));
+  parts.push(it([[42.6, py - .4, nz], [43.4, py + .4, AN_TOP - 8]], rod([43, py, AN_TOP - 8], [43, py, nz], .35, METAL, toneI, .5)));
+  parts.push(it([[50, 14, BH + 6], [54, 18, BH + 24]], box(50, 14, BH + 6, 54, 18, BH + 24, matOf('#d9dde0'), toneI, .7) + rod([52, 16, BH + 24], [52, 16, BH + 28], .5, METAL, toneI, .5)));
+  parts.push(it([[8, 62, BH + .5], [22, 78, BH + 10]], box(8, 62, BH + .5, 22, 78, BH + 10, METAL, toneI, .8)));
+  parts.push(it([[6, 10, BH + 4], [7, 40, BH + 30]], box(6, 10, BH + 4, 7, 40, BH + 30, PCBM, toneI, .7)));
+  return { parts, py };
+}
+function analyzerItem(st, m, ts, k){
+  const [x0, x1, y0, y1] = AN;
+  let body = box(x0, y0, BH, x1, y1, AN_TOP, CERAMIC, tone, 2.2);
+  if (facing([1,0,0])){
+    body += fill(pd(on(PX(x1 + .03), rectUV(y0, AN_TOP - 7, y1, AN_TOP - 4.5))), m.l);
+    body += fill(pd(on(PX(x1 + .03), rectUV(52, BH + 32, 76, BH + 48))), SCR) + ink(pd(on(PX(x1 + .03), rectUV(52, BH + 32, 76, BH + 48))), 1);
+    const t = st.cur === 7 ? st.t : -1;
+    const line1 = t < 0 ? (st.done >= 7 ? 'RESULTS SENT' : 'READY') : t < .22 ? 'LOADING' : t < .8 ? 'RUNNING' : 'RELEASED';
+    body += tx(x1 + .06, 64, BH + 43.5, line1, 2.6, SCRT, 800);
+    if (t >= .22 && t < .8){ const w = (t - .22)/.58; body += fill(pd(on(PX(x1 + .05), rectUV(76 - 2 - 20*w, BH + 36, 74, BH + 38))), SCRT); }
+    if (t >= .8 || (t < 0 && st.done >= 7)) body += tx(x1 + .06, 64, BH + 37.5, 'GLU 5.4  K 4.1', 2.1, SCRT, 700);
+    body += fill(pd(on(PX(x1 + .03), ellUV(14, BH + 48, 1.6, 1.6, 12))), t >= 0 && t < .8 ? '#f4b829' : '#43c25c') + ink(pd(on(PX(x1 + .03), ellUV(14, BH + 48, 1.6, 1.6, 12))), .6);
+    body += ink(pd(on(PX(x1 + .03), rectUV(12, BH + 6, 46, BH + 30))), 1) + ink(pd(on(PX(x1 + .03), rectUV(40, BH + 16, 42, BH + 22))), .9);
+    body += fill(pd(on(PX(x1 + .03), rectUV(TRAYB[2], BH + 3, TRAYB[3], BH + 10))), '#2b2523');
+    body += tx(x1 + .06, 30, AN_TOP - 12, 'CHEMISTRY ANALYZER', 2.8, INK, 800);
+  }
+  if (facing([0,1,0])){ let v = ''; for (let z = BH + 30; z <= BH + 46; z += 2.2) v += pd([[14, y1 + .04, z], [50, y1 + .04, z]], false);
+    body += `<path d="${v}" fill="none" stroke="${INK}" stroke-width=".9" opacity=".6"/>`; }
+  if (facing([-1,0,0])){   // the back: power inlet, switch, network port and the exhaust vents
+    body += fill(pd(on(PX(x0 - .03), rectUV(14, BH + 6, 22, BH + 12))), DARK.m) + ink(pd(on(PX(x0 - .03), rectUV(14, BH + 6, 22, BH + 12))), .8)
+      + fill(pd(on(PX(x0 - .03), rectUV(26, BH + 7, 30, BH + 11))), REDC.l) + fill(pd(on(PX(x0 - .03), rectUV(34, BH + 7, 39, BH + 10))), DARK.d);
+    let v = ''; for (let yv = 46; yv <= 74; yv += 2.4) v += pd([[x0 - .04, yv, BH + 20], [x0 - .04, yv, BH + 44]], false);
+    body += `<path d="${v}" fill="none" stroke="${INK}" stroke-width=".9" opacity=".6"/>`; }
+  if (facing([0,0,1])) body += ink(pd(on(PZ(AN_TOP + .03), rectUV(10, 52, 34, 76))), 1) + ink(pd(on(PZ(AN_TOP + .03), rectUV(38, 14, 54, 46))), .8);
+  let py = 63;
+  if (k > 0){ const am = analyzerMech(st, ts); py = am.py; body = `<g opacity="${f(1 - .72*k)}">${body}</g><g opacity="${f(k)}">${byDepth(am.parts)}</g>`; }
+  return { item: it([[x0, y0, BH], [x1, y1, AN_TOP]], body), py };
+}
+function trayItem(st){
+  const [x0, x1, y0, y1] = TRAYB, dx = puckDx(st), px = PUCK[0] + dx;
+  let s = box(x0, y0, BH, x1, y1, TRAY_Z, TRAYM, toneI, 1.1) + `<path d="${pd([[x0, PUCK[1], TRAY_Z + .03], [x1 - 1.5, PUCK[1], TRAY_Z + .03]], false)}" stroke="#4a5256" stroke-width="1.4" fill="none"/>`;
+  if (px > 62) s += cyl(px, PUCK[1], TRAY_Z, TRAY_Z + 2, 3, DARK, toneI, .9, 18);
+  return it([[x0, y0, BH], [x1, y1, TRAY_Z + 2]], s);
+}
+
+/* ---------- scene ---------- */
+const BTOP = boardTop(-4, -4, BW + 4, BL + 4, BH, 6), DTOP = on(PZ(DK), rectUV(DECKB[0], DECKB[2], DECKB[1], DECKB[3]));
+const corners = (x0, y0, z0, x1, y1, z1) => { const o = []; for (const x of [x0, x1]) for (const y of [y0, y1]) for (const z of [z0, z1]) o.push([x, y, z]); return o; };
+function scene(st, m){
+  const k = ease(st.xr || 0), ts = tubeState(st);
+  let s = board(-4, -4, BW + 4, BL + 4, BH, 6, BOARD);
+  // in see-through the cases are ghosts, so the solid shadow under a ghosted body would show through it: those go
+  s += clipTo(BTOP, [castShadow(corners(INBOX[0], INBOX[2], BH, INBOX[1], INBOX[3], INBOX_Z + 6), BH),
+    k > 0 ? '' : castShadow(corners(AN[0], AN[2], BH, AN[1], AN[3], AN_TOP), BH), castShadow(corners(TRAYB[0], TRAYB[2], BH, TRAYB[1], TRAYB[3], TRAY_Z), BH)].join(''));
+  s += deckSvg(st, m, k);
+  const tA = armTool(st, 'A', ts), tB = armTool(st, 'B', ts);
+  const armA = armItems(ARM_A, tA.tool, tA.g, m, tA.busy), armB = armItems(ARM_B, tB.tool, tB.g, m, tB.busy);
+  s += clipTo(DTOP, [k > 0 ? '' : castShadow(corners(FR[0], FR[2], DK, FR[1], FR[3], FR_TOP), DK), k > 0 ? '' : castShadow(ringZ(CEN[0], CEN[1], DK, CEN_R, 16).concat(ringZ(CEN[0], CEN[1], CEN_TOP + 2, CEN_R, 16)), DK),
+    castShadow(corners(RX0, RACKS[0].y - 4.5, DK, RX1, RACKS[2].y + 4.5, RTOP), DK), castShadow([[MAST[0] - 1.2, MAST[1], DK], [MAST[0] + 1.2, MAST[1], DK], [MAST[0] - 1.2, MAST[1], HEAD_Z], [MAST[0] + 1.2, MAST[1], HEAD_Z]], DK),
+    castShadow(corners(PAD[0] - 4, PAD[1] - 4, HEAD_Z - 6, PAD[0] + 4, PAD[1] + 4, HEAD_Z + 3), DK),
+    armShadow(armA.A), armShadow(armB.A)].join(''));
+  const mast = mastItems(st, k), an = analyzerItem(st, m, ts, k);
+  const items = [it([[INBOX[0], INBOX[2], BH], [INBOX[1], INBOX[3], INBOX_Z + 9]], inboxSvg(st)), ...mast.items, padItem(), ...rackItems(),
+    ...centItems(st, m, ts, k), fridgeItem(st, ts, k), an.item, trayItem(st), ...armA.items, ...armB.items];
+  if (ts.where === 'free') items.push(it(tubeBox(ts.p), tubeSvg(ts.p, ts)));
+  s += byDepth(items);
+  // camera flash: a cone of light from the ring onto the pad, and a scan line climbing the tube
+  if (mast.flash > .02){ const a = ringZ(PAD[0], PAD[1], HEAD_Z - 6, 3.4, 20), b = ringZ(PAD[0], PAD[1], PAD_Z + .1, 6, 20);
+    s += fill(sp(hull([...a, ...b].map(p => P(...p)))), '#dcfff2', `opacity="${f(.42*mast.flash)}"`);
+    const zs = PAD_Z + TUBE_TOP*((st.t*2.2) % 1);
+    s += `<path d="${pd(ringZ(PAD[0], PAD[1], zs, 2.4, 18))}" fill="none" stroke="#5fe3b4" stroke-width="1.4" opacity="${f(mast.flash)}"/>`; }
+  // labels
+  if (k > .6) s += xrCallouts([
+      { at:[20, 156, DK - .4], text:'POLICY COMPUTER', on: !!st.cur },
+      { at:[32, 186, BH + 1.8], text:'CABLE RUN', on: !!st.cur },
+      { at: armB.A.tip, text:'GRIPPER', on: tB.busy },
+      { at:[PAD[0], PAD[1], HEAD_Z - 3], text:'RING LIGHT', on: st.cur === 2 },
+      { at:[CEN[0], CEN[1], DK + 10.5], text:'ROTOR', on: rpmOf(st) > 0 },
+      { at:[CEN[0] - 4, CEN[1], DK + 3], text:'DRIVE MOTOR', on: rpmOf(st) > 0 },
+      { at:[43, an.py, AN_TOP - 8], text:'SAMPLE PROBE', on: st.cur === 7 },
+      { at:[18, 40, BH + 29], text:'REACTION RING', on: st.cur === 7 },
+      { at:[18, 72, BH + 32], text:'REAGENTS', on: st.cur === 7 },
+      { at:[30, 22, BH + 31], text:'PHOTOMETER', on: st.cur === 7 },
+      { at:[10, 138, DK + 8], text:'COMPRESSOR', on: true },
+      { at:[16, 111, FR_RZ + 3], text:'ARCHIVE RACKS', on: st.cur === 9 } ], [0, BW, 0, BL, 0, LAB_H]);
+  else s += xrCallouts([
+      { at:[56, 262, INBOX_Z + 3], text:'COURIER INBOX', on: st.cur === 1 },
+      { at:[PAD[0], PAD[1], HEAD_Z + 3], text:'INSPECTION CAMERA', on: st.cur === 2 },
+      { at:[MAST[0] + 2.4, MAST[1] - 6, DK + 30], text:'LIS', on: st.cur === 3 },
+      { at:[RX1, 163, RTOP], text:'SORT RACKS', on: st.cur === 4 },
+      { at: armA.A.el, text:'ARM A', on: tA.busy },
+      { at: armB.A.el, text:'ARM B', on: tB.busy },
+      { at:[CEN[0], CEN[1] + 6, CEN_TOP + 2], text:'CENTRIFUGE', on: st.cur === 5 },
+      { at:[FR[1], 104, FR_TOP], text:'ARCHIVE FRIDGE', on: st.cur === 9 },
+      { at:[AN[1], 20, AN_TOP], text:'ANALYZER', on: st.cur === 7 } ], [0, BW, 0, BL, 0, LAB_H]);
+  return s;
+}
+
+/* ---------- behaviour ---------- */
+let ui;
+function begin(st){ st.cur = st.done + 1; st.t = 0; const s = STEPS[st.cur]; ui.flash(`${st.cur}. ${s.name}: ${s.note}`, Math.min(3200, s.dur*1000)); }
+// one clock for the whole journey: a step that ends either hands straight on to the next (Run the journey) or stops
+function startStep(st){
+  begin(st);
+  if (st.running) return; st.running = true;
+  ui.animate(dt => {
+    if (!st.cur || st.scrub){ st.running = false; return false; }   // the page's scroll is driving it
+    st.t += dt / STEPS[st.cur].dur;
+    if (st.t >= 1){ st.done = st.cur; st.cur = 0; st.t = 0;
+      if (st.auto && st.done < 9){ begin(st); return true; }
+      st.auto = false; st.running = false; return false; }
+    return true; });
+}
+function nextStep(st){
+  if (st.cur) return ui.flash(`Still on step ${st.cur}: ${STEPS[st.cur].name}`);
+  if (st.done >= 9) return ui.flash('This tube is archived. Start a new specimen');
+  startStep(st);
+}
+function runAll(st){ st.auto = true; if (st.done >= 9){ st.done = 0; } if (!st.cur) startStep(st); }
+function reset(st){ if (st.cur) return ui.flash('Wait for the current step to finish'); st.done = 0; st.auto = false; }
+
+ui = mountFigure({
+  fig:'02', turn:'full', title:'Clinical bench, digital twin', credit:false,
+  size:[BW + 8, BL + 8, LAB_H], center:[BW/2, BL/2], palette:'mint',
+  state:{ done:0, cur:0, t:0, auto:false, running:false },
+  scene,
+  stats: st => { const n = st.cur || st.done, rpm = rpmOf(st);
+    return [ { label:'Step', value: `${n} / 9` },
+      { label:'Now', value: n ? STEPS[n].name : 'Sealed bag', small:true },
+      { label:'LIS', value: lisOf(st), small:true },
+      rpm ? { label:'Rotor', value: rpm + ' rpm', small:true } : null ]; },
+  buttons:[
+    { label:'Next step', onClick:(st) => nextStep(st) },
+    { label:'Run the journey', onClick:(st) => runAll(st) },
+    { label:'New specimen', onClick:(st) => reset(st) },
+  ],
+  acts:{ bag:(st) => { if (!st.done && !st.cur) nextStep(st); } },
+  params:(st, q) => {
+    if (q.has('step')) st.done = Math.max(0, Math.min(9, +q.get('step') | 0));
+    if (q.has('cur')){ st.cur = Math.max(1, Math.min(9, +q.get('cur') | 0)); st.done = st.cur - 1; st.t = clamp01(+(q.get('t') || 0)); }
+  },
+});
+xrMount(() => ui, () => '');
+</script></body></html>

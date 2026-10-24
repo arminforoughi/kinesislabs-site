@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kinesis Labs — specimen receiving, automated at the bench</title>
-<meta name="description" content="A benchtop station that takes a sealed courier bag through unbagging, tube inspection, LIS accessioning, sorting and centrifugation — the same on every shift.">
+<title>Kinesis Labs — clinical lab automation, before and after the analyzer</title>
+<meta name="description" content="Benchtop robots that connect to your LIS and do the hands-on work before and after the analyzer, from the courier bag to the archive fridge.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -15,19 +15,19 @@
 <meta property="og:site_name" content="Kinesis Labs">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://kinesislabs.tech/">
-<meta property="og:title" content="Kinesis Labs — specimen receiving, automated at the bench">
-<meta property="og:description" content="A benchtop station that takes a sealed courier bag through unbagging, tube inspection, LIS accessioning, sorting and centrifugation — the same on every shift.">
+<meta property="og:title" content="Kinesis Labs — clinical lab automation, before and after the analyzer">
+<meta property="og:description" content="Benchtop robots that connect to your LIS and do the hands-on work before and after the analyzer, from the courier bag to the archive fridge.">
 <meta property="og:image" content="https://kinesislabs.tech/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Kinesis Labs — most clinical lab errors happen before the analyzer">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kinesis Labs — specimen receiving, automated at the bench">
-<meta name="twitter:description" content="A benchtop station that takes a sealed courier bag through unbagging, tube inspection, LIS accessioning, sorting and centrifugation — the same on every shift.">
+<meta name="twitter:title" content="Kinesis Labs — clinical lab automation, before and after the analyzer">
+<meta name="twitter:description" content="Benchtop robots that connect to your LIS and do the hands-on work before and after the analyzer, from the courier bag to the archive fridge.">
 <meta name="twitter:image" content="https://kinesislabs.tech/assets/og-image.png">
 <link rel="apple-touch-icon" href="assets/icon-512.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=28">
+<link rel="stylesheet" href="assets/site.css?v=52">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,10 +44,12 @@
         "height": 512
       },
       "email": "alina@kinesislabs.tech",
-      "description": "Kinesis Labs builds a benchtop station that takes a sealed courier bag through unbagging, tube inspection, LIS accessioning, sorting and centrifugation.",
+      "description": "Kinesis Labs builds benchtop robots that connect to a clinical lab's LIS and automate the pre-analytical and post-analytical work around testing.",
       "knowsAbout": [
         "clinical laboratory automation",
         "specimen receiving",
+        "pre-analytical automation",
+        "post-analytical automation",
         "pre-analytical error",
         "laboratory robotics"
       ]
@@ -64,12 +66,12 @@
     },
     {
       "@type": "Service",
-      "name": "Specimen receiving automation",
+      "name": "Clinical lab bench automation",
       "serviceType": "Clinical laboratory automation",
       "provider": {
         "@id": "https://kinesislabs.tech/#organization"
       },
-      "description": "A benchtop station that unbags a sealed courier bag, inspects each tube, accessions it into the LIS, sorts it into spin, no-spin or hold racks, and runs the centrifuge."
+      "description": "A benchtop station that receives, inspects, accessions, sorts, spins and aliquots specimens before testing, and unloads, recaps, archives and retrieves them after it."
     }
   ]
 }
@@ -84,11 +86,10 @@
     <b>Kinesis</b><span>Labs</span>
   </a>
   <span class="nav-links">
+    <a href="#station">How it works</a>
     <a href="#demo">Demo</a>
     <a href="#problem">Problem</a>
-    <a href="#station">Station</a>
-    <a href="#physical-ai">Physical AI</a>
-    <a href="#team">Team</a>
+    <a href="team.html">Team</a>
   </span>
   <a class="btn btn--mint" href="contact.html">Request a demo</a>
 </nav>
@@ -103,23 +104,96 @@
   <div class="hero-stage">
   <div class="wrap hero-grid">
    <div class="hero-copy">
-    <p class="eyebrow">Specimen receiving</p>
-    <h1 id="hero-h">Most clinical lab errors happen before the analyzer.</h1>
-    <p class="lead">Kinesis Labs builds a benchtop station that takes a sealed courier bag through unbagging, tube inspection, LIS accessioning, sorting and centrifugation &mdash; and hands finished racks to staff the same way at 3 a.m. as at 3 p.m.</p>
+    <p class="eyebrow">Clinical lab automation</p>
+    <h1 id="hero-h">Most clinical lab errors happen outside the analyzer.</h1>
+    <p class="lead">Kinesis Labs builds benchtop robots that connect to your LIS and do the hands-on work on both sides of testing &mdash; from the sealed courier bag to the archive fridge &mdash; the same way at 3 a.m. as at 3 p.m.</p>
     <div class="hero-actions">
       <a class="btn btn--mint btn--lg" href="contact.html">Request a demo</a>
     </div>
+    <ul class="chips" aria-label="What the station covers">
+      <li class="chip--on">Pre-analytical</li>
+      <li>Analyzer hand-off</li>
+      <li class="chip--on">Post-analytical</li>
+      <li>LIS-integrated</li>
+    </ul>
    </div>
   </div>
   </div>
 </section>
 
+<!-- How it works: a pinned stage. Scrolling through it runs the bench animation through every step,
+     and the step list beside it follows. -->
+<section class="sec how" id="station" aria-labelledby="station-h" data-mesh="0.80 0.40 0.55 0.35">
+  <div class="wrap">
+    <div class="head">
+      <p class="label">How it works</p>
+      <h2 id="station-h">From the courier bag to the archive fridge.</h2>
+      <p class="lead">One station on the bench you already have, wired into your LIS, middleware and instruments. Scroll to run it through every step.</p>
+    </div>
+  </div>
+  <div class="how-run" style="--steps:10">
+    <div class="how-stick">
+      <div class="wrap how-grid">
+        <div class="how-left">
+        <div class="twin-frame">
+          <iframe src="twin.html?embed=scroll&amp;v=8" title="Animated clinical bench: the station working one tube through every step"></iframe>
+        </div>
+        <div class="jt">
+          <div class="jt-phases" aria-hidden="true"><span class="jt-ph-pre">Before the analyzer</span><span class="jt-ph-an">Analyzer</span><span class="jt-ph-post">After</span></div>
+          <div class="jt-rail">
+            <ol class="jt-track">
+              <li class="jt-step" data-phase="Before the analyzer" data-n="1"><button type="button"><span class="jt-dot">1</span><span class="jt-name">Unbag</span></button><span class="jt-desc" hidden>Opens the sealed courier bag and pulls out the tubes and the requisition.</span></li>
+              <li class="jt-step" data-phase="Before the analyzer" data-n="2"><button type="button"><span class="jt-dot">2</span><span class="jt-name">Inspect</span></button><span class="jt-desc" hidden>Reads label, tube type, fill and integrity, and flags any conflict with the order.</span></li>
+              <li class="jt-step" data-phase="Before the analyzer" data-n="3"><button type="button"><span class="jt-dot">3</span><span class="jt-name">Accession</span></button><span class="jt-desc" hidden>Checks each accepted tube into the LIS, linked to its order.</span></li>
+              <li class="jt-step" data-phase="Before the analyzer" data-n="4"><button type="button"><span class="jt-dot">4</span><span class="jt-name">Sort</span></button><span class="jt-desc" hidden>Routes to spin, no-spin or hold. Held tubes wait for a person.</span></li>
+              <li class="jt-step" data-phase="Before the analyzer" data-n="5"><button type="button"><span class="jt-dot">5</span><span class="jt-name">Centrifuge</span></button><span class="jt-desc" hidden>Balances the rack, runs the right protocol, unloads when it stops.</span></li>
+              <li class="jt-step" data-phase="Before the analyzer" data-n="6"><button type="button"><span class="jt-dot">6</span><span class="jt-name">Aliquot and load</span></button><span class="jt-desc" hidden>Decaps, splits primaries into labelled daughter tubes and loads analyzer racks.</span></li>
+              <li class="jt-step jt-hub" data-phase="At the analyzer" data-n=""><button type="button"><span class="jt-dot"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6.5 8v4M10 8v4M13.5 8v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="jt-name">Your analyzer</span></button><span class="jt-desc" hidden>Stays exactly as it is. Loaded in the order your middleware expects.</span></li>
+              <li class="jt-step" data-phase="After the analyzer" data-n="7"><button type="button"><span class="jt-dot">7</span><span class="jt-name">Unload and recap</span></button><span class="jt-desc" hidden>Pulls racks the moment results release and closes every tube.</span></li>
+              <li class="jt-step" data-phase="After the analyzer" data-n="8"><button type="button"><span class="jt-dot">8</span><span class="jt-name">Archive</span></button><span class="jt-desc" hidden>Stores each tube in indexed fridge racks, its position written to the LIS.</span></li>
+              <li class="jt-step" data-phase="After the analyzer" data-n="9"><button type="button"><span class="jt-dot">9</span><span class="jt-name">Retrieve and dispose</span></button><span class="jt-desc" hidden>Finds any tube for an add-on or rerun, and clears expired ones by policy.</span></li>
+            </ol>
+            <span class="jt-tube" aria-hidden="true"></span>
+          </div>
+          <p class="jt-cap" aria-live="polite"><span class="jt-cap-k"></span><span class="jt-cap-t"></span><span class="jt-cap-d"></span></p>
+        </div>
+        </div>
+        <div class="how-steps">
+          <ol class="sl">
+            <li class="sl-label">Before the analyzer</li>
+            <li class="sl-step"><button type="button"><span class="sl-n">1</span><span class="sl-name">Unbag</span><span class="sl-desc">Opens the sealed courier bag and pulls out the tubes and the requisition.</span></button></li>
+            <li class="sl-step"><button type="button"><span class="sl-n">2</span><span class="sl-name">Inspect</span><span class="sl-desc">Reads label, tube type, fill and integrity, and flags any conflict with the order.</span></button></li>
+            <li class="sl-step"><button type="button"><span class="sl-n">3</span><span class="sl-name">Accession</span><span class="sl-desc">Checks each accepted tube into the LIS, linked to its order.</span></button></li>
+            <li class="sl-step"><button type="button"><span class="sl-n">4</span><span class="sl-name">Sort</span><span class="sl-desc">Routes to spin, no-spin or hold. Held tubes wait for a person.</span></button></li>
+            <li class="sl-step"><button type="button"><span class="sl-n">5</span><span class="sl-name">Centrifuge</span><span class="sl-desc">Balances the rack, runs the right protocol, unloads when it stops.</span></button></li>
+            <li class="sl-step"><button type="button"><span class="sl-n">6</span><span class="sl-name">Aliquot and load</span><span class="sl-desc">Decaps, splits primaries into labelled daughter tubes and loads analyzer racks.</span></button></li>
+            <li class="sl-label">At the analyzer</li>
+            <li class="sl-step sl-hub"><button type="button"><span class="sl-n">&#9632;</span><span class="sl-name">Your analyzer</span><span class="sl-desc">Stays exactly as it is. Loaded in the order your middleware expects.</span></button></li>
+            <li class="sl-label">After the analyzer</li>
+            <li class="sl-step"><button type="button"><span class="sl-n">7</span><span class="sl-name">Unload and recap</span><span class="sl-desc">Pulls racks the moment results release and closes every tube.</span></button></li>
+            <li class="sl-step"><button type="button"><span class="sl-n">8</span><span class="sl-name">Archive</span><span class="sl-desc">Stores each tube in indexed fridge racks, its position written to the LIS.</span></button></li>
+            <li class="sl-step"><button type="button"><span class="sl-n">9</span><span class="sl-name">Retrieve and dispose</span><span class="sl-desc">Finds any tube for an add-on or rerun, and clears expired ones by policy.</span></button></li>
+          </ol>
+          <div class="how-bar" aria-hidden="true"><i></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap how-after">
+    <div class="notes">
+      <p>Held specimens are deliberately not accessioned, so nothing downstream can pull, bill or treat them as received until a person rules on them.</p>
+      <p>Every job is checked before and verified after: order, tube and destination must agree before a tube moves, and cameras confirm the result before the LIS is updated.</p>
+      <p>Receiving runs on the bench prototype today. Each further step is a new trained skill on the same two arms.</p>
+    </div>
+  </div>
+</section>
+
 <!-- Bench demo -->
-<section class="sec" id="demo" aria-labelledby="demo-h" data-mesh="0.34 0.72 0.60 0.60">
+<section class="sec dark" id="demo" aria-labelledby="demo-h" data-mesh="0.52 0.88 0.55 0.25">
   <div class="wrap demo-grid">
     <div class="demo-copy">
       <p class="label">On the bench</p>
-      <h2 id="demo-h">The prototype, working real tubes.</h2>
+      <h2 id="demo-h">Receiving first, working real tubes.</h2>
       <p class="lead">Each task runs in simulation first, then on the bench: the arm reads each specimen, decides what happens to it, and checks the accepted ones into the LIS. The bench clip plays muted &mdash; unmute for the audio.</p>
       <ul class="demo-list">
         <li><b>Reads the requirement</b><span>Reasons through what the ordered test needs, and takes only a specimen that satisfies it.</span></li>
@@ -158,7 +232,7 @@
   <div class="wrap">
     <div class="head">
       <p class="label">The problem, in numbers</p>
-      <h2 id="problem-h">The receiving bench is where the errors start and the hours go.</h2>
+      <h2 id="problem-h">The work around the analyzer is where the errors start and the hours go.</h2>
     </div>
 
     <dl class="stats">
@@ -173,8 +247,8 @@
       <div class="stat">
         <dt>$190&ndash;225k</dt>
         <dd>
-          <p class="means">a year to keep one receiving desk staffed around the clock.</p>
-          <p class="why">Specimens arrive on the courier's schedule, so the desk is covered on three shifts. That is the fully loaded cost, every year, for work that is mostly unbagging, checking and racking.</p>
+          <p class="means">a year to keep one bench position staffed around the clock.</p>
+          <p class="why">Specimens arrive on the courier's schedule, so the bench is covered on three shifts. That is the fully loaded cost, every year, for work that is mostly unbagging, racking, splitting and filing.</p>
           <span class="src">BLS wage data, fully loaded</span>
         </dd>
       </div>
@@ -182,157 +256,39 @@
         <dt>7&ndash;11%</dt>
         <dd>
           <p class="means">of clinical lab positions sit vacant, higher in some regions.</p>
-          <p class="why">The person you need at 2 a.m. is the hardest one to hire and keep. When the seat is open, receiving gets covered by whoever is available, and that is exactly when the same tube starts being handled two different ways.</p>
+          <p class="why">The person you need at 2 a.m. is the hardest one to hire and keep. When the seat is open, the bench gets covered by whoever is available, and that is exactly when the same tube starts being handled two different ways.</p>
           <span class="src">Clinical laboratory workforce vacancy data</span>
         </dd>
       </div>
     </dl>
 
     <div class="stats-prose">
-      <p>Put those together and the picture is simple. The step where most laboratory error begins is the step that is staffed around the clock by the role that is hardest to fill, and it is the one step a lab cannot slow down, because the courier does not wait.</p>
+      <p>And another 18&ndash;47% of errors happen after the result: add-ons that never reach the tube, reruns on a specimen nobody can find. The analyzer is automated. The hands-on work on both sides of it is not, and it is staffed around the clock by the role that is hardest to fill.</p>
     </div>
-  </div>
-</section>
-
-<!-- 2. How it works -->
-<section class="sec dark" id="station" aria-labelledby="station-h" data-mesh="0.80 0.76 0.62 0.95">
-  <div class="wrap">
-    <div class="head">
-      <p class="label">How it works</p>
-      <h2 id="station-h">Sealed bag in. Racked, accessioned, spun specimens out.</h2>
-      <p class="lead">One station, six steps, on the receiving desk you already have.</p>
-    </div>
-
-    <ol class="grid grid--3">
-      <li class="step">
-        <span class="n" aria-hidden="true">1</span>
-        <h3>Unbag</h3>
-        <p>Opens the sealed courier bag and removes the contents, including the requisition paperwork, without disturbing the tubes.</p>
-      </li>
-      <li class="step">
-        <span class="n" aria-hidden="true">2</span>
-        <h3>Inspect</h3>
-        <p>Reads each tube: label, tube type and additive, fill volume, and physical integrity. Flags any conflict between the ordered test and the tube it arrived in.</p>
-      </li>
-      <li class="step">
-        <span class="n" aria-hidden="true">3</span>
-        <h3>Accession into the LIS</h3>
-        <p>Checks each accepted specimen into the laboratory information system so the order and the physical tube are linked before anything moves.</p>
-      </li>
-      <li class="step">
-        <span class="n" aria-hidden="true">4</span>
-        <h3>Sort into racks</h3>
-        <p>Sorts into spin, no-spin and hold racks based on the ordered test and the tube it arrived in.</p>
-      </li>
-      <li class="step">
-        <span class="n" aria-hidden="true">5</span>
-        <h3>Load, run and unload the centrifuge</h3>
-        <p>Balances and loads the spin rack, runs the correct protocol, and unloads it when the cycle finishes.</p>
-      </li>
-      <li class="step">
-        <span class="n" aria-hidden="true">6</span>
-        <h3>Signal staff</h3>
-        <p>Tells staff which racks are ready for the analyzers and which specimens are being held for a person to resolve.</p>
-      </li>
-    </ol>
-
-    <div class="notes">
-      <p>Held specimens are deliberately not accessioned. A tube in the hold rack has not been checked in, so nothing downstream can pull it, bill it, or treat it as received before a person has ruled on it.</p>
-      <p>Accessioned specimens move from &ldquo;collected&rdquo; to &ldquo;in-lab&rdquo; in the LIS, which is the state change everyone downstream is actually waiting on.</p>
-    </div>
-  </div>
-</section>
-
-<!-- 3. Physical AI -->
-<section class="sec" id="physical-ai" aria-labelledby="pai-h" data-mesh="0.30 0.62 0.65 0.60">
-  <div class="wrap">
-    <div class="head">
-      <p class="label">Physical AI</p>
-      <h2 id="pai-h">Trained by teleoperation. Deployed autonomously.</h2>
-      <p class="lead">Teleoperation is how the system learns, not how it runs.</p>
-    </div>
-
-    <div class="grid grid--2">
-      <div class="feat">
-        <h3>Learns from the bench</h3>
-        <p>A licensed technologist drives the arms through real receiving work. Those demonstrations are the training data.</p>
-      </div>
-      <div class="feat">
-        <h3>Runs on its own</h3>
-        <p>What ships is a trained policy running on the station in your lab. No remote operator, no per-specimen human in the loop.</p>
-      </div>
-      <div class="feat">
-        <h3>Judgment at the sealed bag</h3>
-        <p>The hard part is not moving tubes. It is deciding, tube by tube, what gets accessioned, what gets spun, and what gets held.</p>
-      </div>
-      <div class="feat">
-        <h3>Two arms, one bench</h3>
-        <p>A benchtop station that works the receiving desk you already have, not a track line that replaces the room.</p>
-      </div>
-    </div>
-
-    <p class="callout">This is the single most common misreading of what we do, so we state it plainly: the customer receives <strong>a trained policy, not a remote operator</strong>. Nobody is driving the arms from off site.</p>
   </div>
 </section>
 
 <!-- Closing CTA -->
-<section class="sec cta" id="contact" aria-labelledby="cta-h" data-mesh="0.22 0.64 0.80 0.95">
+<section class="sec cta" id="contact" aria-labelledby="cta-h" data-mesh="0.88 0.72 0.55 0.40">
   <div class="wrap">
     <p class="label">See it on your workflow</p>
-    <h2 id="cta-h">Hand the receiving desk to the station.</h2>
-    <p class="lead" style="margin:1.25rem auto 0;max-width:38rem">Tell us what arrives at your bench, or pick a time to talk it through with Alina.</p>
+    <h2 id="cta-h">Hand the bench to the station.</h2>
+    <p class="lead" style="margin:1.25rem auto 0;max-width:38rem">Tell us which bench work takes your hours, or pick a time to talk it through with <a href="team.html">Alina</a>.</p>
     <a class="btn btn--mint btn--lg" href="contact.html">Get in touch</a>
-  </div>
-</section>
-
-<!-- 4. Who we are -->
-<section class="sec dark team" id="team" aria-labelledby="team-h" data-mesh="0.50 0.85 0.60 0.45">
-  <div class="wrap">
-    <h2 id="team-h" class="label">Who we are</h2>
-    <div class="team-row">
-      <article class="person">
-        <div class="person-head">
-          <img src="assets/team-alina.jpg" width="400" height="400" alt="Alina Minikhanova" loading="lazy" decoding="async">
-          <div>
-            <h3>Alina Minikhanova</h3>
-            <p class="person-role">Co-founder &middot; Knows the task</p>
-            <p class="person-cred">Clinical Lab Scientist</p>
-          </div>
-        </div>
-        <ul class="person-list">
-          <li>10 years doing this exact work by hand, across every department of a hospital lab.</li>
-          <li>3 years building the software systems labs use to track samples.</li>
-          <li>Labels the training data, judges whether a demonstration was good, and can say why a robot got it wrong.</li>
-          <li>Knows, by name, the lab directors this station is built for.</li>
-        </ul>
-      </article>
-      <article class="person">
-        <div class="person-head">
-          <img src="assets/team-armin.jpg" width="400" height="400" alt="Armin Foroughi" loading="lazy" decoding="async">
-          <div>
-            <h3>Armin Foroughi</h3>
-            <p class="person-role">Co-founder &middot; Builds the system</p>
-            <p class="person-cred">Robotics &middot; Electronics &middot; Machine learning</p>
-          </div>
-        </div>
-        <ul class="person-list">
-          <li>Has already automated a lab assay end to end with a robot arm.</li>
-          <li>Has built several drones and robots, from the electronics up.</li>
-          <li>Computer vision and robot learning; trains models on GPU clusters.</li>
-          <li>Biochemistry background and real wet-lab time, so the constraints need no translation.</li>
-          <li>MS Data Science, University of Virginia. BSc Biochemistry with Data Science, UC San Diego.</li>
-        </ul>
-      </article>
-    </div>
+    <ul class="chips chips--center" aria-label="What the call is">
+      <li>20 minutes</li>
+      <li>With a licensed CLS</li>
+      <li>No slides</li>
+    </ul>
   </div>
 </section>
 
 </main>
 
-<footer class="foot" data-mesh="0.22 0.47 0.95 0.85">
+<footer class="foot" data-mesh="0.88 0.72 0.55 0.40">
   <div class="wrap">
     <p>&copy; 2026 Kinesis Labs</p>
-    <p><a href="mailto:alina@kinesislabs.tech">alina@kinesislabs.tech</a></p>
+    <p class="foot-links"><a href="team.html">Team</a><a href="contact.html">Contact</a><a href="mailto:alina@kinesislabs.tech">alina@kinesislabs.tech</a></p>
   </div>
 </footer>
 
@@ -717,7 +673,7 @@
      canvas behind the page cannot be seen through them. */
   var paperEls = [];
   function collectPaper() {
-    paperEls = [].slice.call(document.querySelectorAll('.sec:not(.dark):not(.cta)'));
+    paperEls = [].slice.call(document.querySelectorAll('.sec:not(.dark):not(.cta):not(.how)'));   // not over the live animation
   }
   function paperBands() {
     var out = [], i, r;
@@ -986,6 +942,17 @@
 })();
 </script>
 <script>
+/* The embedded twin reports its own height, so the frame always fits it. */
+(function(){
+  var f = document.querySelector('.twin-frame iframe');
+  if(!f) return;
+  window.addEventListener('message', function(e){
+    if(e.source !== f.contentWindow || !e.data || !e.data.twinH) return;
+    f.style.height = Math.max(320, Math.min(1400, e.data.twinH)) + 'px';
+  });
+})();
+</script>
+<script>
 (function(){
   var vids = document.querySelectorAll('.demo-video video');
   if(!vids.length || !('IntersectionObserver' in window)) return;
@@ -1002,6 +969,72 @@
     });
   }, { threshold: 0.35 });
   Array.prototype.forEach.call(vids, function(v){ io.observe(v); });
+})();
+</script>
+
+<script>
+/* How it works: the section pins while you scroll through its runway, and the scroll position is the timeline.
+ * It drives the bench animation (the iframe; twinAt 0..9 = how far along the nine steps) and the step track under
+ * it, whose tube slides between stops in step with the scroll. The track has one more stop than the animation:
+ * retrieve and dispose, the last tenth. */
+(function(){
+  var run = document.querySelector('.how-run');
+  if(!run) return;
+  var f = run.querySelector('iframe'), track = run.querySelector('.jt'), rail = run.querySelector('.jt-rail');
+  var items = [].slice.call(run.querySelectorAll('.jt-step'));
+  var side = [].slice.call(run.querySelectorAll('.sl-step')), bar = run.querySelector('.how-bar i');
+  var N = items.length;
+  var ck = run.querySelector('.jt-cap-k'), ct = run.querySelector('.jt-cap-t'), cd = run.querySelector('.jt-cap-d');
+  var active = -1, sent = -1, cx = [];
+
+  function span(){ return Math.max(1, run.offsetHeight - window.innerHeight); }
+  function progress(){ return Math.max(0, Math.min(1, -run.getBoundingClientRect().top / span())); }
+  function send(x){ if(f && f.contentWindow) f.contentWindow.postMessage({ twinAt: x }, '*'); }
+  // the centre of each stop's dot along the rail, measured, so the track can reflow freely
+  function measure(){
+    var r = rail.getBoundingClientRect();
+    cx = items.map(function(li){ var d = li.querySelector('.jt-dot').getBoundingClientRect(); return d.left + d.width / 2 - r.left; });
+    track.style.setProperty('--x0', cx[0] + 'px');
+    track.style.setProperty('--x1', cx[N - 1] + 'px');
+  }
+  function update(){
+    if(!cx.length) measure();
+    var p = progress(), x = p * N, i = Math.min(N - 1, Math.floor(x)), fr = Math.min(1, x - i);
+    if(i !== active){
+      active = i;
+      items.forEach(function(li, n){ li.classList.toggle('on', n === i); li.classList.toggle('past', n < i); });
+      side.forEach(function(li, n){ li.classList.toggle('on', n === i); li.classList.toggle('past', n < i); });
+      var li = items[i];
+      ck.textContent = (li.dataset.n ? 'Step ' + li.dataset.n + ' of 9' : 'Your analyzer') + ' \u00b7 ' + li.dataset.phase;
+      ct.textContent = li.querySelector('.jt-name').textContent;
+      cd.textContent = li.querySelector('.jt-desc').textContent;
+    }
+    // the tube travels from this stop toward the next across the step
+    if(bar) bar.style.width = (p * 100).toFixed(2) + '%';
+    var tx = i < N - 1 ? cx[i] + (cx[i + 1] - cx[i]) * fr : cx[N - 1];
+    track.style.setProperty('--x', tx + 'px');
+    var ax = Math.min(9, x);
+    if(Math.abs(ax - sent) > .001){ sent = ax; send(ax); }
+  }
+  function onScroll(){ update(); }   // scroll events already come once a frame
+
+  // a stop scrolls the page to the start of that step
+  items.concat(side).forEach(function(li, k){
+    var n = k % N;
+    li.querySelector('button').addEventListener('click', function(){
+      var top = run.getBoundingClientRect().top + window.pageYOffset + (n + .15) / N * span();
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+  });
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function(){ cx = []; onScroll(); }, { passive: true });
+  window.addEventListener('load', function(){ cx = []; update(); });
+  if(f) f.addEventListener('load', function(){ sent = -1; update(); });
+  // the animation says when it is listening (its load may land before this script runs)
+  window.addEventListener('message', function(e){
+    if(f && e.source === f.contentWindow && e.data && e.data.twinReady){ sent = -1; update(); }
+  });
+  update();
 })();
 </script>
 
