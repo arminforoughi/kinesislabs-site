@@ -444,3 +444,10 @@ main,.foot{position:relative;z-index:1}
 @media (prefers-reduced-motion:reduce){.jt-dot{transition:none}}
 .how-after .notes{margin-top:0}
 .how .notes p{color:var(--muted);border-left-color:var(--line)}
+
+/* phones: no pinning -- the section scrolls past like any other, and the animation plays by itself */
+@media (max-width:819px){
+  .how-run{height:auto}
+  .how-stick{position:static;height:auto;display:block;padding:clamp(1.5rem,1rem + 2vw,2.25rem) 0 0}
+  .how-after{margin-top:1.75rem}
+}

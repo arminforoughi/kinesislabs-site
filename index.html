@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://kinesislabs.tech/assets/og-image.png">
 <link rel="apple-touch-icon" href="assets/icon-512.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=52">
+<link rel="stylesheet" href="assets/site.css?v=53">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -136,7 +136,7 @@
       <div class="wrap how-grid">
         <div class="how-left">
         <div class="twin-frame">
-          <iframe src="twin.html?embed=scroll&amp;v=8" title="Animated clinical bench: the station working one tube through every step"></iframe>
+          <iframe src="twin.html?embed=scroll&amp;v=10" title="Animated clinical bench: the station working one tube through every step"></iframe>
         </div>
         <div class="jt">
           <div class="jt-phases" aria-hidden="true"><span class="jt-ph-pre">Before the analyzer</span><span class="jt-ph-an">Analyzer</span><span class="jt-ph-post">After</span></div>
@@ -973,10 +973,11 @@
 </script>
 
 <script>
-/* How it works: the section pins while you scroll through its runway, and the scroll position is the timeline.
- * It drives the bench animation (the iframe; twinAt 0..9 = how far along the nine steps) and the step track under
- * it, whose tube slides between stops in step with the scroll. The track has one more stop than the animation:
- * retrieve and dispose, the last tenth. */
+/* How it works. On a wide screen the section pins while you scroll through its runway, and the scroll position is
+ * the timeline: it drives the bench animation (the iframe; twinAt 0..9 = how far along the nine steps), the step
+ * list beside it and the step track. On a phone it does not pin -- scrolling a pinned stage on a phone is a chore --
+ * so the animation plays the journey by itself while it is on screen, on a loop, and the track follows the step it
+ * reports; tapping a stop plays that step. The track has one more stop than the animation: retrieve and dispose. */
 (function(){
   var run = document.querySelector('.how-run');
   if(!run) return;
@@ -985,11 +986,12 @@
   var side = [].slice.call(run.querySelectorAll('.sl-step')), bar = run.querySelector('.how-bar i');
   var N = items.length;
   var ck = run.querySelector('.jt-cap-k'), ct = run.querySelector('.jt-cap-t'), cd = run.querySelector('.jt-cap-d');
-  var active = -1, sent = -1, cx = [];
+  var phoneMq = window.matchMedia('(max-width: 819px)'), phone = phoneMq.matches;
+  var active = -1, sent = -1, cx = [], ready = false, playing = false, manual = false, loopT = 0;
 
+  function post(msg){ if(f && f.contentWindow) f.contentWindow.postMessage(msg, '*'); }
   function span(){ return Math.max(1, run.offsetHeight - window.innerHeight); }
   function progress(){ return Math.max(0, Math.min(1, -run.getBoundingClientRect().top / span())); }
-  function send(x){ if(f && f.contentWindow) f.contentWindow.postMessage({ twinAt: x }, '*'); }
   // the centre of each stop's dot along the rail, measured, so the track can reflow freely
   function measure(){
     var r = rail.getBoundingClientRect();
@@ -997,44 +999,78 @@
     track.style.setProperty('--x0', cx[0] + 'px');
     track.style.setProperty('--x1', cx[N - 1] + 'px');
   }
-  function update(){
-    if(!cx.length) measure();
-    var p = progress(), x = p * N, i = Math.min(N - 1, Math.floor(x)), fr = Math.min(1, x - i);
-    if(i !== active){
-      active = i;
-      items.forEach(function(li, n){ li.classList.toggle('on', n === i); li.classList.toggle('past', n < i); });
-      side.forEach(function(li, n){ li.classList.toggle('on', n === i); li.classList.toggle('past', n < i); });
-      var li = items[i];
-      ck.textContent = (li.dataset.n ? 'Step ' + li.dataset.n + ' of 9' : 'Your analyzer') + ' \u00b7 ' + li.dataset.phase;
-      ct.textContent = li.querySelector('.jt-name').textContent;
-      cd.textContent = li.querySelector('.jt-desc').textContent;
-    }
-    // the tube travels from this stop toward the next across the step
-    if(bar) bar.style.width = (p * 100).toFixed(2) + '%';
-    var tx = i < N - 1 ? cx[i] + (cx[i + 1] - cx[i]) * fr : cx[N - 1];
-    track.style.setProperty('--x', tx + 'px');
-    var ax = Math.min(9, x);
-    if(Math.abs(ax - sent) > .001){ sent = ax; send(ax); }
+  function mark(i){
+    if(i === active) return;
+    active = i;
+    items.forEach(function(li, n){ li.classList.toggle('on', n === i); li.classList.toggle('past', n < i); });
+    side.forEach(function(li, n){ li.classList.toggle('on', n === i); li.classList.toggle('past', n < i); });
+    var li = items[i];
+    ck.textContent = (li.dataset.n ? 'Step ' + li.dataset.n + ' of 9' : 'Your analyzer') + ' \u00b7 ' + li.dataset.phase;
+    ct.textContent = li.querySelector('.jt-name').textContent;
+    cd.textContent = li.querySelector('.jt-desc').textContent;
   }
-  function onScroll(){ update(); }   // scroll events already come once a frame
+  function tubeAt(i, fr){
+    if(!cx.length) measure();
+    track.style.setProperty('--x', (i < N - 1 ? cx[i] + (cx[i + 1] - cx[i]) * fr : cx[N - 1]) + 'px');
+  }
 
-  // a stop scrolls the page to the start of that step
+  /* wide screens: the scroll is the timeline */
+  function update(){
+    if(phone) return;
+    var p = progress(), x = p * N, i = Math.min(N - 1, Math.floor(x)), fr = Math.min(1, x - i);
+    mark(i);
+    if(bar) bar.style.width = (p * 100).toFixed(2) + '%';
+    tubeAt(i, fr);
+    var ax = Math.min(9, x);
+    if(Math.abs(ax - sent) > .001){ sent = ax; post({ twinAt: ax }); }
+  }
+
+  /* phones: plays by itself while on screen, and again a few seconds after it finishes */
+  function onScreen(){ var r = (f || run).getBoundingClientRect(); return r.top < innerHeight * .75 && r.bottom > innerHeight * .25; }
+  function autoplay(){
+    if(!phone || !ready || manual || playing || !onScreen()) return;
+    playing = true; post({ twinRun: 1 });
+  }
+  function onStep(n){                          // the step the animation is on (0 = not started, 9 = archived)
+    if(!phone) return;
+    var i = Math.max(0, Math.min(N - 1, n - 1));
+    mark(i); tubeAt(i, 0);
+    clearTimeout(loopT);
+    if(n >= 9 && !manual) loopT = setTimeout(function(){ playing = false; autoplay(); }, 3500);
+  }
+
+  // a stop: on a wide screen it scrolls to that step; on a phone it plays it
   items.concat(side).forEach(function(li, k){
     var n = k % N;
     li.querySelector('button').addEventListener('click', function(){
+      if(phone){
+        manual = true; clearTimeout(loopT); mark(n); tubeAt(n, 0);
+        if(n < N - 1) post({ twinGo: n + 1 });
+        return;
+      }
       var top = run.getBoundingClientRect().top + window.pageYOffset + (n + .15) / N * span();
       window.scrollTo({ top: top, behavior: 'smooth' });
     });
   });
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function(){ cx = []; onScroll(); }, { passive: true });
-  window.addEventListener('load', function(){ cx = []; update(); });
-  if(f) f.addEventListener('load', function(){ sent = -1; update(); });
-  // the animation says when it is listening (its load may land before this script runs)
+
+  window.addEventListener('scroll', function(){ if(phone) autoplay(); else update(); }, { passive: true });
+  window.addEventListener('resize', function(){ cx = []; if(phone){ if(active >= 0) tubeAt(active, 0); } else update(); }, { passive: true });
+  window.addEventListener('load', function(){ cx = []; if(phone) autoplay(); else update(); });
+  function onMode(){
+    phone = phoneMq.matches; cx = []; active = -1; sent = -1; playing = false; manual = false; clearTimeout(loopT);
+    if(phone){ mark(0); tubeAt(0, 0); autoplay(); } else update();
+  }
+  if(phoneMq.addEventListener) phoneMq.addEventListener('change', onMode); else if(phoneMq.addListener) phoneMq.addListener(onMode);
+  if(f) f.addEventListener('load', function(){ ready = true; sent = -1; if(phone) autoplay(); else update(); });
   window.addEventListener('message', function(e){
-    if(f && e.source === f.contentWindow && e.data && e.data.twinReady){ sent = -1; update(); }
+    if(!f || e.source !== f.contentWindow || !e.data) return;
+    // the animation says when it is listening (its load may land before this script runs)
+    if(e.data.twinReady){ ready = true; sent = -1; if(phone) autoplay(); else update(); }
+    if(e.data.twinStep != null) onStep(e.data.twinStep);
   });
-  update();
+  // ask until it answers: its own 'ready' can land before this script is listening
+  var pings = 0, pingT = setInterval(function(){ if(ready || ++pings > 20){ clearInterval(pingT); return; } post({ twinPing: 1 }); }, 400);
+  if(phone){ mark(0); tubeAt(0, 0); } else update();
 })();
 </script>
 

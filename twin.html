@@ -1275,9 +1275,9 @@ if(new URLSearchParams(location.search).has('embed')){const TO='*';   /* any ori
   let last=0;const post=()=>{let b=0;for(const el of document.querySelectorAll('body>*,.stage>*,.lgd,.vset,.zwrap')){const r=el.getBoundingClientRect();if(r.height)b=Math.max(b,r.bottom+scrollY);}const h=Math.ceil(b+8);if(Math.abs(h-last)>2){last=h;parent.postMessage({twinH:h},TO);}};
   new ResizeObserver(post).observe(document.body);let pq=0;new MutationObserver(()=>{if(!pq)pq=setTimeout(()=>{pq=0;post();},80);}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});addEventListener('load',post);setTimeout(post,500);
   /* driven by the home page's step track: twinGo plays one step, twinRun plays the whole journey; the step on show is reported back */
-  addEventListener('message',e=>{if(e.source!==parent||!e.data)return;   /* only our own page drives it */const s=window.__st;if(!s||typeof startStep!=='function')return;
+  addEventListener('message',e=>{if(e.source!==parent||!e.data)return;if(e.data.twinPing){parent.postMessage({twinReady:1},TO);return;}   /* only our own page drives it */const s=window.__st;if(!s||typeof startStep!=='function')return;
     if(e.data.twinAt!=null){s.scrub=true;s.auto=false;glideTo(Math.max(0,Math.min(9,+e.data.twinAt||0)));return;}
-    s.scrub=false;
+    const wasScrub=s.scrub;s.scrub=false;if(wasScrub){s.cur=0;s.t=0;}
     if(e.data.twinGo){const n=Math.max(1,Math.min(9,e.data.twinGo|0));s.auto=false;s.cur=0;s.t=0;s.done=n-1;startStep(s);}
     else if(e.data.twinRun){if(!s.cur){if(s.done>=9)s.done=0;s.auto=true;startStep(s);}}});
   /* scroll mode camera: zoom in on the part that is working, gliding to the next one as a step ends; the whole
@@ -1301,6 +1301,8 @@ if(new URLSearchParams(location.search).has('embed')){const TO='*';   /* any ori
   function sched(){if(pend)return;pend=true;const go=()=>{if(!pend)return;pend=false;clearTimeout(tm);tick();};requestAnimationFrame(go);tm=setTimeout(go,40);}
   function glideTo(x){tgt=x;sched();}
   addEventListener('resize',()=>{if(shown!=null)focus(shown);});
+  /* playing by itself (phones): the camera follows the step that is running, the same as when scrolled */
+  setInterval(()=>{const s=window.__st;if(!s||s.scrub)return;focus(s.cur?s.done+s.t:s.done);},40);
   new MutationObserver(()=>{if(shown!=null)focus(shown);}).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
   if(new URLSearchParams(location.search).get('embed')==='scroll'){window.LBL_U=()=>0;const ls=document.createElement('style');ls.textContent='.lgd{display:none!important}';document.head.appendChild(ls);   /* labels carry their names: no list under the figure here */
     /* the phone legend script swaps each label's name for a number; put the names back (it only renumbers once) */
