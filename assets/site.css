@@ -442,5 +442,20 @@ main,.foot{position:relative;z-index:1}
 @media (prefers-reduced-motion:reduce){.jt-dot{transition:none}}
 .how-after .notes{margin-top:0}
 .how .notes p{color:var(--muted);border-left-color:var(--line)}
+/* How it works on black: the paper-coloured animation card is the lit thing; the track and step list go dark */
+.dark.how .notes p{color:var(--muted-d);border-left-color:var(--line-d)}
+.dark .twin-frame{border-color:var(--line-d);box-shadow:0 30px 60px -36px rgba(0,0,0,.9)}
+.dark .sl-label,.dark .jt-phases span,.dark .jt-cap-k{color:var(--mint)}
+.dark .jt-phases span{border-bottom-color:var(--line-d)}
+.dark .sl-name,.dark .sl-desc,.dark .jt-name,.dark .jt-cap{color:var(--muted-d)}
+.dark .sl-step button:hover{background:rgba(255,255,255,.05)}
+.dark .sl-step.on button{background:var(--panel);box-shadow:none}
+.dark .sl-step.on .sl-name,.dark .jt-step.on .jt-name,.dark .jt-cap-t{color:#fff}
+.dark .sl-n,.dark .jt-dot{background:var(--panel);border-color:var(--line-d);color:var(--muted-d)}
+.dark .sl-hub .sl-n,.dark .jt-hub .jt-dot{background:rgba(95,227,180,.1);border-color:rgba(95,227,180,.4);color:var(--mint)}
+.dark .sl-step.past .sl-n,.dark .jt-step.past .jt-dot{border-color:rgba(95,227,180,.45);color:var(--mint)}
+.dark .sl-step.on .sl-n,.dark .jt-step.on .jt-dot{background:var(--mint);border-color:var(--mint);color:#04241C}
+.dark .how-bar,.dark .jt-rail::before{background:var(--line-d)}
+.dark .jt-cap{border-top-color:var(--line-d)}
 
 .how-after{margin-top:1.75rem}
