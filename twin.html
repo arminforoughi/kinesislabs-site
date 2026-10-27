@@ -1283,7 +1283,7 @@ if(new URLSearchParams(location.search).has('embed')){const TO='*';   /* any ori
   if(STATIC){const off=e=>{if(e.target.closest&&e.target.closest('.zwrap'))e.stopPropagation();};
     addEventListener('wheel',off,{capture:true,passive:true});
     addEventListener('pointerdown',e=>{if(e.target.closest&&e.target.closest('#fig'))e.stopPropagation();},true);
-    const ts=document.createElement('style');ts.textContent='#fig{touch-action:pan-x pan-y!important;cursor:default!important}html body .toast{display:none!important}html,html body{overflow:hidden!important;overscroll-behavior:none}';document.head.appendChild(ts);}
+    const ts=document.createElement('style');ts.textContent='#fig{touch-action:pan-x pan-y!important;cursor:default!important}html body .toast{display:none!important}html,html body{overflow:hidden!important}';document.head.appendChild(ts);}
   if(new URLSearchParams(location.search).get('embed')==='scroll'){window.LBL_U=()=>0;const ls=document.createElement('style');ls.textContent='.lgd{display:none!important}';document.head.appendChild(ls);   /* labels carry their names: no list under the figure here */
     /* the phone legend script swaps each label's name for a number; put the names back (it only renumbers once) */
     const figEl=document.getElementById('fig');if(figEl)new MutationObserver(()=>{for(const g of figEl.querySelectorAll('.tag[data-t]')){const t=g.querySelector('text');if(t&&t.textContent!==g.dataset.t)t.textContent=g.dataset.t;}}).observe(figEl,{childList:true,subtree:true});
