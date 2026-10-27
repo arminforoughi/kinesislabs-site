@@ -1282,9 +1282,15 @@ if(new URLSearchParams(location.search).has('embed')){const TO='*';   /* any ori
     else if(e.data.twinRun){if(!s.cur){if(s.done>=9)s.done=0;s.auto=true;startStep(s);}}});
   /* scroll mode camera: zoom in on the part that is working, gliding to the next one as a step ends; the whole
      bench at the start and again once the tube is archived */
+  /* on the home page the view stays put: no camera moves, and no wheel, pinch or drag to zoom or turn it */
+  const STATIC=new URLSearchParams(location.search).get('embed')==='scroll';
+  if(STATIC){const off=e=>{if(e.target.closest&&e.target.closest('.zwrap'))e.stopPropagation();};
+    addEventListener('wheel',off,{capture:true,passive:true});
+    addEventListener('pointerdown',e=>{if(e.target.closest&&e.target.closest('#fig'))e.stopPropagation();},true);
+    const ts=document.createElement('style');ts.textContent='#fig{touch-action:pan-x pan-y!important;cursor:default!important}';document.head.appendChild(ts);}
   const FOCI=[null,[55,232,22],[52,196,34],[28,196,36],[55,163,16],[56,122,20],[64,96,24],[52,50,34],[68,63,22],[18,120,42]];
   const ez=k=>k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2, cl=k=>Math.max(0,Math.min(1,k));
-  function focus(x){const fig=document.getElementById('fig');if(!fig||!fig.viewBox||!fig.viewBox.baseVal)return;
+  function focus(x){const fig=document.getElementById('fig');if(!fig||!fig.viewBox||!fig.viewBox.baseVal)return;if(STATIC){fig.style.transform='';return;}
     const step=Math.min(9,Math.floor(x)+1),fr=x-Math.floor(x),a=FOCI[step],b=FOCI[Math.min(9,step+1)]||a,k=step<9?ez(cl((fr-.78)/.22)):0;
     const pt=a.map((v,i)=>v+(b[i]-v)*k);
     // with Labels on, the whole bench stays in view so every name can be read
