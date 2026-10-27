@@ -490,7 +490,7 @@ function startStep(st){
   begin(st);
   if (st.running) return; st.running = true;
   ui.animate(dt => {
-    if (!st.cur || st.scrub){ st.running = false; return false; }   // the page's scroll is driving it
+    if (!st.cur){ st.running = false; return false; }
     st.t += dt / STEPS[st.cur].dur;
     if (st.t >= 1){ st.done = st.cur; st.cur = 0; st.t = 0;
       if (st.auto && st.done < 9){ begin(st); return true; }

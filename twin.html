@@ -1133,7 +1133,7 @@ function startStep(st){
   begin(st);
   if (st.running) return; st.running = true;
   ui.animate(dt => {
-    if (!st.cur || st.scrub){ st.running = false; return false; }   // the page's scroll is driving it
+    if (!st.cur){ st.running = false; return false; }
     st.t += dt / STEPS[st.cur].dur;
     if (st.t >= 1){ st.done = st.cur; st.cur = 0; st.t = 0;
       if (st.auto && st.done < 9){ begin(st); return true; }
@@ -1276,40 +1276,14 @@ if(new URLSearchParams(location.search).has('embed')){const TO='*';   /* any ori
   new ResizeObserver(post).observe(document.body);let pq=0;new MutationObserver(()=>{if(!pq)pq=setTimeout(()=>{pq=0;post();},80);}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});addEventListener('load',post);setTimeout(post,500);
   /* driven by the home page's step track: twinGo plays one step, twinRun plays the whole journey; the step on show is reported back */
   addEventListener('message',e=>{if(e.source!==parent||!e.data)return;if(e.data.twinPing){parent.postMessage({twinReady:1},TO);return;}   /* only our own page drives it */const s=window.__st;if(!s||typeof startStep!=='function')return;
-    if(e.data.twinAt!=null){s.scrub=true;s.auto=false;glideTo(Math.max(0,Math.min(9,+e.data.twinAt||0)));return;}
-    const wasScrub=s.scrub;s.scrub=false;if(wasScrub){s.cur=0;s.t=0;}
     if(e.data.twinGo){const n=Math.max(1,Math.min(9,e.data.twinGo|0));s.auto=false;s.cur=0;s.t=0;s.done=n-1;startStep(s);}
     else if(e.data.twinRun){if(!s.cur){if(s.done>=9)s.done=0;s.auto=true;startStep(s);}}});
-  /* scroll mode camera: zoom in on the part that is working, gliding to the next one as a step ends; the whole
-     bench at the start and again once the tube is archived */
   /* on the home page the view stays put: no camera moves, and no wheel, pinch or drag to zoom or turn it */
   const STATIC=new URLSearchParams(location.search).get('embed')==='scroll';
   if(STATIC){const off=e=>{if(e.target.closest&&e.target.closest('.zwrap'))e.stopPropagation();};
     addEventListener('wheel',off,{capture:true,passive:true});
     addEventListener('pointerdown',e=>{if(e.target.closest&&e.target.closest('#fig'))e.stopPropagation();},true);
     const ts=document.createElement('style');ts.textContent='#fig{touch-action:pan-x pan-y!important;cursor:default!important}html body .toast{display:none!important}';document.head.appendChild(ts);}
-  const FOCI=[null,[55,232,22],[52,196,34],[28,196,36],[55,163,16],[56,122,20],[64,96,24],[52,50,34],[68,63,22],[18,120,42]];
-  const ez=k=>k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2, cl=k=>Math.max(0,Math.min(1,k));
-  function focus(x){const fig=document.getElementById('fig');if(!fig||!fig.viewBox||!fig.viewBox.baseVal)return;if(STATIC){fig.style.transform='';return;}
-    const step=Math.min(9,Math.floor(x)+1),fr=x-Math.floor(x),a=FOCI[step],b=FOCI[Math.min(9,step+1)]||a,k=step<9?ez(cl((fr-.78)/.22)):0;
-    const pt=a.map((v,i)=>v+(b[i]-v)*k);
-    // with Labels on, the whole bench stays in view so every name can be read
-    const S=document.documentElement.classList.contains('nolabels')?(innerWidth<=560?1.75:1.9):1,z=1+(S-1)*ez(cl(x/.5))*(1-ez(cl((x-8.55)/.45)));
-    const vb=fig.viewBox.baseVal,w=fig.clientWidth,h=fig.clientHeight,q=P(pt[0],pt[1],pt[2]);
-    const px=(q[0]-vb.x)/vb.width*w,py=(q[1]-vb.y)/vb.height*h;
-    // keep the zoomed drawing covering the frame: no paper showing past its edges
-    let tx=w/2-z*px,ty=h/2-z*py;tx=Math.min(0,Math.max(w-w*z,tx));ty=Math.min(0,Math.max(h-h*z,ty));
-    fig.style.transform=z<=1.001?'':`translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px) scale(${z.toFixed(3)})`;}
-  /* the scroll sets a target; the scene eases toward it every frame, so a wheel tick is a glide, not a jump */
-  let tgt=null,shown=null,pend=false,tm=0;
-  function show(x){const s=window.__st,dn=Math.floor(x);if(dn>=9){s.done=9;s.cur=0;s.t=0;}else{s.done=dn;s.cur=dn+1;s.t=x-dn;}ui.render();focus(x);}
-  function tick(){if(tgt==null)return;if(shown==null)shown=tgt;const d=tgt-shown;shown=Math.abs(d)<.0015?tgt:shown+d*.085;show(shown);if(shown!==tgt)sched();}
-  function sched(){if(pend)return;pend=true;const go=()=>{if(!pend)return;pend=false;clearTimeout(tm);tick();};requestAnimationFrame(go);tm=setTimeout(go,40);}
-  function glideTo(x){tgt=x;sched();}
-  addEventListener('resize',()=>{if(shown!=null)focus(shown);});
-  /* playing by itself (phones): the camera follows the step that is running, the same as when scrolled */
-  setInterval(()=>{const s=window.__st;if(!s||s.scrub)return;focus(s.cur?s.done+s.t:s.done);},40);
-  new MutationObserver(()=>{if(shown!=null)focus(shown);}).observe(document.documentElement,{attributes:true,attributeFilter:['class']});
   if(new URLSearchParams(location.search).get('embed')==='scroll'){window.LBL_U=()=>0;const ls=document.createElement('style');ls.textContent='.lgd{display:none!important}';document.head.appendChild(ls);   /* labels carry their names: no list under the figure here */
     /* the phone legend script swaps each label's name for a number; put the names back (it only renumbers once) */
     const figEl=document.getElementById('fig');if(figEl)new MutationObserver(()=>{for(const g of figEl.querySelectorAll('.tag[data-t]')){const t=g.querySelector('text');if(t&&t.textContent!==g.dataset.t)t.textContent=g.dataset.t;}}).observe(figEl,{childList:true,subtree:true});
