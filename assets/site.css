@@ -345,13 +345,6 @@ main,.foot{position:relative;z-index:1}
 /* step count beside the workflow group labels */
 .label .count{display:inline-block;white-space:nowrap;margin-left:.6rem;padding:.2rem .55rem;border-radius:var(--pill);border:1px solid rgba(95,227,180,.3);color:rgba(214,236,240,.6);letter-spacing:.1em}
 
-/* The bench animation keeps its own paper ground, framed like a plate */
-.how .head{margin-bottom:clamp(1.75rem,1.4rem + 1.6vw,2.75rem)}
-.twin-frame{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#f2efe7;box-shadow:0 30px 60px -40px rgba(10,18,22,.45)}
-.twin-frame iframe{display:block;width:100%;height:596px;border:0}
-@media (max-width:760px){.twin-frame iframe{height:560px}}
-@media (max-width:560px){.twin-frame iframe{height:430px}}
-
 /* Bench demo on the ink ground */
 .dark .demo-list{background:var(--line-d);border-color:var(--line-d)}
 .dark .demo-list li{background:var(--panel)}
@@ -362,100 +355,15 @@ main,.foot{position:relative;z-index:1}
 .dark .demo-video video{border-color:var(--line-d);box-shadow:0 30px 60px -36px rgba(0,0,0,.9)}
 .dark .demo-video figcaption{color:var(--muted-d)}
 
-/* How it works: the animation, the step track under it, the steps beside it on a wide screen. It plays by itself. */
-.how{padding-bottom:clamp(3rem,2rem + 3vw,5rem)}
-.how .head{margin-bottom:0}
-.how-run{position:relative}
-.how-stick{padding-top:clamp(1.5rem,1rem + 2vw,2.25rem)}
-.how-grid{display:grid;gap:1rem;grid-template-columns:1fr;align-items:center}
-.how-left{display:grid;gap:.9rem;min-width:0}
-/* the frame takes the figure's own proportions (the twin draws 4:3 plus its switches; taller on a phone) */
-.how-left .twin-frame iframe{height:auto!important;aspect-ratio:1.28}
-@media (max-width:560px){.how-left .twin-frame iframe{aspect-ratio:1.25}}
-.how-steps{display:none}
-/* desktop: the animation on the left, as large as fits under the nav; the steps beside it */
-@media (min-width:1000px){
-  .how-grid{grid-template-columns:minmax(0,1.65fr) minmax(16rem,1fr);gap:clamp(1.5rem,1rem + 2vw,3rem)}
-  .how-left .twin-frame{width:100%;max-width:calc((100vh - 7rem) * 1.28);justify-self:center}
-  .how-left .jt{display:none}
-  .how-steps{display:block}
-}
-/* tablets and phones: the step track's dots and caption under the animation, kept to one screen */
-@media (max-width:999px){.how-left{max-width:calc((100vh - 17rem) * 1.28 + 3rem);width:100%;justify-self:center}}
-@media (max-width:819px){.how-left{max-width:none}}
-
-/* the side step list: every step named, the current one opened, a progress bar under it */
-.sl{display:grid;gap:.1rem}
-.sl-label{font-size:var(--t-xs);font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint-deep);margin:.9rem 0 .35rem}
-.sl-label:first-child{margin-top:0}
-.sl-step button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:1.75rem minmax(0,1fr);column-gap:.75rem;align-items:center;padding:.32rem .5rem;border-radius:10px;transition:background-color .4s var(--ease),box-shadow .4s var(--ease)}
-.sl-step button:hover{background:rgba(10,18,22,.04)}
-.sl-step button:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
-.sl-n{display:inline-flex;align-items:center;justify-content:center;width:1.75rem;height:1.75rem;border-radius:var(--pill);border:1px solid var(--line);background:#fff;font-size:.75rem;font-weight:600;color:var(--muted);transition:background-color .4s var(--ease),border-color .4s var(--ease),color .4s var(--ease)}
-.sl-hub .sl-n{border-radius:7px;font-size:.6rem;color:var(--mint-deep);background:#e8f7f0;border-color:rgba(14,110,85,.4)}
-.sl-name{font-size:var(--t-sm);color:var(--muted);transition:color .4s var(--ease)}
-.sl-desc{grid-column:2;font-size:var(--t-sm);line-height:1.45;color:var(--muted);max-height:0;overflow:hidden;opacity:0;transition:max-height .5s var(--ease),opacity .4s var(--ease),margin .5s var(--ease)}
-.sl-step.past .sl-n{border-color:rgba(14,110,85,.45);color:var(--mint-deep)}
-.sl-step.on button{background:#fff;box-shadow:0 10px 24px -18px rgba(10,18,22,.5)}
-.sl-step.on .sl-n{background:var(--mint);border-color:var(--mint);color:#04241C}
-.sl-step.on .sl-name{color:var(--text);font-weight:600}
-.sl-step.on .sl-desc{max-height:5rem;opacity:1;margin-top:.2rem}
-.how-bar{height:3px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:1rem}
-.how-bar i{display:block;height:100%;width:0;background:var(--mint);border-radius:3px;transition:width .5s var(--ease)}
-
-.jt{--x0:0px;--x1:0px;--x:0px}
-.jt-phases,.jt-track{display:grid;grid-template-columns:repeat(6,minmax(0,1fr)) minmax(0,1.4fr) repeat(3,minmax(0,1fr))}
-.jt-phases{margin-bottom:.7rem}
-.jt-phases span{font-size:var(--t-xs);font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint-deep);padding-bottom:.45rem;border-bottom:1px solid var(--line)}
-.jt-ph-pre{grid-column:1/7}
-.jt-ph-an{grid-column:7/8;text-align:center;border-bottom-color:rgba(14,110,85,.45)!important}
-.jt-ph-post{grid-column:8/11;text-align:right}
-.jt-rail{position:relative}
-.jt-rail::before,.jt-rail::after{content:"";position:absolute;top:1.1rem;left:var(--x0);height:2px;margin-top:-1px;border-radius:2px;pointer-events:none}
-.jt-rail::before{width:calc(var(--x1) - var(--x0));background:var(--line)}
-.jt-rail::after{width:calc(var(--x) - var(--x0));background:linear-gradient(90deg,rgba(95,227,180,.3),var(--mint));transition:width .6s var(--ease)}
-.jt-tube{position:absolute;top:1.1rem;left:var(--x);width:22px;height:9px;margin:-4.5px 0 0 -11px;border-radius:var(--pill);background:var(--mint);box-shadow:0 0 0 3px rgba(95,227,180,.18),0 0 16px rgba(95,227,180,.75);pointer-events:none;z-index:0;transition:left .6s var(--ease)}
-.jt-track li{position:relative;z-index:1}
-.jt-step button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.4rem;text-align:center}
-.jt-step button:focus-visible .jt-dot{outline:3px solid var(--mint);outline-offset:2px}
-.jt-dot{display:inline-flex;align-items:center;justify-content:center;width:2.2rem;height:2.2rem;border-radius:var(--pill);background:#fff;border:1px solid var(--line);color:var(--muted);font-size:.8125rem;font-weight:600;transition:background-color .4s var(--ease),border-color .4s var(--ease),color .4s var(--ease),transform .4s var(--ease)}
-.jt-hub .jt-dot{width:2.6rem;border-radius:10px;background:#e8f7f0;border-color:rgba(14,110,85,.45);color:var(--mint-deep)}
-.jt-dot svg{width:1.1rem;height:1.1rem}
-.jt-name{font-size:var(--t-xs);line-height:1.25;color:var(--muted);padding:0 .15rem;transition:color var(--dur) var(--ease)}
-.jt-step button:hover .jt-dot{border-color:var(--mint-deep)}
-.jt-step.past .jt-dot{border-color:rgba(14,110,85,.45);color:var(--mint-deep)}
-.jt-step.on .jt-dot{background:var(--mint);border-color:var(--mint);color:#04241C;transform:scale(1.08)}
-.jt-step.on .jt-name{color:var(--text);font-weight:600}
-.jt-cap{margin:.85rem 0 0;padding-top:.75rem;border-top:1px solid var(--line);font-size:var(--t-sm);line-height:1.5;color:var(--muted);min-height:3.2em}
-.jt-cap-k{display:block;font-size:var(--t-xs);font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint-deep);margin-bottom:.2rem}
-.jt-cap-t{color:var(--text);font-weight:600;margin-right:.45rem}
-/* phones: the stops shrink to dots, the names go, the caption carries the step */
-@media (max-width:819px){
-  .jt-phases{display:none}
-  .jt-name{display:none}
-  .jt-dot{width:1.5rem;height:1.5rem;font-size:.6875rem}
-  .jt-hub .jt-dot{width:1.8rem;border-radius:7px}
-  .jt-dot svg{width:.85rem;height:.85rem}
-  .jt-rail::before,.jt-rail::after,.jt-tube{top:.75rem}
-  .jt-cap{min-height:5.2em}
-}
-@media (prefers-reduced-motion:reduce){.jt-dot{transition:none}}
-.how-after .notes{margin-top:0}
-.how .notes p{color:var(--muted);border-left-color:var(--line)}
-/* How it works on black: the paper-coloured animation card is the lit thing; the track and step list go dark */
-.dark.how .notes p{color:var(--muted-d);border-left-color:var(--line-d)}
-.dark .twin-frame{border-color:var(--line-d);box-shadow:0 30px 60px -36px rgba(0,0,0,.9)}
-.dark .sl-label,.dark .jt-phases span,.dark .jt-cap-k{color:var(--mint)}
-.dark .jt-phases span{border-bottom-color:var(--line-d)}
-.dark .sl-name,.dark .sl-desc,.dark .jt-name,.dark .jt-cap{color:var(--muted-d)}
-.dark .sl-step button:hover{background:rgba(255,255,255,.05)}
-.dark .sl-step.on button{background:var(--panel);box-shadow:none}
-.dark .sl-step.on .sl-name,.dark .jt-step.on .jt-name,.dark .jt-cap-t{color:#fff}
-.dark .sl-n,.dark .jt-dot{background:var(--panel);border-color:var(--line-d);color:var(--muted-d)}
-.dark .sl-hub .sl-n,.dark .jt-hub .jt-dot{background:rgba(95,227,180,.1);border-color:rgba(95,227,180,.4);color:var(--mint)}
-.dark .sl-step.past .sl-n,.dark .jt-step.past .jt-dot{border-color:rgba(95,227,180,.45);color:var(--mint)}
-.dark .sl-step.on .sl-n,.dark .jt-step.on .jt-dot{background:var(--mint);border-color:var(--mint);color:#04241C}
-.dark .how-bar,.dark .jt-rail::before{background:var(--line-d)}
-.dark .jt-cap{border-top-color:var(--line-d)}
-
-.how-after{margin-top:1.75rem}
+/* How it works: every step in three groups -- before, at and after the analyzer */
+.how .head{margin-bottom:clamp(1.75rem,1.4rem + 1.6vw,2.75rem)}
+.flow{display:grid;gap:clamp(1.5rem,1rem + 2vw,2.5rem);grid-template-columns:1fr}
+@media (min-width:900px){.flow{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1.2fr);align-items:start}}
+.flow-k{margin:0 0 .9rem;padding-bottom:.6rem;border-bottom:1px solid var(--line-d);font-size:var(--t-xs);font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint)}
+.flow-list{list-style:none;margin:0;padding:0;display:grid;gap:1rem}
+.flow-list li{display:grid;grid-template-columns:1.9rem minmax(0,1fr);column-gap:.8rem;align-items:baseline}
+.flow-n{grid-row:span 2;align-self:start;display:inline-flex;align-items:center;justify-content:center;width:1.9rem;height:1.9rem;border-radius:var(--pill);border:1px solid var(--line-d);background:var(--panel);color:var(--muted-d);font-size:.75rem;font-weight:600}
+.flow-hub .flow-n{border-radius:8px;font-size:.6rem;color:var(--mint);background:rgba(95,227,180,.1);border-color:rgba(95,227,180,.4)}
+.flow-list b{color:#fff;font-size:var(--t-sm);font-weight:600}
+.flow-list span:not(.flow-n){grid-column:2;font-size:var(--t-sm);line-height:1.5;color:var(--muted-d)}
+.how .notes{margin-top:clamp(2rem,1.6rem + 1.6vw,3rem)}

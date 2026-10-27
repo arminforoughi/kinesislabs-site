@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://kinesislabs.tech/assets/og-image.png">
 <link rel="apple-touch-icon" href="assets/icon-512.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=57">
+<link rel="stylesheet" href="assets/site.css?v=58">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -160,64 +160,41 @@
   </div>
 </section>
 
-<!-- How it works: the bench animation plays every step by itself, and the step list beside it follows. -->
+<!-- How it works: every step, before and after the analyzer -->
 <section class="sec dark how" id="station" aria-labelledby="station-h" data-mesh="0.52 0.92 0.5 0">
   <div class="wrap">
     <div class="head">
       <p class="label">How it works</p>
       <h2 id="station-h">From the courier bag to the archive fridge.</h2>
-      <p class="lead">One station on the bench you already have, wired into your LIS, middleware and instruments. Here it is running every step.</p>
+      <p class="lead">One station on the bench you already have, wired into your LIS, middleware and instruments.</p>
     </div>
-  </div>
-  <div class="how-run">
-    <div class="how-stick">
-      <div class="wrap how-grid">
-        <div class="how-left">
-        <div class="twin-frame">
-          <iframe src="twin.html?embed=scroll&amp;v=16" scrolling="no" title="Animated clinical bench: the station working one tube through every step"></iframe>
-        </div>
-        <div class="jt">
-          <div class="jt-phases" aria-hidden="true"><span class="jt-ph-pre">Before the analyzer</span><span class="jt-ph-an">Analyzer</span><span class="jt-ph-post">After</span></div>
-          <div class="jt-rail">
-            <ol class="jt-track">
-              <li class="jt-step" data-phase="Before the analyzer" data-n="1"><button type="button"><span class="jt-dot">1</span><span class="jt-name">Unbag</span></button><span class="jt-desc" hidden>Opens the sealed courier bag and pulls out the tubes and the requisition.</span></li>
-              <li class="jt-step" data-phase="Before the analyzer" data-n="2"><button type="button"><span class="jt-dot">2</span><span class="jt-name">Inspect</span></button><span class="jt-desc" hidden>Reads label, tube type, fill and integrity, and flags any conflict with the order.</span></li>
-              <li class="jt-step" data-phase="Before the analyzer" data-n="3"><button type="button"><span class="jt-dot">3</span><span class="jt-name">Accession</span></button><span class="jt-desc" hidden>Checks each accepted tube into the LIS, linked to its order.</span></li>
-              <li class="jt-step" data-phase="Before the analyzer" data-n="4"><button type="button"><span class="jt-dot">4</span><span class="jt-name">Sort</span></button><span class="jt-desc" hidden>Routes to spin, no-spin or hold. Held tubes wait for a person.</span></li>
-              <li class="jt-step" data-phase="Before the analyzer" data-n="5"><button type="button"><span class="jt-dot">5</span><span class="jt-name">Centrifuge</span></button><span class="jt-desc" hidden>Balances the rack, runs the right protocol, unloads when it stops.</span></li>
-              <li class="jt-step" data-phase="Before the analyzer" data-n="6"><button type="button"><span class="jt-dot">6</span><span class="jt-name">Aliquot and load</span></button><span class="jt-desc" hidden>Decaps, splits primaries into labelled daughter tubes and loads analyzer racks.</span></li>
-              <li class="jt-step jt-hub" data-phase="At the analyzer" data-n=""><button type="button"><span class="jt-dot"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6.5 8v4M10 8v4M13.5 8v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span><span class="jt-name">Your analyzer</span></button><span class="jt-desc" hidden>Stays exactly as it is. Loaded in the order your middleware expects.</span></li>
-              <li class="jt-step" data-phase="After the analyzer" data-n="7"><button type="button"><span class="jt-dot">7</span><span class="jt-name">Unload and recap</span></button><span class="jt-desc" hidden>Pulls racks the moment results release and closes every tube.</span></li>
-              <li class="jt-step" data-phase="After the analyzer" data-n="8"><button type="button"><span class="jt-dot">8</span><span class="jt-name">Archive</span></button><span class="jt-desc" hidden>Stores each tube in indexed fridge racks, its position written to the LIS.</span></li>
-              <li class="jt-step" data-phase="After the analyzer" data-n="9"><button type="button"><span class="jt-dot">9</span><span class="jt-name">Retrieve and dispose</span></button><span class="jt-desc" hidden>Finds any tube for an add-on or rerun, and clears expired ones by policy.</span></li>
-            </ol>
-            <span class="jt-tube" aria-hidden="true"></span>
-          </div>
-          <p class="jt-cap" aria-live="polite"><span class="jt-cap-k"></span><span class="jt-cap-t"></span><span class="jt-cap-d"></span></p>
-        </div>
-        </div>
-        <div class="how-steps">
-          <ol class="sl">
-            <li class="sl-label">Before the analyzer</li>
-            <li class="sl-step"><button type="button"><span class="sl-n">1</span><span class="sl-name">Unbag</span><span class="sl-desc">Opens the sealed courier bag and pulls out the tubes and the requisition.</span></button></li>
-            <li class="sl-step"><button type="button"><span class="sl-n">2</span><span class="sl-name">Inspect</span><span class="sl-desc">Reads label, tube type, fill and integrity, and flags any conflict with the order.</span></button></li>
-            <li class="sl-step"><button type="button"><span class="sl-n">3</span><span class="sl-name">Accession</span><span class="sl-desc">Checks each accepted tube into the LIS, linked to its order.</span></button></li>
-            <li class="sl-step"><button type="button"><span class="sl-n">4</span><span class="sl-name">Sort</span><span class="sl-desc">Routes to spin, no-spin or hold. Held tubes wait for a person.</span></button></li>
-            <li class="sl-step"><button type="button"><span class="sl-n">5</span><span class="sl-name">Centrifuge</span><span class="sl-desc">Balances the rack, runs the right protocol, unloads when it stops.</span></button></li>
-            <li class="sl-step"><button type="button"><span class="sl-n">6</span><span class="sl-name">Aliquot and load</span><span class="sl-desc">Decaps, splits primaries into labelled daughter tubes and loads analyzer racks.</span></button></li>
-            <li class="sl-label">At the analyzer</li>
-            <li class="sl-step sl-hub"><button type="button"><span class="sl-n">&#9632;</span><span class="sl-name">Your analyzer</span><span class="sl-desc">Stays exactly as it is. Loaded in the order your middleware expects.</span></button></li>
-            <li class="sl-label">After the analyzer</li>
-            <li class="sl-step"><button type="button"><span class="sl-n">7</span><span class="sl-name">Unload and recap</span><span class="sl-desc">Pulls racks the moment results release and closes every tube.</span></button></li>
-            <li class="sl-step"><button type="button"><span class="sl-n">8</span><span class="sl-name">Archive</span><span class="sl-desc">Stores each tube in indexed fridge racks, its position written to the LIS.</span></button></li>
-            <li class="sl-step"><button type="button"><span class="sl-n">9</span><span class="sl-name">Retrieve and dispose</span><span class="sl-desc">Finds any tube for an add-on or rerun, and clears expired ones by policy.</span></button></li>
-          </ol>
-          <div class="how-bar" aria-hidden="true"><i></i></div>
-        </div>
+    <div class="flow">
+      <div class="flow-col">
+        <p class="flow-k">Before the analyzer</p>
+        <ol class="flow-list">
+          <li><span class="flow-n">1</span><b>Unbag</b><span>Opens the sealed courier bag and pulls out the tubes and the requisition.</span></li>
+          <li><span class="flow-n">2</span><b>Inspect</b><span>Reads label, tube type, fill and integrity, and flags any conflict with the order.</span></li>
+          <li><span class="flow-n">3</span><b>Accession</b><span>Checks each accepted tube into the LIS, linked to its order.</span></li>
+          <li><span class="flow-n">4</span><b>Sort</b><span>Routes to spin, no-spin or hold. Held tubes wait for a person.</span></li>
+          <li><span class="flow-n">5</span><b>Centrifuge</b><span>Balances the rack, runs the right protocol, unloads when it stops.</span></li>
+          <li><span class="flow-n">6</span><b>Aliquot and load</b><span>Decaps, splits primaries into labelled daughter tubes and loads analyzer racks.</span></li>
+        </ol>
+      </div>
+      <div class="flow-col flow-hub">
+        <p class="flow-k">At the analyzer</p>
+        <ol class="flow-list">
+          <li><span class="flow-n">&#9632;</span><b>Your analyzer</b><span>Stays exactly as it is. Loaded in the order your middleware expects.</span></li>
+        </ol>
+      </div>
+      <div class="flow-col">
+        <p class="flow-k">After the analyzer</p>
+        <ol class="flow-list" start="7">
+          <li><span class="flow-n">7</span><b>Unload and recap</b><span>Pulls racks the moment results release and closes every tube.</span></li>
+          <li><span class="flow-n">8</span><b>Archive</b><span>Stores each tube in indexed fridge racks, its position written to the LIS.</span></li>
+          <li><span class="flow-n">9</span><b>Retrieve and dispose</b><span>Finds any tube for an add-on or rerun, and clears expired ones by policy.</span></li>
+        </ol>
       </div>
     </div>
-  </div>
-  <div class="wrap how-after">
     <div class="notes">
       <p>Held specimens are deliberately not accessioned, so nothing downstream can pull, bill or treat them as received until a person rules on them.</p>
       <p>Every job is checked before and verified after: order, tube and destination must agree before a tube moves, and cameras confirm the result before the LIS is updated.</p>
@@ -672,7 +649,7 @@
      canvas behind the page cannot be seen through them. */
   var paperEls = [];
   function collectPaper() {
-    paperEls = [].slice.call(document.querySelectorAll('.sec:not(.dark):not(.cta):not(.how)'));   // not over the live animation
+    paperEls = [].slice.call(document.querySelectorAll('.sec:not(.dark):not(.cta)'));
   }
   function paperBands() {
     var out = [], i, r;
@@ -941,17 +918,6 @@
 })();
 </script>
 <script>
-/* The embedded twin reports its own height, so the frame always fits it. */
-(function(){
-  var f = document.querySelector('.twin-frame iframe');
-  if(!f) return;
-  window.addEventListener('message', function(e){
-    if(e.source !== f.contentWindow || !e.data || !e.data.twinH) return;
-    f.style.height = Math.max(320, Math.min(1400, e.data.twinH)) + 'px';
-  });
-})();
-</script>
-<script>
 (function(){
   var vids = document.querySelectorAll('.demo-video video');
   if(!vids.length || !('IntersectionObserver' in window)) return;
@@ -970,86 +936,5 @@
   Array.prototype.forEach.call(vids, function(v){ io.observe(v); });
 })();
 </script>
-
-<script>
-/* How it works. The section scrolls past like any other; the bench animation (the iframe) plays the journey by
- * itself while it is on screen, on a loop, and the step track and the step list beside it follow the step it
- * reports. Clicking a stop plays that step. The track has one more stop than the animation: retrieve and dispose. */
-(function(){
-  var run = document.querySelector('.how-run');
-  if(!run) return;
-  var f = run.querySelector('iframe'), track = run.querySelector('.jt'), rail = run.querySelector('.jt-rail');
-  var items = [].slice.call(run.querySelectorAll('.jt-step'));
-  var side = [].slice.call(run.querySelectorAll('.sl-step')), bar = run.querySelector('.how-bar i');
-  var N = items.length;
-  var ck = run.querySelector('.jt-cap-k'), ct = run.querySelector('.jt-cap-t'), cd = run.querySelector('.jt-cap-d');
-  var active = -1, cx = [], ready = false, playing = false, manual = false, loopT = 0;
-
-  function post(msg){ if(f && f.contentWindow) f.contentWindow.postMessage(msg, '*'); }
-  // the centre of each stop's dot along the rail, measured, so the track can reflow freely
-  function measure(){
-    var r = rail.getBoundingClientRect();
-    cx = items.map(function(li){ var d = li.querySelector('.jt-dot').getBoundingClientRect(); return d.left + d.width / 2 - r.left; });
-    track.style.setProperty('--x0', cx[0] + 'px');
-    track.style.setProperty('--x1', cx[N - 1] + 'px');
-  }
-  function mark(i){
-    if(i === active) return;
-    active = i;
-    items.forEach(function(li, n){ li.classList.toggle('on', n === i); li.classList.toggle('past', n < i); });
-    side.forEach(function(li, n){ li.classList.toggle('on', n === i); li.classList.toggle('past', n < i); });
-    if(bar) bar.style.width = ((i + 1) / N * 100).toFixed(2) + '%';
-    var li = items[i];
-    ck.textContent = (li.dataset.n ? 'Step ' + li.dataset.n + ' of 9' : 'Your analyzer') + ' \u00b7 ' + li.dataset.phase;
-    ct.textContent = li.querySelector('.jt-name').textContent;
-    cd.textContent = li.querySelector('.jt-desc').textContent;
-  }
-  function tubeAt(i){
-    if(!cx.length) measure();
-    track.style.setProperty('--x', cx[i] + 'px');
-  }
-
-  // plays by itself while on screen, and again a few seconds after it finishes
-  function onScreen(){ var r = (f || run).getBoundingClientRect(); return r.top < innerHeight * .75 && r.bottom > innerHeight * .25; }
-  function autoplay(){
-    if(!ready || manual || playing || !onScreen()) return;
-    playing = true; post({ twinRun: 1 });
-  }
-  function onStep(n){                          // the step the animation is on (0 = not started, 9 = archived)
-    var i = Math.max(0, Math.min(N - 1, n - 1));
-    mark(i); tubeAt(i);
-    clearTimeout(loopT);
-    if(n >= 9 && !manual) loopT = setTimeout(function(){ playing = false; autoplay(); }, 3500);
-  }
-
-  // a stop plays that step
-  items.concat(side).forEach(function(li, k){
-    var n = k % N;
-    li.querySelector('button').addEventListener('click', function(){
-      manual = true; clearTimeout(loopT); mark(n); tubeAt(n);
-      if(n < N - 1) post({ twinGo: n + 1 });
-    });
-  });
-
-  // off screen it is held: it stops drawing, so the rest of the page (and the machine behind it) stays smooth
-  var held = null;
-  function visible(){ var r = (f || run).getBoundingClientRect(); return r.bottom > -100 && r.top < innerHeight + 100; }
-  function holdCheck(){ var h = !visible(); if(h !== held && ready){ held = h; post({ twinHold: h }); } }
-  window.addEventListener('scroll', function(){ holdCheck(); autoplay(); }, { passive: true });
-  window.addEventListener('resize', function(){ cx = []; if(active >= 0) tubeAt(active); }, { passive: true });
-  window.addEventListener('load', function(){ cx = []; tubeAt(Math.max(0, active)); autoplay(); });
-  if(f) f.addEventListener('load', function(){ ready = true; holdCheck(); autoplay(); });
-  window.addEventListener('message', function(e){
-    if(!f || e.source !== f.contentWindow || !e.data) return;
-    // the animation says when it is listening (its load may land before this script runs)
-    if(e.data.twinReady){ ready = true; holdCheck(); autoplay(); }
-    if(e.data.twinStep != null) onStep(e.data.twinStep);
-  });
-  // ask until it answers: its own 'ready' can land before this script is listening
-  var pings = 0, pingT = setInterval(function(){ if(ready || ++pings > 20){ clearInterval(pingT); return; } post({ twinPing: 1 }); }, 400);
-  mark(0); tubeAt(0);
-})();
-</script>
-
 </body>
 </html>
