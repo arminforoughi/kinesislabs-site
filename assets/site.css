@@ -362,12 +362,11 @@ main,.foot{position:relative;z-index:1}
 .dark .demo-video video{border-color:var(--line-d);box-shadow:0 30px 60px -36px rgba(0,0,0,.9)}
 .dark .demo-video figcaption{color:var(--muted-d)}
 
-/* How it works: a pinned stage -- the animation, the step track under it. The runway is the scroll distance; the
-   stage sticks under the nav while it passes, and the animation shrinks as needed so both fit on one screen. */
+/* How it works: the animation, the step track under it, the steps beside it on a wide screen. It plays by itself. */
 .how{padding-bottom:clamp(3rem,2rem + 3vw,5rem)}
 .how .head{margin-bottom:0}
-.how-run{position:relative;height:calc(100vh + var(--steps) * 65vh)}
-.how-stick{position:sticky;top:0;height:100vh;display:flex;align-items:center;padding-top:4.5rem;padding-bottom:.75rem}
+.how-run{position:relative}
+.how-stick{padding-top:clamp(1.5rem,1rem + 2vw,2.25rem)}
 .how-grid{display:grid;gap:1rem;grid-template-columns:1fr;align-items:center}
 .how-left{display:grid;gap:.9rem;min-width:0}
 /* the frame takes the figure's own proportions (the twin draws 4:3 plus its switches; taller on a phone) */
@@ -439,15 +438,9 @@ main,.foot{position:relative;z-index:1}
   .jt-dot svg{width:.85rem;height:.85rem}
   .jt-rail::before,.jt-rail::after,.jt-tube{top:.75rem}
   .jt-cap{min-height:5.2em}
-  .how-stick{padding-top:4.25rem}
 }
 @media (prefers-reduced-motion:reduce){.jt-dot{transition:none}}
 .how-after .notes{margin-top:0}
 .how .notes p{color:var(--muted);border-left-color:var(--line)}
 
-/* phones: no pinning -- the section scrolls past like any other, and the animation plays by itself */
-@media (max-width:819px){
-  .how-run{height:auto}
-  .how-stick{position:static;height:auto;display:block;padding:clamp(1.5rem,1rem + 2vw,2.25rem) 0 0}
-  .how-after{margin-top:1.75rem}
-}
+.how-after{margin-top:1.75rem}
