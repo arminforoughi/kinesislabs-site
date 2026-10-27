@@ -1275,9 +1275,16 @@ if(new URLSearchParams(location.search).has('embed')){const TO='*';   /* any ori
   let last=0;const post=()=>{let b=0;for(const el of document.querySelectorAll('body>*,.stage>*,.lgd,.vset,.zwrap')){const r=el.getBoundingClientRect();if(r.height)b=Math.max(b,r.bottom+scrollY);}const h=Math.ceil(b+8);if(Math.abs(h-last)>2){last=h;parent.postMessage({twinH:h},TO);}};
   new ResizeObserver(post).observe(document.body);let pq=0;new MutationObserver(()=>{if(!pq)pq=setTimeout(()=>{pq=0;post();},80);}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});addEventListener('load',post);setTimeout(post,500);
   /* driven by the home page's step track: twinGo plays one step, twinRun plays the whole journey; the step on show is reported back */
-  addEventListener('message',e=>{if(e.source!==parent||!e.data)return;if(e.data.twinPing){parent.postMessage({twinReady:1},TO);return;}   /* only our own page drives it */const s=window.__st;if(!s||typeof startStep!=='function')return;
+  addEventListener('message',e=>{if(e.source!==parent||!e.data)return;if(e.data.twinPing){parent.postMessage({twinReady:1},TO);return;}
+    if(e.data.twinHold!=null){hold(!!e.data.twinHold);return;}   /* only our own page drives it */const s=window.__st;if(!s||typeof startStep!=='function')return;
     if(e.data.twinGo){const n=Math.max(1,Math.min(9,e.data.twinGo|0));s.auto=false;s.cur=0;s.t=0;s.done=n-1;startStep(s);}
     else if(e.data.twinRun){if(!s.cur){if(s.done>=9)s.done=0;s.auto=true;startStep(s);}}});
+  /* off screen the home page holds it: the journey stops where it is and nothing redraws, so it costs nothing while
+     you read the rest of the page; back on screen it carries on from the same spot */
+  let held=false;const rawRender=ui.render,rawAnimate=ui.animate;
+  ui.render=()=>{if(!held)rawRender();};
+  ui.animate=step=>rawAnimate(dt=>held?true:step(dt));
+  function hold(on){if(on===held)return;held=on;if(!on)rawRender();}
   /* on the home page the view stays put: no camera moves, and no wheel, pinch or drag to zoom or turn it */
   const STATIC=new URLSearchParams(location.search).get('embed')==='scroll';
   if(STATIC){const off=e=>{if(e.target.closest&&e.target.closest('.zwrap'))e.stopPropagation();};
