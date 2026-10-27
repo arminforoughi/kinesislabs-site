@@ -86,8 +86,8 @@
     <b>Kinesis</b><span>Labs</span>
   </a>
   <span class="nav-links">
-    <a href="#station">How it works</a>
     <a href="#demo">Demo</a>
+    <a href="#station">How it works</a>
     <a href="#problem">Problem</a>
     <a href="team.html">Team</a>
   </span>
@@ -121,8 +121,46 @@
   </div>
 </section>
 
-<!-- How it works: a pinned stage. Scrolling through it runs the bench animation through every step,
-     and the step list beside it follows. -->
+<!-- Bench demo -->
+<section class="sec dark" id="demo" aria-labelledby="demo-h" data-mesh="0.52 0.88 0.55 0.25">
+  <div class="wrap demo-grid">
+    <div class="demo-copy">
+      <p class="label">On the bench</p>
+      <h2 id="demo-h">Receiving first, working real tubes.</h2>
+      <p class="lead">Each task runs in simulation first, then on the bench: the arm reads each specimen, decides what happens to it, and checks the accepted ones into the LIS. The bench clip plays muted &mdash; unmute for the audio.</p>
+      <ul class="demo-list">
+        <li><b>Reads the requirement</b><span>Reasons through what the ordered test needs, and takes only a specimen that satisfies it.</span></li>
+        <li><b>Holds the bad ones</b><span>Detects error specimens and sets them aside instead of passing them downstream.</span></li>
+        <li><b>Decides what gets spun</b><span>Knows which specimens go to the centrifuge, and runs it.</span></li>
+        <li><b>Accessions in the LIS</b><span>Checks each accepted specimen in directly, so the order and the physical tube are linked.</span></li>
+      </ul>
+    </div>
+    <div class="demo-pair">
+      <figure class="demo-video">
+        <p class="demo-step"><span>01</span>Simulation</p>
+        <video controls autoplay muted loop playsinline preload="metadata"
+               poster="assets/sim-demo-poster.jpg"
+               aria-label="The receiving task running in simulation, seen from four camera angles">
+          <source src="assets/sim-demo.mp4" type="video/mp4">
+          Your browser does not support embedded video.
+        </video>
+        <figcaption>A simulated copy of the bench, where each task runs before it goes to the hardware.</figcaption>
+      </figure>
+      <figure class="demo-video">
+        <p class="demo-step"><span>02</span>Physical</p>
+        <video controls autoplay muted loop playsinline preload="metadata"
+               poster="assets/sample-receipt-poster.jpg"
+               aria-label="Bench demonstration of the receiving prototype handling blood tubes">
+          <source src="assets/sample-receipt-demo.mp4?v=2" type="video/mp4">
+          Your browser does not support embedded video.
+        </video>
+        <figcaption>Bench prototype, filmed August 2026. A working system on a bench, not a station deployed in a lab.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- How it works: the bench animation plays every step by itself, and the step list beside it follows. -->
 <section class="sec how" id="station" aria-labelledby="station-h" data-mesh="0.80 0.40 0.55 0.35">
   <div class="wrap">
     <div class="head">
@@ -184,45 +222,6 @@
       <p>Held specimens are deliberately not accessioned, so nothing downstream can pull, bill or treat them as received until a person rules on them.</p>
       <p>Every job is checked before and verified after: order, tube and destination must agree before a tube moves, and cameras confirm the result before the LIS is updated.</p>
       <p>Receiving runs on the bench prototype today. Each further step is a new trained skill on the same two arms.</p>
-    </div>
-  </div>
-</section>
-
-<!-- Bench demo -->
-<section class="sec dark" id="demo" aria-labelledby="demo-h" data-mesh="0.52 0.88 0.55 0.25">
-  <div class="wrap demo-grid">
-    <div class="demo-copy">
-      <p class="label">On the bench</p>
-      <h2 id="demo-h">Receiving first, working real tubes.</h2>
-      <p class="lead">Each task runs in simulation first, then on the bench: the arm reads each specimen, decides what happens to it, and checks the accepted ones into the LIS. The bench clip plays muted &mdash; unmute for the audio.</p>
-      <ul class="demo-list">
-        <li><b>Reads the requirement</b><span>Reasons through what the ordered test needs, and takes only a specimen that satisfies it.</span></li>
-        <li><b>Holds the bad ones</b><span>Detects error specimens and sets them aside instead of passing them downstream.</span></li>
-        <li><b>Decides what gets spun</b><span>Knows which specimens go to the centrifuge, and runs it.</span></li>
-        <li><b>Accessions in the LIS</b><span>Checks each accepted specimen in directly, so the order and the physical tube are linked.</span></li>
-      </ul>
-    </div>
-    <div class="demo-pair">
-      <figure class="demo-video">
-        <p class="demo-step"><span>01</span>Simulation</p>
-        <video controls autoplay muted loop playsinline preload="metadata"
-               poster="assets/sim-demo-poster.jpg"
-               aria-label="The receiving task running in simulation, seen from four camera angles">
-          <source src="assets/sim-demo.mp4" type="video/mp4">
-          Your browser does not support embedded video.
-        </video>
-        <figcaption>A simulated copy of the bench, where each task runs before it goes to the hardware.</figcaption>
-      </figure>
-      <figure class="demo-video">
-        <p class="demo-step"><span>02</span>Physical</p>
-        <video controls autoplay muted loop playsinline preload="metadata"
-               poster="assets/sample-receipt-poster.jpg"
-               aria-label="Bench demonstration of the receiving prototype handling blood tubes">
-          <source src="assets/sample-receipt-demo.mp4" type="video/mp4">
-          Your browser does not support embedded video.
-        </video>
-        <figcaption>Bench prototype, filmed August 2026. A working system on a bench, not a station deployed in a lab.</figcaption>
-      </figure>
     </div>
   </div>
 </section>
