@@ -1287,7 +1287,7 @@ if(new URLSearchParams(location.search).has('embed')){const TO='*';   /* any ori
   if(STATIC){const off=e=>{if(e.target.closest&&e.target.closest('.zwrap'))e.stopPropagation();};
     addEventListener('wheel',off,{capture:true,passive:true});
     addEventListener('pointerdown',e=>{if(e.target.closest&&e.target.closest('#fig'))e.stopPropagation();},true);
-    const ts=document.createElement('style');ts.textContent='#fig{touch-action:pan-x pan-y!important;cursor:default!important}';document.head.appendChild(ts);}
+    const ts=document.createElement('style');ts.textContent='#fig{touch-action:pan-x pan-y!important;cursor:default!important}html body .toast{display:none!important}';document.head.appendChild(ts);}
   const FOCI=[null,[55,232,22],[52,196,34],[28,196,36],[55,163,16],[56,122,20],[64,96,24],[52,50,34],[68,63,22],[18,120,42]];
   const ez=k=>k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2, cl=k=>Math.max(0,Math.min(1,k));
   function focus(x){const fig=document.getElementById('fig');if(!fig||!fig.viewBox||!fig.viewBox.baseVal)return;if(STATIC){fig.style.transform='';return;}
