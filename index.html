@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://kinesislabs.tech/assets/og-image.png">
 <link rel="apple-touch-icon" href="assets/icon-512.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=58">
+<link rel="stylesheet" href="assets/site.css?v=62">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -137,7 +137,6 @@
     </div>
     <div class="demo-pair">
       <figure class="demo-video">
-        <p class="demo-step">Physical</p>
         <video controls autoplay muted loop playsinline preload="metadata"
                poster="assets/sample-receipt-poster.jpg"
                aria-label="Bench demonstration of the receiving prototype handling blood tubes">
@@ -146,15 +145,31 @@
         </video>
         <figcaption>Bench prototype, filmed August 2026. A working system on a bench, not a station deployed in a lab.</figcaption>
       </figure>
+    </div>
+  </div>
+
+  <!-- Earlier research-lab demos -->
+  <div class="wrap earlier">
+    <div class="earlier-head">
+      <p class="label">Earlier work</p>
+      <p class="earlier-lead">Before clinical receiving, we automated research-lab work: moving samples between machines and pipetting.</p>
+    </div>
+    <div class="earlier-row">
       <figure class="demo-video">
-        <p class="demo-step">Simulation</p>
-        <video controls autoplay muted loop playsinline preload="metadata"
-               poster="assets/sim-demo-poster.jpg"
-               aria-label="The receiving task running in simulation, seen from four camera angles">
-          <source src="assets/sim-demo.mp4" type="video/mp4">
-          Your browser does not support embedded video.
+        <video controls muted loop playsinline preload="none"
+               poster="assets/plate-to-fridge-poster.jpg?v=2"
+               aria-label="A rail-mounted arm carrying plates between a liquid handler, plate reader, shaker and fridge">
+          <source src="assets/plate-to-fridge.mp4?v=2" type="video/mp4">
         </video>
-        <figcaption>A simulated copy of the bench, where each task runs before it goes to the hardware.</figcaption>
+        <figcaption><b>Moving samples between machines</b>A rail-mounted arm carries plates between the liquid handler, plate reader, shaker and fridge.</figcaption>
+      </figure>
+      <figure class="demo-video">
+        <video class="wide" controls muted loop playsinline preload="none"
+               poster="assets/pipetting-poster.jpg"
+               aria-label="A robot gripper working a pipette">
+          <source src="assets/pipetting.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>Pipetting</b>The gripper works a pipette for small-volume transfers.</figcaption>
       </figure>
     </div>
   </div>

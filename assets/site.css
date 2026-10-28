@@ -163,32 +163,46 @@ main,.foot{position:relative;z-index:1}
 
 /* Bench demo */
 .demo-grid{display:grid;gap:clamp(2rem,1.5rem + 3vw,4rem);grid-template-columns:1fr;align-items:center}
-@media (min-width:1100px){.demo-grid{grid-template-columns:minmax(0,1fr) minmax(520px,620px)}}
+@media (min-width:1000px){.demo-grid{grid-template-columns:minmax(0,1fr) minmax(320px,380px)}}
 .demo-copy .lead{margin-top:1.4rem;max-width:40rem}
 .demo-list{display:grid;gap:1px;margin-top:2rem;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
 .demo-list li{background:#fff;padding:1rem 1.2rem;display:grid;gap:.2rem}
 .demo-list b{font-weight:600;letter-spacing:-.015em}
 .demo-list span{font-size:var(--t-sm);color:var(--muted);line-height:1.55}
-/* Simulation and bench clips side by side; a swipeable row on phones, where two
-   9:16 players next to each other would be too narrow to read the captions. */
-.demo-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.75rem,.5rem + 1vw,1.25rem);align-items:start;width:100%;max-width:620px;margin-inline:auto}
-@media (max-width:559px){
-  .demo-pair{
-    grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;width:auto;max-width:none;
-    overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
-    margin-inline:calc(-1 * clamp(1.25rem,4vw,2.5rem));padding-inline:clamp(1.25rem,4vw,2.5rem);scroll-padding-inline:clamp(1.25rem,4vw,2.5rem)
-  }
-  .demo-pair::-webkit-scrollbar{display:none}
-  .demo-pair>.demo-video{scroll-snap-align:start}
-}
-.demo-step{margin:0;display:flex;align-items:baseline;gap:.55rem;font-size:var(--t-xs);font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--text)}
-.demo-step span{font-family:var(--mono);letter-spacing:.06em;color:var(--mint-deep)}
+/* The bench clip beside the copy */
+.demo-pair{width:100%;max-width:380px;margin-inline:auto}
 .demo-video{margin:0;display:grid;gap:.9rem;justify-items:center}
 .demo-video video{
   width:100%;max-width:380px;aspect-ratio:9/16;border-radius:var(--r);background:var(--ink);
   border:1px solid var(--line);box-shadow:0 30px 60px -40px rgba(10,18,22,.55);object-fit:cover;
 }
 .demo-video figcaption{font-size:var(--t-xs);letter-spacing:.02em;color:var(--muted);text-align:center;max-width:32ch;line-height:1.5}
+
+/* Earlier work: two 9:16 clips side by side; a swipeable row on phones, where two
+   players next to each other would be too narrow to read the captions */
+.earlier{margin-top:clamp(3.5rem,2.5rem + 4vw,6rem)}
+.earlier-head{display:grid;gap:.25rem;margin-bottom:clamp(1.5rem,1.2rem + 1.2vw,2.25rem)}
+.earlier-head .label{margin:0}
+.earlier-lead{margin:0;max-width:44rem;color:var(--muted);line-height:1.6}
+.earlier-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.75rem,.5rem + 1vw,1.25rem);align-items:start;max-width:620px}
+/* laptop: the note on the left and the clips on the right, like the demo above */
+@media (min-width:1000px){
+  .earlier{display:grid;grid-template-columns:minmax(0,1fr) minmax(520px,640px);gap:clamp(2rem,1.5rem + 3vw,4rem);align-items:center}
+  .earlier-head{margin-bottom:0}
+  .earlier-row{max-width:none}
+}
+@media (max-width:559px){
+  .earlier-row{
+    grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;max-width:none;
+    overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
+    margin-inline:calc(-1 * clamp(1.25rem,4vw,2.5rem));padding-inline:clamp(1.25rem,4vw,2.5rem);scroll-padding-inline:clamp(1.25rem,4vw,2.5rem)
+  }
+  .earlier-row::-webkit-scrollbar{display:none}
+  .earlier-row>.demo-video{scroll-snap-align:start}
+}
+.earlier .demo-video video{aspect-ratio:3/4}   /* the fridge clip is cut to 3:4, without the cables under the bench */
+.earlier .demo-video video.wide{object-position:58% 50%}   /* the landscape pipetting clip, cropped onto the gripper */
+.earlier .demo-video figcaption b{display:block;color:var(--text);font-weight:600;margin-bottom:.15rem}
 
 /* Stats */
 .stats{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;grid-template-columns:1fr}
@@ -350,8 +364,6 @@ main,.foot{position:relative;z-index:1}
 .dark .demo-list li{background:var(--panel)}
 .dark .demo-list b{color:#fff}
 .dark .demo-list span{color:var(--muted-d)}
-.dark .demo-step{color:#fff}
-.dark .demo-step span{color:var(--mint)}
 .dark .demo-video video{border-color:var(--line-d);box-shadow:0 30px 60px -36px rgba(0,0,0,.9)}
 .dark .demo-video figcaption{color:var(--muted-d)}
 
