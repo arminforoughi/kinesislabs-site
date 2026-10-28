@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://kinesislabs.tech/assets/og-image.png">
 <link rel="apple-touch-icon" href="assets/icon-512.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=62">
+<link rel="stylesheet" href="assets/site.css?v=66">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -127,7 +127,7 @@
     <div class="demo-copy">
       <p class="label">On the bench</p>
       <h2 id="demo-h">Receiving first, working real tubes.</h2>
-      <p class="lead">Each task runs in simulation first, then on the bench: the arm reads each specimen, decides what happens to it, and checks the accepted ones into the LIS. The bench clip plays muted &mdash; unmute for the audio.</p>
+      <p class="lead">The arm reads each specimen, decides what happens to it, and checks the accepted ones into the LIS. Every task is rehearsed in simulation before it runs on the bench. The clip plays muted &mdash; unmute for the audio.</p>
       <ul class="demo-list">
         <li><b>Reads the requirement</b><span>Reasons through what the ordered test needs, and takes only a specimen that satisfies it.</span></li>
         <li><b>Holds the bad ones</b><span>Detects error specimens and sets them aside instead of passing them downstream.</span></li>
@@ -152,7 +152,13 @@
   <div class="wrap earlier">
     <div class="earlier-head">
       <p class="label">Earlier work</p>
-      <p class="earlier-lead">Before clinical receiving, we automated research-lab work: moving samples between machines and pipetting.</p>
+      <h3 class="earlier-h">Research-lab automation came first.</h3>
+      <p class="earlier-lead">Before clinical receiving, we automated research-lab work on a bench of off-the-shelf instruments: an arm on a rail moving samples between a liquid handler, plate reader, shaker and fridge, and a gripper working a pipette.</p>
+      <ul class="earlier-points">
+        <li><b>Hand-offs between machines</b><span>Picking up from one instrument and placing into the next &mdash; the same move the clinical station makes at the centrifuge, the analyzer and the archive fridge.</span></li>
+        <li><b>Fine manipulation</b><span>Pipetting small volumes, where a small error in position shows up in the result.</span></li>
+        <li><b>Instruments left as they are</b><span>The robot works around the lab&rsquo;s existing equipment instead of asking the lab to replace it.</span></li>
+      </ul>
     </div>
     <div class="earlier-row">
       <figure class="demo-video">
@@ -183,38 +189,26 @@
       <h2 id="station-h">From the courier bag to the archive fridge.</h2>
       <p class="lead">One station on the bench you already have, wired into your LIS, middleware and instruments.</p>
     </div>
-    <div class="flow">
-      <div class="flow-col">
-        <p class="flow-k">Before the analyzer</p>
-        <ol class="flow-list">
-          <li><span class="flow-n">1</span><b>Unbag</b><span>Opens the sealed courier bag and pulls out the tubes and the requisition.</span></li>
-          <li><span class="flow-n">2</span><b>Inspect</b><span>Reads label, tube type, fill and integrity, and flags any conflict with the order.</span></li>
-          <li><span class="flow-n">3</span><b>Accession</b><span>Checks each accepted tube into the LIS, linked to its order.</span></li>
-          <li><span class="flow-n">4</span><b>Sort</b><span>Routes to spin, no-spin or hold. Held tubes wait for a person.</span></li>
-          <li><span class="flow-n">5</span><b>Centrifuge</b><span>Balances the rack, runs the right protocol, unloads when it stops.</span></li>
-          <li><span class="flow-n">6</span><b>Aliquot and load</b><span>Decaps, splits primaries into labelled daughter tubes and loads analyzer racks.</span></li>
-        </ol>
-      </div>
-      <div class="flow-col flow-hub">
-        <p class="flow-k">At the analyzer</p>
-        <ol class="flow-list">
-          <li><span class="flow-n">&#9632;</span><b>Your analyzer</b><span>Stays exactly as it is. Loaded in the order your middleware expects.</span></li>
-        </ol>
-      </div>
-      <div class="flow-col">
-        <p class="flow-k">After the analyzer</p>
-        <ol class="flow-list" start="7">
-          <li><span class="flow-n">7</span><b>Unload and recap</b><span>Pulls racks the moment results release and closes every tube.</span></li>
-          <li><span class="flow-n">8</span><b>Archive</b><span>Stores each tube in indexed fridge racks, its position written to the LIS.</span></li>
-          <li><span class="flow-n">9</span><b>Retrieve and dispose</b><span>Finds any tube for an add-on or rerun, and clears expired ones by policy.</span></li>
-        </ol>
-      </div>
+    <p class="flow-k">Before the analyzer</p>
+    <ol class="flow-grid">
+      <li><span class="flow-n">01</span><b>Unbag</b><span>Opens the courier bag; pulls tubes and requisition.</span></li>
+      <li><span class="flow-n">02</span><b>Inspect</b><span>Checks label, tube, fill and the order.</span></li>
+      <li><span class="flow-n">03</span><b>Accession</b><span>Checks accepted tubes into the LIS.</span></li>
+      <li><span class="flow-n">04</span><b>Sort</b><span>Spin, no-spin, or hold for a person.</span></li>
+      <li><span class="flow-n">05</span><b>Centrifuge</b><span>Balances, spins and unloads.</span></li>
+      <li><span class="flow-n">06</span><b>Aliquot and load</b><span>Splits primaries, loads analyzer racks.</span></li>
+    </ol>
+    <div class="flow-hub">
+      <span class="flow-hub-k">Your analyzer</span>
+      <span>Stays exactly as it is.</span>
     </div>
-    <div class="notes">
-      <p>Held specimens are deliberately not accessioned, so nothing downstream can pull, bill or treat them as received until a person rules on them.</p>
-      <p>Every job is checked before and verified after: order, tube and destination must agree before a tube moves, and cameras confirm the result before the LIS is updated.</p>
-      <p>Receiving runs on the bench prototype today. Each further step is a new trained skill on the same two arms.</p>
-    </div>
+    <p class="flow-k">After the analyzer</p>
+    <ol class="flow-grid" start="7">
+      <li><span class="flow-n">07</span><b>Unload and recap</b><span>Pulls racks when results release.</span></li>
+      <li><span class="flow-n">08</span><b>Archive</b><span>Racks tubes in the fridge, logged in the LIS.</span></li>
+      <li><span class="flow-n">09</span><b>Retrieve and dispose</b><span>Finds tubes for reruns; clears expired ones.</span></li>
+    </ol>
+    <p class="flow-note">Held tubes are never accessioned until a person rules on them, and cameras verify every move before the LIS is updated. Receiving runs on the bench prototype today.</p>
   </div>
 </section>
 

@@ -113,8 +113,8 @@ ul,ol{margin:0;padding:0;list-style:none}
 /* short viewports: shrink the type before anything falls off the screen */
 @media (max-height:900px) and (min-width:1000px){
   .hero h1{font-size:clamp(2.25rem,1.2rem + 2.6vw,3.4rem)}
-  .hero .lead{font-size:1.0625rem;margin-top:1rem}
-  .hero-actions{margin-top:1.4rem}
+  .hero .lead{font-size:1.0625rem;margin-top:1.4rem}
+  .hero-actions{margin-top:1.6rem}
 }
 @media (max-width:999px){
   .hero-stage{padding-block:4.75rem 1.25rem}
@@ -181,8 +181,8 @@ main,.foot{position:relative;z-index:1}
 /* Earlier work: two 9:16 clips side by side; a swipeable row on phones, where two
    players next to each other would be too narrow to read the captions */
 .earlier{margin-top:clamp(3.5rem,2.5rem + 4vw,6rem)}
-.earlier-head{display:grid;gap:.25rem;margin-bottom:clamp(1.5rem,1.2rem + 1.2vw,2.25rem)}
-.earlier-head .label{margin:0}
+.earlier-head{margin-bottom:clamp(1.5rem,1.2rem + 1.2vw,2.25rem)}
+.earlier-head .label{margin:0 0 .9rem}
 .earlier-lead{margin:0;max-width:44rem;color:var(--muted);line-height:1.6}
 .earlier-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.75rem,.5rem + 1vw,1.25rem);align-items:start;max-width:620px}
 /* laptop: the note on the left and the clips on the right, like the demo above */
@@ -224,8 +224,6 @@ main,.foot{position:relative;z-index:1}
 .step .n{display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:var(--pill);margin-bottom:1.1rem;background:rgba(95,227,180,.1);border:1px solid rgba(95,227,180,.3);color:var(--mint);font-family:var(--mono);font-size:.8125rem;font-weight:600}
 .step h3{margin-bottom:.55rem}
 .step p{margin:0;font-size:var(--t-sm);line-height:1.6;color:var(--muted-d)}
-.notes{margin-top:clamp(2rem,1.6rem + 1.6vw,3rem);display:grid;gap:1rem;max-width:52rem}
-.notes p{margin:0;font-size:var(--t-sm);color:rgba(214,236,240,.62);padding-left:1rem;border-left:1px solid var(--line-d)}
 
 /* Physical AI */
 .feat h3{margin-bottom:.5rem}
@@ -359,23 +357,26 @@ main,.foot{position:relative;z-index:1}
 /* step count beside the workflow group labels */
 .label .count{display:inline-block;white-space:nowrap;margin-left:.6rem;padding:.2rem .55rem;border-radius:var(--pill);border:1px solid rgba(95,227,180,.3);color:rgba(214,236,240,.6);letter-spacing:.1em}
 
-/* Bench demo on the ink ground */
-.dark .demo-list{background:var(--line-d);border-color:var(--line-d)}
-.dark .demo-list li{background:var(--panel)}
-.dark .demo-list b{color:#fff}
-.dark .demo-list span{color:var(--muted-d)}
-.dark .demo-video video{border-color:var(--line-d);box-shadow:0 30px 60px -36px rgba(0,0,0,.9)}
-.dark .demo-video figcaption{color:var(--muted-d)}
+/* How it works: the nine steps as one compact grid, the analyzer a band across the middle */
+.how .head{margin-bottom:clamp(1.5rem,1.2rem + 1.4vw,2.25rem)}
+.flow-k{margin:0 0 .75rem;font-size:var(--t-xs);font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint)}
+.flow-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem clamp(1rem,.8rem + 1.2vw,2rem)}
+@media (max-width:559px){.flow-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem 1rem}}
+.flow-grid li{display:grid;gap:.15rem;align-content:start;padding-top:.7rem;border-top:1px solid var(--line-d)}
+.flow-n{font-family:var(--mono);font-size:.6875rem;letter-spacing:.06em;color:var(--mint)}
+.flow-grid b{color:#fff;font-weight:600;font-size:var(--t-sm)}
+.flow-grid span:not(.flow-n){font-size:var(--t-sm);line-height:1.45;color:var(--muted-d)}
+.flow-hub{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.3rem .9rem;margin:clamp(1.25rem,1rem + 1vw,1.75rem) 0;
+  padding:.75rem 1.1rem;border:1px solid rgba(95,227,180,.35);border-radius:var(--r);background:rgba(95,227,180,.06);
+  font-size:var(--t-sm);color:var(--muted-d)
+}
+.flow-hub-k{font-size:var(--t-xs);font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint)}
+.flow-note{margin:clamp(1.5rem,1.2rem + 1vw,2rem) 0 0;max-width:52rem;font-size:var(--t-sm);line-height:1.55;color:rgba(214,236,240,.62)}
 
-/* How it works: every step in three groups -- before, at and after the analyzer */
-.how .head{margin-bottom:clamp(1.75rem,1.4rem + 1.6vw,2.75rem)}
-.flow{display:grid;gap:clamp(1.5rem,1rem + 2vw,2.5rem);grid-template-columns:1fr}
-@media (min-width:900px){.flow{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1.2fr);align-items:start}}
-.flow-k{margin:0 0 .9rem;padding-bottom:.6rem;border-bottom:1px solid var(--line-d);font-size:var(--t-xs);font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint)}
-.flow-list{list-style:none;margin:0;padding:0;display:grid;gap:1rem}
-.flow-list li{display:grid;grid-template-columns:1.9rem minmax(0,1fr);column-gap:.8rem;align-items:baseline}
-.flow-n{grid-row:span 2;align-self:start;display:inline-flex;align-items:center;justify-content:center;width:1.9rem;height:1.9rem;border-radius:var(--pill);border:1px solid var(--line-d);background:var(--panel);color:var(--muted-d);font-size:.75rem;font-weight:600}
-.flow-hub .flow-n{border-radius:8px;font-size:.6rem;color:var(--mint);background:rgba(95,227,180,.1);border-color:rgba(95,227,180,.4)}
-.flow-list b{color:#fff;font-size:var(--t-sm);font-weight:600}
-.flow-list span:not(.flow-n){grid-column:2;font-size:var(--t-sm);line-height:1.5;color:var(--muted-d)}
-.how .notes{margin-top:clamp(2rem,1.6rem + 1.6vw,3rem)}
+/* Earlier work: heading and the three things that carried over */
+.earlier-h{margin:0 0 .9rem;font-size:clamp(1.4rem,1.1rem + 1vw,1.9rem);letter-spacing:-.03em;line-height:1.15}
+.earlier-points{list-style:none;margin:1.5rem 0 0;padding:0;display:grid;gap:1rem}
+.earlier-points li{display:grid;gap:.2rem;padding-left:1rem;border-left:2px solid rgba(14,110,85,.35)}
+.earlier-points b{font-weight:600;font-size:var(--t-sm)}
+.earlier-points span{font-size:var(--t-sm);line-height:1.55;color:var(--muted)}
